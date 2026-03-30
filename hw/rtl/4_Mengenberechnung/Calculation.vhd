@@ -71,21 +71,10 @@ architecture Behavioral of Calculation is
             m_axis_tdata : out STD_LOGIC_VECTOR(95 downto 0)
         );
     end component;
-    component AXIS_ASyncFIFO_Arbiter is
-        Port ( 
-            s_axis_aresetn : in STD_LOGIC;
-            s_axis_aclk : in STD_LOGIC;
-            s_axis_tvalid : in STD_LOGIC;
-            s_axis_tready : out STD_LOGIC;
-            s_axis_tdata : in STD_LOGIC_VECTOR(31 downto 0);
-            m_axis_aclk : in STD_LOGIC;
-            m_axis_tvalid : out STD_LOGIC;
-            m_axis_tready : in STD_LOGIC;
-            m_axis_tdata : out STD_LOGIC_VECTOR(31 downto 0)
-        );
-    end component;
     component Dispatcher is
         port(
+            i_resetn : in std_logic;
+            i_clk : in std_logic;
             -- Input
             i_valid : in std_logic;
             i_pixel_data : in t_pixel_data;
@@ -93,11 +82,11 @@ architecture Behavioral of Calculation is
             -- Output 1
             i_s1_ready : in std_logic;
             o_s1_valid : out std_logic;
+            o_s1_pixel_data : out t_pixel_data;
             -- Output 2
             i_s2_ready : in std_logic;
             o_s2_valid : out std_logic;
-            -- Both Outputs
-            o_pixel_data : out t_pixel_data
+            o_s2_pixel_data : out t_pixel_data
         );
     end component;
     component Core is
@@ -130,6 +119,19 @@ architecture Behavioral of Calculation is
             i_ready : in std_logic;
             o_valid : out std_logic;
             o_pixel_result : out t_pixel_result
+        );
+    end component;
+    component AXIS_ASyncFIFO_Arbiter is
+        Port ( 
+            s_axis_aresetn : in STD_LOGIC;
+            s_axis_aclk : in STD_LOGIC;
+            s_axis_tvalid : in STD_LOGIC;
+            s_axis_tready : out STD_LOGIC;
+            s_axis_tdata : in STD_LOGIC_VECTOR(31 downto 0);
+            m_axis_aclk : in STD_LOGIC;
+            m_axis_tvalid : out STD_LOGIC;
+            m_axis_tready : in STD_LOGIC;
+            m_axis_tdata : out STD_LOGIC_VECTOR(31 downto 0)
         );
     end component;
 
@@ -189,16 +191,19 @@ begin
     gen_DISP: for idx in 0 to g_AMOUNT_CORES - 2 generate
         DISP: Dispatcher
         port map (
-            i_valid      => w_disp_valid(idx),
-            i_pixel_data => w_disp_data_array(idx),
-            o_ready      => w_disp_ready(idx),
-            i_s1_ready   => w_disp_ready((idx * 2) + 1),
-            o_s1_valid   => w_disp_valid((idx * 2) + 1),
-            i_s2_ready   => w_disp_ready((idx * 2) + 2),
-            o_s2_valid   => w_disp_valid((idx * 2) + 2),
-            o_pixel_data => w_disp_data_array((idx * 2) + 1)
+            i_resetn        => i_resetn_calc,
+            i_clk           => i_clk_calc,
+            i_valid         => w_disp_valid(idx),
+            i_pixel_data    => w_disp_data_array(idx),
+            o_ready         => w_disp_ready(idx),
+            i_s1_ready      => w_disp_ready((idx * 2) + 1),
+            o_s1_valid      => w_disp_valid((idx * 2) + 1),
+            o_s1_pixel_data => w_disp_data_array((idx * 2) + 1),
+            i_s2_ready      => w_disp_ready((idx * 2) + 2),
+            o_s2_valid      => w_disp_valid((idx * 2) + 2),
+            o_s2_pixel_data => w_disp_data_array((idx * 2) + 2)
+            
         );
-        w_disp_data_array((idx * 2) + 2) <= w_disp_data_array((idx * 2) + 1);
     end generate;
 
     gen_CORE: for idx in g_AMOUNT_CORES - 1 to 2 * (g_AMOUNT_CORES - 1) generate
