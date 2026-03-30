@@ -45,8 +45,8 @@ entity Calculation is
         i_c_img : in std_logic_vector(17 downto 0);
         o_ready : out std_logic;
         -- Output AXI Stream like interface
-        i_clk_arbiter : in std_logic;
-        i_resetn_arbiter : in std_logic;
+        i_clk_color : in std_logic;
+        i_resetn_color : in std_logic;
         i_ready : in std_logic;
         o_valid : out std_logic;
         o_video_pix_col : out std_logic_vector(9 downto 0);
@@ -236,12 +236,12 @@ begin
 
     ARBITE_FIFO: AXIS_ASyncFIFO_Arbiter
     port map (
-        s_axis_aresetn => i_resetn_arbiter,
+        s_axis_aresetn => i_resetn_color,
         s_axis_aclk    => i_clk_calc,
         s_axis_tvalid  => w_arbit_valid(0),
         s_axis_tready  => w_arbit_ready(0),
         s_axis_tdata   => w_arbit_fifo_pixel_data_in,
-        m_axis_aclk    => i_clk_arbiter,
+        m_axis_aclk    => i_clk_color,
         m_axis_tvalid  => o_valid,
         m_axis_tready  => i_ready,
         m_axis_tdata   => w_arbit_fifo_pixel_data_out

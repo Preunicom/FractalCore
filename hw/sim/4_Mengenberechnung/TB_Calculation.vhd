@@ -41,10 +41,10 @@ architecture Testbench of TB_Calculation is
     constant c_AMOUNT_STIMULI_PER_CASE : integer := 63;
     signal s_clk_init : std_logic := '0';
     signal s_clk_calc : std_logic := '0';
-    signal s_clk_arbiter : std_logic := '0';
+    signal s_clk_color : std_logic := '0';
     signal s_resetn_init : std_logic;
     signal s_resetn_calc : std_logic;
-    signal s_resetn_arbiter : std_logic;
+    signal s_resetn_color : std_logic;
     signal s_valid : std_logic;
     signal s_video_pix_col : std_logic_vector(9 downto 0);
     signal s_video_pix_row : std_logic_vector(8 downto 0);
@@ -100,8 +100,8 @@ begin
         i_c_real                 => s_c_real,
         i_c_img                  => s_c_img,
         o_ready                  => c_ready,
-        i_clk_arbiter            => s_clk_arbiter,
-        i_resetn_arbiter         => s_resetn_arbiter,
+        i_clk_color              => s_clk_color,
+        i_resetn_color           => s_resetn_color,
         i_ready                  => s_ready,
         o_valid                  => c_valid,
         o_video_pix_col          => c_video_pix_col,
@@ -118,8 +118,8 @@ begin
     s_resetn_calc <= '0', '1' after 3*tbase_calc;
     s_clk_calc <= not s_clk_calc after 0.5*tbase_calc;
 
-    s_resetn_arbiter <= '0', '1' after 3*tbase_arbit;
-    s_clk_arbiter <= not s_clk_arbiter after 0.5*tbase_arbit;
+    s_resetn_color <= '0', '1' after 3*tbase_arbit;
+    s_clk_color <= not s_clk_color after 0.5*tbase_arbit;
 
     STIMULI: process
 	begin
@@ -201,9 +201,9 @@ begin
         variable row_3 : integer := 0;
         variable row_4 : integer := 0;
 	begin
-        wait until s_resetn_arbiter = '1';
+        wait until s_resetn_color = '1';
         loop
-            wait_for_handshake(s_clk_arbiter, c_valid, s_ready);
+            wait_for_handshake(s_clk_color, c_valid, s_ready);
             if c_video_pix_row = std_logic_vector(to_unsigned(1, 9)) then
             ----- 0 Iterations
                 row_1 := row_1 + 1;
