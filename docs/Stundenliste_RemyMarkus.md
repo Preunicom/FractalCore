@@ -17,6 +17,7 @@
 | 29.03.2026 | 4.2.3 | 2 | TB Calculation |
 | 30.03.2026 | 5 | 3 | Arbiter Pipeline + Rework TB Arbiter |
 | 30.03.2026 | 4.2.1 | 1 | Dispatcher Pipeline + Rework TB Dispatcher |
+| 30.03.2026 | 4.2.2 | 1 | Skid Buffer + TB Skid Buffer |
 
 ## Feature Nummerierung
 
