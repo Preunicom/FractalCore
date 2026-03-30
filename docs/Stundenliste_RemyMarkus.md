@@ -15,6 +15,7 @@
 | 29.03.2026 | 5 | 4 | Arbiter + TB |
 | 29.03.2026 | 4.2.1 | 1 | Generate Schleifen für Dispatcher, Core und Arbiter |
 | 29.03.2026 | 4.2.3 | 2 | TB Calculation |
+| 30.03.2026 | 5 | 3 | Arbiter Pipeline + Rework TB Arbiter |
 
 ## Feature Nummerierung
 
