@@ -23,7 +23,25 @@ Abhängig von der Geschwindigkeit werden ggf. weniger verwendet.
 
 ## 4. Berechnung
 
-### 4.1 Core
+### 4.1 Dispatcher
+
+Der Dispatcher verteilt eingehende Startwerte für die Berechnung auf die Cores.
+Dabei ist die Reihenfolge auf welchen Core er die Werte verteilt egal solange der Empfänger eine freie Stage hat.
+Der Dispatcher ist gepipelined um das Timing zu verbessern.
+Die Pipeline hat jedoch ein Problem.
+Wenn sie gefüllt werden würde müssten viele Werte sehr lange warten bis sie durch alle Dispatcher Stufen hindurch sind während ein anderer Core beispielsweise leer läuft.
+Diese Verzögerung ist nicht hinnehmbar.
+Ohne die Pipeline zu fülllen benötigt ein Startwert allerdings n Takte mit n der Anzahl an Dispatcher Stufen.
+Da die Startwerte deutlich langsamer erzeugt werden als die Berechnung getaktet ist, ist diese Verzögerung jedoch kein großes Problem.
+Ebenso bringt diese Designentscheidung mit sich, dass erst, wenn das letzte Paket empfangen wurde, das nächste Paket angefordert werden kann.
+Aber auch das ist, unter der Annahme, dass eine größere Anzahl an Cores verwendet wird und somit selten nur ein Core alleine anfordert kein Problem.
+Es muss jedoch bei der Auswahl der Anzahl an Cores berücksichtigt werden.
+
+Um die n Takte mit n der Anzahl an Dispatcher Stufen als Verzögerung zu gewährleisten, muss der Dispatcher sich merken, ob er bereits ein ready empfangen hat, da eine freie Stage im Core nur alle 3 Takte einen ready Puls auslöst.
+Ohne diese Speicherung des ready flags wäre die Verzögerung 3*n.
+Die Speicherung wird nach dem Senden einer Datenpacketes zurückgesetzt.
+
+### 4.2 Core
 
 #### Rundungsfehler
 
@@ -51,13 +69,19 @@ In Testbenches muss es jedoch beachtet werden.
 ## 5. Arbiter
 
 Der Arbiter führt die Ergebnisse der parallelen Cores wieder zusammen.
-Ursprünglich war geplant das anhand der Pixelposition für jedes Paket zu priorisieren.
-Allerdings kostet diese Logik zu viel Zeit um sie auf der Taktfreuquenz der Cores umzusetzen.
+Dabei soll ein Paket anhand der Pixelposition priorisiert werden.
+
+Diese Logik kostet allerdings ohne Pipeline zu viel Zeit um sie auf der Taktfreuquenz der Cores umzusetzen.
 Um zusätzlich Ressourcen zu sparen und aufgrund Einschränkungen in der Konfiguration der asynchronen FIFO IPs ist es auch nicht wie anfangs geplant möglich die Logik in der Ausgangstaktfrequenz umzusetzen.
 
-Anstatt anhand von Prioritäten vorzugehen ist der alternativ gewählte Ansatz ein Round Robin Prinzip.
+Anstatt anhand von Prioritäten vorzugehen wurde zuerst ein alternativer Ansatz getestet.
+Dieser basiert auf dem Round Robin Prinzip.
 Jeder Arbiter merkt sich welcher der beiden Master zuletzt gesendet hat.
 Wenn beide senden wollen wird der Master bevorzugt behandelt, der nicht zuletzt gesendet hat.
 Somit ist Starvation ausgeschlossen.
 So wird das Bild im Framebuffer zwar nicht strikt der Reihenfolge von links oben nach rechts unten aufgebaut, aber der Durchsatz bleibt gleich.
 Aufgrund des Framebuffers und der Tatsache, dass es kein Starvation gibt, ist die Abweichung in der Reihenfolge kein Problem, da genug zeitlicher Spielraum vorhanden ist mit einem Frame Vorsprung vor der VGA Ausgabe.
+
+Dennoch limitiert der Pfad die Taktfrequenz des Cores.
+Deshalb wurde der Arbiter gepipelined.
+Somit konnte die Pixelprosiiton als Priorisierung doch umgesetzt werden.
