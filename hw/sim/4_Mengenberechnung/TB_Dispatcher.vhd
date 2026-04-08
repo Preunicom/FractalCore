@@ -88,7 +88,7 @@ begin
     STIMULI_M: process
 	begin
         wait until s_resetn = '1';
-        for i in 1 to 6 loop
+        for i in 1 to 8 loop
             s_pixel_data.video_pix_row <= std_logic_vector(to_unsigned(i, 9));
             s_valid <= '1';
             wait_for_handshake(s_clk, s_valid, c_ready);
@@ -97,7 +97,7 @@ begin
         for i in 1 to 10 loop
             wait until rising_edge(s_clk);
         end loop;
-        for i in 7 to 10 loop
+        for i in 9 to 12 loop
             s_pixel_data.video_pix_row <= std_logic_vector(to_unsigned(i, 9));
             s_valid <= '1';
             wait_for_handshake(s_clk, s_valid, c_ready);
@@ -107,9 +107,12 @@ begin
 
     STIMULI_S1: process
 	begin
-        wait until s_resetn = '1';
         s_s1_ready <= '1';
         wait_for_handshake(s_clk, c_s1_valid, s_s1_ready);
+        s_s1_ready <= '0';
+        wait_for_handshake(s_clk, c_s2_valid, s_s2_ready);
+        s_s1_ready <= '0';
+        wait_for_handshake(s_clk, c_s2_valid, s_s2_ready);
         s_s1_ready <= '0';
         wait_for_handshake(s_clk, c_s2_valid, s_s2_ready);
         s_s1_ready <= '1';
@@ -125,7 +128,10 @@ begin
 
     STIMULI_S2: process
 	begin
-        wait until s_resetn = '1';
+        s_s2_ready <= '1';
+        wait_for_handshake(s_clk, c_s2_valid, s_s2_ready);
+        s_s2_ready <= '1';
+        wait_for_handshake(s_clk, c_s2_valid, s_s2_ready);
         s_s2_ready <= '1';
         wait_for_handshake(s_clk, c_s2_valid, s_s2_ready);
         s_s2_ready <= '1';
@@ -139,10 +145,10 @@ begin
     CHECK_S1: process
 	begin
         check_slave(c_s1_valid, s_s1_ready, c_s1_pixel_data.video_pix_row, std_logic_vector(to_unsigned(1, 9)));
-        check_slave(c_s1_valid, s_s1_ready, c_s1_pixel_data.video_pix_row, std_logic_vector(to_unsigned(3, 9)));
         check_slave(c_s1_valid, s_s1_ready, c_s1_pixel_data.video_pix_row, std_logic_vector(to_unsigned(5, 9)));
         check_slave(c_s1_valid, s_s1_ready, c_s1_pixel_data.video_pix_row, std_logic_vector(to_unsigned(7, 9)));
-        check_slave(c_s1_valid, s_s1_ready, c_s1_pixel_data.video_pix_row, std_logic_vector(to_unsigned(8, 9)));
+        check_slave(c_s1_valid, s_s1_ready, c_s1_pixel_data.video_pix_row, std_logic_vector(to_unsigned(9, 9)));
+        check_slave(c_s1_valid, s_s1_ready, c_s1_pixel_data.video_pix_row, std_logic_vector(to_unsigned(10, 9)));
         tb_s1_check_ended <= true;
         wait;
     end process;
@@ -150,8 +156,10 @@ begin
     CHECK_S2: process
 	begin
         check_slave(c_s2_valid, s_s2_ready, c_s2_pixel_data.video_pix_row, std_logic_vector(to_unsigned(2, 9)));
+        check_slave(c_s2_valid, s_s2_ready, c_s2_pixel_data.video_pix_row, std_logic_vector(to_unsigned(3, 9)));
         check_slave(c_s2_valid, s_s2_ready, c_s2_pixel_data.video_pix_row, std_logic_vector(to_unsigned(4, 9)));
         check_slave(c_s2_valid, s_s2_ready, c_s2_pixel_data.video_pix_row, std_logic_vector(to_unsigned(6, 9)));
+        check_slave(c_s2_valid, s_s2_ready, c_s2_pixel_data.video_pix_row, std_logic_vector(to_unsigned(8, 9)));
         tb_s2_check_ended <= true;
         wait;
     end process;

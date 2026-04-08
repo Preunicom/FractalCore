@@ -125,19 +125,6 @@ begin
 	begin
         wait until s_resetn_init = '1';
         for i in 1 to c_AMOUNT_STIMULI_PER_CASE loop
-            -- 0 iterations
-            s_video_frame_idx <= "00";
-            s_video_pix_col <= std_logic_vector(to_unsigned(i + 2**6, 10));
-            s_video_pix_row <= std_logic_vector(to_unsigned(1, 9));
-            s_z0_real <= std_logic_vector(to_signed(2, 18) sll 15);
-            s_z0_img <= std_logic_vector(to_signed(2, 18) sll 15);
-            s_c_real <= std_logic_vector(to_signed(2, 18) sll 15);
-            s_c_img <= std_logic_vector(to_signed(2, 18) sll 15);
-            s_valid <= '1';
-            s_ready <= '0';
-            wait_for_handshake(s_clk_init, s_valid, c_ready);
-        end loop;
-        for i in 1 to c_AMOUNT_STIMULI_PER_CASE loop
             -- 2 iterations
             s_video_frame_idx <= "01";
             s_video_pix_col <= std_logic_vector(to_unsigned(i + 2**7, 10));
@@ -163,6 +150,19 @@ begin
             s_z0_img  <= (others => '0');
             s_c_real <= std_logic_vector(to_signed(-24366, 18)); -- -0.7436
             s_c_img  <= std_logic_vector(to_signed(4316, 18));   --  0.1318
+            s_valid <= '1';
+            s_ready <= '0';
+            wait_for_handshake(s_clk_init, s_valid, c_ready);
+        end loop;
+        for i in 1 to c_AMOUNT_STIMULI_PER_CASE loop
+            -- 0 iterations
+            s_video_frame_idx <= "00";
+            s_video_pix_col <= std_logic_vector(to_unsigned(i + 2**6, 10));
+            s_video_pix_row <= std_logic_vector(to_unsigned(1, 9));
+            s_z0_real <= std_logic_vector(to_signed(2, 18) sll 15);
+            s_z0_img <= std_logic_vector(to_signed(2, 18) sll 15);
+            s_c_real <= std_logic_vector(to_signed(2, 18) sll 15);
+            s_c_img <= std_logic_vector(to_signed(2, 18) sll 15);
             s_valid <= '1';
             s_ready <= '0';
             wait_for_handshake(s_clk_init, s_valid, c_ready);
@@ -331,6 +331,3 @@ begin
     end process;
 
 end Testbench;
-
-
--- TODO: Check why we need the one clock cycle delay in the stimuli section.

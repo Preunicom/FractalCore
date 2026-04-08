@@ -46,70 +46,87 @@ entity Arbiter is
 end Arbiter;
 
 architecture Behavioral of Arbiter is
-    signal w_m1_ready : std_logic;
-    signal w_m2_ready : std_logic;
+    component Skid_Buffer is
+        generic(
+            g_DATA_WIDTH : natural 
+        );
+        port(
+            i_resetn : in std_logic;
+            i_clk : in std_logic;
+            -- Input
+            i_valid : in std_logic;
+            i_data : in std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+            o_ready : out std_logic;
+            -- Output 1
+            i_ready : in std_logic;
+            o_valid : out std_logic;
+            o_data : out std_logic_vector(g_DATA_WIDTH - 1 downto 0)
+        );
+    end component;
 
-    signal r_buf_m1_full : std_logic;
-    signal r_buf_m1 : t_pixel_result;
-    signal r_buf_m2_full : std_logic;
-    signal r_buf_m2 : t_pixel_result;
+    signal w_m1_buf_ready : std_logic;
+    signal w_m1_buf_valid : std_logic;
+    signal w_m1_buf_data : std_logic_vector(29 downto 0);
+    signal w_m1_buf_pixel_result : t_pixel_result;
+
+    signal w_m2_buf_ready : std_logic;
+    signal w_m2_buf_valid : std_logic;
+    signal w_m2_buf_data : std_logic_vector(29 downto 0);
+    signal w_m2_buf_pixel_result : t_pixel_result;
 
     signal w_m1_prio : std_logic_vector(20 downto 0);
     signal w_m2_prio : std_logic_vector(20 downto 0);
     signal w_selected_m1 : std_logic;
-
-    signal w_valid : std_logic;
 begin
 
-    REG: process(i_clk)
-    begin
-        if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                r_buf_m1_full <= '0';
-                r_buf_m1 <= c_PIXEL_RESULT_RESET;
-                r_buf_m2_full <= '0';
-                r_buf_m2 <= c_PIXEL_RESULT_RESET;
-            else
-                -- Reset buffer full flag
-                if w_valid = '1' and i_ready = '1' then
-                    if w_selected_m1 = '1' then
-                        -- m1 data was transmitted
-                        r_buf_m1_full <= '0';
-                    else
-                        -- m2 data was transmitted
-                        r_buf_m2_full <= '0';
-                    end if;
-                end if;
+    M1_INP_SKID_BUF: Skid_Buffer
+    generic map (
+        g_DATA_WIDTH => 30
+    )
+    port map (
+        i_resetn => i_resetn,
+        i_clk    => i_clk,
+        i_valid  => i_m1_valid,
+        i_data   => to_std_logic_vector(i_m1_pixel_result),
+        o_ready  => o_m1_ready,
+        i_ready  => w_m1_buf_ready,
+        o_valid  => w_m1_buf_valid,
+        o_data   => w_m1_buf_data
+    );
+    w_m1_buf_pixel_result <= to_pixel_result(w_m1_buf_data);
 
-                -- Receive data in buffer
-                if i_m1_valid = '1' and w_m1_ready = '1' then
-                    -- Load buffer 1
-                    r_buf_m1 <= i_m1_pixel_result;
-                    r_buf_m1_full <= '1';
-                end if;
-                if i_m2_valid = '1' and w_m2_ready = '1' then
-                    -- Load buffer 2
-                    r_buf_m2 <= i_m2_pixel_result;
-                    r_buf_m2_full <= '1';
-                end if;
-            end if;
-        end if;
-    end process;
+    M2_INP_SKID_BUF: Skid_Buffer
+    generic map (
+        g_DATA_WIDTH => 30
+    )
+    port map (
+        i_resetn => i_resetn,
+        i_clk    => i_clk,
+        i_valid  => i_m2_valid,
+        i_data   => to_std_logic_vector(i_m2_pixel_result),
+        o_ready  => o_m2_ready,
+        i_ready  => w_m2_buf_ready,
+        o_valid  => w_m2_buf_valid,
+        o_data   => w_m2_buf_data
+    );
+    w_m2_buf_pixel_result <= to_pixel_result(w_m2_buf_data);
 
-    w_m1_prio <= r_buf_m1.video_frame_idx & r_buf_m1.video_pix_row & r_buf_m1.video_pix_col;
-    w_m2_prio <= r_buf_m2.video_frame_idx & r_buf_m2.video_pix_row & r_buf_m2.video_pix_col;
+    -- CONTROL PATH
 
-    ARBIT: process(r_buf_m1_full, r_buf_m2_full, w_m1_prio, w_m2_prio, r_buf_m1.video_frame_idx, r_buf_m2.video_frame_idx)
+    w_m1_prio <= w_m1_buf_pixel_result.video_frame_idx & w_m1_buf_pixel_result.video_pix_row & w_m1_buf_pixel_result.video_pix_col;
+    w_m2_prio <= w_m2_buf_pixel_result.video_frame_idx & w_m2_buf_pixel_result.video_pix_row & w_m2_buf_pixel_result.video_pix_col;
+
+    ARBIT: process(w_m1_buf_valid, w_m2_buf_valid, w_m1_prio, w_m2_prio, w_m1_buf_pixel_result.video_frame_idx, w_m2_buf_pixel_result.video_frame_idx)
 	begin
         w_selected_m1 <= '1';
-        if r_buf_m1_full = '1' and r_buf_m2_full = '0' then
+        if w_m1_buf_valid = '1' and w_m2_buf_valid = '0' then
             w_selected_m1 <= '1';
-        elsif r_buf_m1_full = '0' and r_buf_m2_full = '1' then
+        elsif w_m1_buf_valid = '0' and w_m2_buf_valid = '1' then
             w_selected_m1 <= '0';
         else
             -- Both valid
-            if (w_m1_prio < w_m2_prio or (r_buf_m1.video_frame_idx = "11" and r_buf_m2.video_frame_idx = "00"))
-            and not (r_buf_m1.video_frame_idx = "00" and r_buf_m2.video_frame_idx = "11") then -- Overflow in frame
+            if (w_m1_prio < w_m2_prio or (w_m1_buf_pixel_result.video_frame_idx = "11" and w_m2_buf_pixel_result.video_frame_idx = "00"))
+            and not (w_m1_buf_pixel_result.video_frame_idx = "00" and w_m2_buf_pixel_result.video_frame_idx = "11") then -- Overflow in frame
                 -- m1 has lower prio index --> m1 is more important
                 w_selected_m1 <= '1';
             else
@@ -119,27 +136,11 @@ begin
         end if;
     end process;
 
-    TRANSMIT: process(r_buf_m1_full, r_buf_m2_full, w_selected_m1, r_buf_m1, r_buf_m2)
-    begin
-        o_pixel_result <= c_PIXEL_RESULT_RESET;
-        w_valid <= '0';
-        if r_buf_m1_full = '1' and w_selected_m1 = '1' then
-            -- Transmit m1 buffer
-            o_pixel_result <= r_buf_m1;
-            w_valid <= '1';
-        elsif r_buf_m2_full = '1' and w_selected_m1 = '0' then
-            -- Transmit m2 buffer
-            o_pixel_result <= r_buf_m2;
-            w_valid <= '1';
-        end if;
-    end process;
+    -- DATAPATH
 
-    -- Ready if buffer is empty or buffer is read
-    w_m1_ready <= not r_buf_m1_full or (w_selected_m1 and w_valid and i_ready); 
-    w_m2_ready <= not r_buf_m2_full or (not w_selected_m1 and w_valid and i_ready);
-
-    o_m1_ready <= w_m1_ready;
-    o_m2_ready <= w_m2_ready;
-    o_valid <= w_valid;
+    w_m1_buf_ready <= i_ready when w_selected_m1 = '1' else '0';
+    w_m2_buf_ready <= i_ready when w_selected_m1 = '0' else '0';
+    o_valid <= w_m1_buf_valid when w_selected_m1 = '1' else w_m2_buf_valid;
+    o_pixel_result <= w_m1_buf_pixel_result when w_selected_m1 = '1' else w_m2_buf_pixel_result;
    
 end Behavioral;

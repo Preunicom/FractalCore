@@ -45,80 +45,105 @@ entity Dispatcher is
 end Dispatcher;
 
 architecture Behavioral of Dispatcher is
-    signal r_s1_saved_ready : std_logic;
-    signal r_s2_saved_ready : std_logic;
+    component Skid_Buffer is
+        generic(
+            g_DATA_WIDTH : natural 
+        );
+        port(
+            i_resetn : in std_logic;
+            i_clk : in std_logic;
+            -- Input
+            i_valid : in std_logic;
+            i_data : in std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+            o_ready : out std_logic;
+            -- Output 1
+            i_ready : in std_logic;
+            o_valid : out std_logic;
+            o_data : out std_logic_vector(g_DATA_WIDTH - 1 downto 0)
+        );
+    end component;
 
-    signal w_ready : std_logic;
-    signal w_s1_ready : std_logic;
-    signal w_s2_ready : std_logic;
+    -- Skid buffer
+    signal w_skid_buf_inp_pixel_data: std_logic_vector(92 downto 0);
+    signal w_skid_buf_out_pixel_data : std_logic_vector(92 downto 0);
+    
+    -- Dispatch
+    signal w_buf_out_ready : std_logic;
+    signal w_buf_out_valid : std_logic;
+    signal r_s1_selected : std_logic;
 
-    signal r_buf_s1_full : std_logic;
-    signal r_buf_s1 : t_pixel_data;
-    signal r_buf_s2_full : std_logic;
-    signal r_buf_s2 : t_pixel_data;
-
-    signal w_selected_s1 : std_logic;
+    -- Helper signals
+    signal w_handshake_s1 : std_logic;
+    signal w_handshake_s2 : std_logic;
 begin
 
-    REG: process(i_clk)
+    w_skid_buf_inp_pixel_data <= to_std_logic_vector(i_pixel_data);
+
+    INP_SKID_BUF: Skid_Buffer
+    generic map (
+        g_DATA_WIDTH => 93
+    )
+    port map (
+        i_resetn => i_resetn,
+        i_clk    => i_clk,
+        i_valid  => i_valid,
+        i_data   => w_skid_buf_inp_pixel_data,
+        o_ready  => o_ready,
+        i_ready  => w_buf_out_ready,
+        o_valid  => w_buf_out_valid,
+        o_data   => w_skid_buf_out_pixel_data
+    );
+
+    w_handshake_s1 <= w_buf_out_valid and i_s1_ready;
+    w_handshake_s2 <= w_buf_out_valid and i_s2_ready;
+
+    SWITCH_REG: process(i_clk)
     begin
         if rising_edge(i_clk) then
             if i_resetn = '0' then
-                r_buf_s1_full <= '0';
-                r_buf_s1 <= c_PIXEL_DATA_RESET;
-                r_buf_s2_full <= '0';
-                r_buf_s2 <= c_PIXEL_DATA_RESET;
+                r_s1_selected <= '1';
             else
-                -- Save ready until data was transmitted (because one Core slot givs an ready impuls only every 3 clock cylces)
-                if i_s1_ready = '1' then
-                    r_s1_saved_ready <= '1';
-                end if;
-                if i_s2_ready = '1' then
-                    r_s2_saved_ready <= '1';
-                end if;
-
-                -- Reset buffer full flag
-                if r_buf_s1_full = '1' and i_s1_ready = '1' then
-                    -- buffer 1 was read
-                    r_buf_s1_full <= '0';
-                    r_s1_saved_ready <= '0';
-                end if;
-                if r_buf_s2_full = '1' and i_s2_ready = '1' then
-                    -- buffer 2 was read
-                    r_buf_s2_full <= '0';
-                    r_s2_saved_ready <= '0';
-                end if;
-                
-                -- Receive data in buffer
-                -- Each Buffer can only be filled every 2 clock cycles, as we do not know if the slave wants one or more data packets
-                -- If the slave wants one and we buffer one the data has to wait until the core is free (and this for every dispatcher we meet)
-                -- This slows down the dispatch algorithm but garantees that lower pixel idx packages will be computed first
-                if i_valid = '1' and w_ready = '1' then
-                    if w_selected_s1 = '1' then
-                        -- Load buffer 1
-                        r_buf_s1_full <= '1';
-                        r_buf_s1 <= i_pixel_data;
-                    elsif w_selected_s1 = '0' then
-                        -- Load buffer 2
-                        r_buf_s2_full <= '1';
-                        r_buf_s2 <= i_pixel_data;
+                if w_buf_out_valid = '1' then
+                    if r_s1_selected = '1' and i_s1_ready = '1' then
+                        -- Was successfully transmitted to s1
+                        r_s1_selected <= '0';
+                    elsif r_s1_selected = '0' and i_s2_ready = '1' then
+                        -- Was successfully transmitted to s2
+                        r_s1_selected <= '1';
                     end if;
                 end if;
-
             end if;
         end if;
     end process;
 
-    w_s1_ready  <= (r_s1_saved_ready or i_s1_ready) and not r_buf_s1_full;
-    w_s2_ready  <= (r_s2_saved_ready or i_s2_ready) and not r_buf_s2_full;
-    w_ready <= w_s1_ready or w_s2_ready;
-    o_ready <= w_ready;
+    SWITCH_LOGIC: process(w_handshake_s1, w_handshake_s2, r_s1_selected, w_buf_out_valid, i_s1_ready)
+	begin
+        o_s1_valid <= '0';
+        o_s2_valid <= '0';
+        w_buf_out_ready <= '0';
+        if w_handshake_s1 = '1' and w_handshake_s2 = '1' then
+            -- Both ready, take planned signal
+            if r_s1_selected = '1' then
+                -- Take s1
+                o_s1_valid <= w_buf_out_valid;
+                w_buf_out_ready <= i_s1_ready;
+            else
+                -- Take s2
+                o_s2_valid <= w_buf_out_valid;
+                w_buf_out_ready <= i_s2_ready;
+            end if;
+        elsif w_handshake_s2 = '1' then
+            -- Only s2 ready, take s2
+            o_s2_valid <= w_buf_out_valid;
+            w_buf_out_ready <= i_s2_ready;
+        else
+            -- Nobody or s1 ready, take s1
+            o_s1_valid <= w_buf_out_valid;
+            w_buf_out_ready <= i_s1_ready;
+        end if;
+    end process;
 
-    w_selected_s1 <= '1' when w_s1_ready = '1' else '0'; 
-
-    o_s1_valid <= r_buf_s1_full;
-    o_s1_pixel_data <= r_buf_s1;
-    o_s2_valid <= r_buf_s2_full;
-    o_s2_pixel_data <= r_buf_s2;
+    o_s1_pixel_data <= to_pixel_data(w_skid_buf_out_pixel_data);
+    o_s2_pixel_data <= to_pixel_data(w_skid_buf_out_pixel_data);
    
 end Behavioral;

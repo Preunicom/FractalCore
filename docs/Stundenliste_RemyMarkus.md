@@ -18,6 +18,9 @@
 | 30.03.2026 | 5 | 3 | Arbiter Pipeline + Rework TB Arbiter |
 | 30.03.2026 | 4.2.1 | 1 | Dispatcher Pipeline + Rework TB Dispatcher |
 | 30.03.2026 | 4.2.2 | 1 | Skid Buffer + TB Skid Buffer |
+| 04.04.2026 | 4.2.2 | 1 | Skid Buffer + TB Skid Buffer |
+| 07.04.2026 | 4.2.2 | 2 | Rework Dispatcher + Arbiter mit Skid Buffer |
+
 
 ## Feature Nummerierung
 

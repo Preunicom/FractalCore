@@ -35,9 +35,9 @@ architecture Testbench of TB_Skid_Buffer is
     -- STIMULI
     signal s_resetn : std_logic;
     signal s_clk : std_logic := '0';
-    signal s_valid : std_logic;
-    signal s_ready : std_logic;
-    signal s_data : std_logic_vector(3 downto 0);
+    signal s_valid : std_logic := '0';
+    signal s_ready : std_logic := '0';
+    signal s_data : std_logic_vector(3 downto 0) := (others => '0');
     -- CHECK
     signal c_ready : std_logic;
     signal c_valid : std_logic;

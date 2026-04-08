@@ -45,77 +45,104 @@ architecture Behavioral of Skid_Buffer is
     type t_state_type is (s_IDLE, s_FLOW, s_BACKPRESSURE); 
     signal r_state, w_next_state : t_state_type;
     -- Data path
-    signal r_data_buffer : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
-    signal w_use_data_buffer : std_logic := '0';
-    signal w_write_data_buffer : std_logic := '0';
+    signal r_buffer : std_logic_vector(g_DATA_WIDTH - 1 downto 0);
+    signal w_output_write_en : std_logic;
+    signal w_buffer_write_en : std_logic;
+    -- Support signals
+    signal w_is_read_handshake : std_logic;
+    signal w_is_write_handshake : std_logic;
+    signal w_ready : std_logic;
+    signal w_valid : std_logic;
 begin
+
+    -- Support signals
+
+    w_is_read_handshake <= i_valid and w_ready;
+    w_is_write_handshake <= i_ready and w_valid;
+    o_ready <= w_ready;
+    o_valid <= w_valid;
 
     -- Control path
 
-    CONTROL_FSM_STATE: process(i_clk)
+    FSM_OUTPUT_AND_STATE_REG: process(i_clk)
 	begin
         if rising_edge(i_clk) then
             if i_resetn = '0' then
                 r_state <= s_IDLE;
+                w_valid <= '0';
+                w_ready <= '1';
             else
                 r_state <= w_next_state;
+                -- Registered control path outputs
+                if w_next_state /= s_BACKPRESSURE then
+                    w_ready <= '1';
+                else
+                    w_ready <= '0';
+                end if;
+                if w_next_state /= s_IDLE then
+                    w_valid <= '1';
+                else
+                    w_valid <= '0';
+                end if;
             end if;
         end if;
     end process;
 
-    CONTROL_FSM_TRANSITION: process(r_state, i_valid, i_ready)
+    NEXT_STATE_LOGIC: process(r_state, w_is_read_handshake, w_is_write_handshake)
     begin
         w_next_state <= r_state;
-        o_ready <= '1';
-        o_valid <= '1';
-        w_write_data_buffer <= '1';
-        w_use_data_buffer <= '0';
         case r_state is
             when s_IDLE =>
-                if i_valid = '1' then
+                if w_is_read_handshake = '1' then
                     w_next_state <= s_FLOW;
-                    o_valid <= '0';
-                else
-                    o_valid <= '0';
                 end if;
             when s_FLOW =>
-                if i_valid = '1' and i_ready = '0' then
+                if w_is_read_handshake = '1' and w_is_write_handshake = '0' then
                     w_next_state <= s_BACKPRESSURE;
-                    o_ready <= '0';
-                    w_write_data_buffer <= '0';
-                    w_use_data_buffer <= '1';
-                elsif i_valid = '0' and i_ready = '1' then
+                elsif w_is_read_handshake = '0' and w_is_write_handshake = '1' then
                     w_next_state <= s_IDLE;
-                    o_valid <= '1';
                 end if;
             when s_BACKPRESSURE =>
-                if i_ready = '1' then
+                if w_is_write_handshake = '1' then
                     w_next_state <= s_FLOW;
-                else
-                    o_ready <= '0';
-                    w_write_data_buffer <= '0';
-                    w_use_data_buffer <= '1';
                 end if;
             when others => null;
         end case;
     end process;
 
+    BUF_CONTROL: process(r_state, w_is_read_handshake, w_is_write_handshake)
+	begin
+        w_buffer_write_en <= '0';
+        w_output_write_en <= '0';
+        if r_state = s_FLOW and w_is_read_handshake = '1' and w_is_write_handshake = '0' then
+            w_buffer_write_en <= '1';
+        end if;
+        if ((r_state = s_IDLE and w_is_read_handshake = '1' and w_is_write_handshake = '0') 
+        or (r_state = s_FLOW and w_is_read_handshake = '1' and w_is_write_handshake = '1')
+        or (r_state = s_BACKPRESSURE and w_is_read_handshake = '0' and w_is_write_handshake = '1')) then
+            w_output_write_en <= '1';
+        end if;
+
+    end process;
+
     -- Datapath
 
-    REG: process(i_clk)
+    BUF: process(i_clk)
 	begin
         if rising_edge(i_clk) then
             if i_resetn = '0' then
                 o_data <= (others => '0');
-                r_data_buffer <= (others => '0');
+                r_buffer <= (others => '0');
             else
-                if w_write_data_buffer = '1' then
-                    r_data_buffer <= i_data;
+                if w_output_write_en = '1' then
+                    if r_state = s_BACKPRESSURE then
+                        o_data <= r_buffer;
+                    else
+                        o_data <= i_data;
+                    end if;
                 end if;
-                if w_use_data_buffer = '1' then
-                    o_data <= r_data_buffer;
-                else
-                    o_data <= i_data;
+                if w_buffer_write_en = '1' then
+                    r_buffer <= i_data;
                 end if;
             end if;
         end if;
