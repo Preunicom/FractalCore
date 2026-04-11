@@ -20,6 +20,9 @@
 | 30.03.2026 | 4.2.2 | 1 | Skid Buffer + TB Skid Buffer |
 | 04.04.2026 | 4.2.2 | 1 | Skid Buffer + TB Skid Buffer |
 | 07.04.2026 | 4.2.2 | 2 | Rework Dispatcher + Arbiter mit Skid Buffer |
+| 08.04.2026 | 3.2.2 | 1 | Überlegungen Initialwertarchitektur und Logik |
+| 11.04.2026 | 4.2.1 | 1 | IP Packagen und Rework Projektstruktur |
+| 11.04.2026 | 9 | 4 | Projektstruktur überarbeitet um den IP Ansatz zu unterstützen + CI Testautomatisierung hinzugefügt |
 
 
 ## Feature Nummerierung
