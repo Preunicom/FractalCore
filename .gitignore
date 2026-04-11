@@ -17,7 +17,6 @@
 # Allow hardware related files
 !hw
 !hw/**/
-# TODO: Filter files in ip_repo if necessary
 # Allow software related files
 !sw
 ## Manage Vitis files according to https://docs.amd.com/r/en-US/ug1400-vitis-embedded/Source-Control

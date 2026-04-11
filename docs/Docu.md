@@ -26,20 +26,52 @@ Abhängig von der Geschwindigkeit werden ggf. weniger verwendet.
 ### 4.1 Dispatcher
 
 Der Dispatcher verteilt eingehende Startwerte für die Berechnung auf die Cores.
-Dabei ist die Reihenfolge auf welchen Core er die Werte verteilt egal solange der Empfänger eine freie Stage hat.
-Der Dispatcher ist gepipelined um das Timing zu verbessern.
-Die Pipeline hat jedoch ein Problem.
-Wenn sie gefüllt werden würde müssten viele Werte sehr lange warten bis sie durch alle Dispatcher Stufen hindurch sind während ein anderer Core beispielsweise leer läuft.
-Diese Verzögerung ist nicht hinnehmbar.
-Ohne die Pipeline zu fülllen benötigt ein Startwert allerdings n Takte mit n der Anzahl an Dispatcher Stufen.
-Da die Startwerte deutlich langsamer erzeugt werden als die Berechnung getaktet ist, ist diese Verzögerung jedoch kein großes Problem.
-Ebenso bringt diese Designentscheidung mit sich, dass erst, wenn das letzte Paket empfangen wurde, das nächste Paket angefordert werden kann.
-Aber auch das ist, unter der Annahme, dass eine größere Anzahl an Cores verwendet wird und somit selten nur ein Core alleine anfordert kein Problem.
-Es muss jedoch bei der Auswahl der Anzahl an Cores berücksichtigt werden.
+Da aufgrund Einschränkungen in der Konfiguration die asynchronen FIFOs nicht direkt vor den Cores platziert werden konnten, muss er davor platziert werden.
+Damit ist der Dispatcher in der Clock Domaine der Cores und muss entprechend hoch getaktet werden können.
+Es wurden verschiedene Ansätze getestet um eine möglichst hohe Taktfrequenz zu erreichen.
 
-Um die n Takte mit n der Anzahl an Dispatcher Stufen als Verzögerung zu gewährleisten, muss der Dispatcher sich merken, ob er bereits ein ready empfangen hat, da eine freie Stage im Core nur alle 3 Takte einen ready Puls auslöst.
-Ohne diese Speicherung des ready flags wäre die Verzögerung 3*n.
-Die Speicherung wird nach dem Senden einer Datenpacketes zurückgesetzt.
+#### Baumstruktur
+
+Allen Ansätzen gemeinsam hatte die Binärbaum Struktur.
+Dabei wird immer ein Datensatz an Eingangsdaten auf zwei Ausgänge verteilt.
+Die Entscheidung welcher Ausgang verwendet wird hängt dabei von der Herangehensweise ab.
+So ist das Problem einfach zu lösen aber dennoch skalierbar mit der Anzahl an Cores.
+Dafür werden die einzelnen Dispatcher als Knoten in einem Binärbaum interpretiert mit den Cores als Blätter des Baums.
+
+#### Trivialer Ansatz
+
+Der triviale Ansatz ist das ganze ohne Pipelining umzusetzen.
+Dabei werden die Steuersignale sowie die Daten in beide Richtungen kombinatorisch durchgereicht.
+Dieser Ansatz erziehlt die gleichmäßigste Verteilung auf die Cores, da Cores die Daten benötigen noch im selben Takt die Daten erhalten.
+Diese Geschwindigkeit und Flexibilität ermöglicht jedoch nur sehr niedrige Taktfrequenzen und ist damit nicht geeignet.
+
+#### Gepipelinter Datenpfad
+
+Die nächstliegende Möglichkeit ist das synchronisieren der Signale um so eine höhere Taktrate zu erzielen.
+Jedoch ist das ready signal hierbei weiterhin kombinatorisch, da es in der Pipeline in die entgegengesetzte Richtung führt.
+Das erschwert das synchronisieren dieses Signals.
+Der Pfad des ready signals beinhaltet nur einfache Logik, aber da es dennoch in jeder Ebene des Baums durch eine Look-Up-Table führt skaliert dieser Ansatz nicht gut für größere Anzahlen an Cores.
+Außerdem wandern so angefragt Daten mit jedem Takt nur eine Ebene durch den Baum.
+Dementsprechend muss ein Core die Höhe des Baums in Takten auf die Daten warten.
+Zusätzlich muss Logik implementiert werden um das ready Signal des Cores zu erhalten, da ein Slot im Core nur jeden dritten Takt Daten anfragt.
+Falls ein Core mehrere freie Slots hat, muss die Anzahl an freien Slots mit der Höhe des Baums multipliziert werden um die Wartetakte z uermitteln, da erst nach dem Empfangen der Daten am Core die nächste Anfrage erkannt wird.
+
+Zusammengefasst eignet sich diese Möglichkeit nicht aufgrund ihrer Komplexität sowie auf der weiterhin niedrigen Taktfrequenz.
+
+#### Skid Buffer
+
+Um das ready signal auch mit in die Pipeline aufzunehmen, und somit kürzere Pfade zu haben, wird ein Skid Buffer verwendet.
+Dieser geht davon aus, dass im nächsten Takt einer der beiden nachfolgenden Partner bereit ist und empfängt Daten.
+Sollte kein Partner bereit sein, nimmt er die empfangenen Daten in den inneren Buffer auf.
+Er ist dann solange nicht mehr bereit, bis der innere Puffer wieder an einen der Ausgänge weitergegeben werden konnte, da einer der Partner Daten gelesen hat.
+Das hat den Vorteil, dass die kombinatorischen Kontroll- und Datenpfade durchbrochen werden und höhere Taktfrequenzen möglich sind.
+Dafür ist in jeder Stufe ein Wert gespeichert und die Daten müssen unter Umständen im Baum warten während in der anderen Baumhälfte ein Core leerläuft.
+Das ist nicht optimal, jedoch vertretbar, da ein Wert aufgrund der Baumstruktur nicht nur einen Core nach sich hat, der ihn entgegennehmen kann, sondern mehrere.
+Er hat in jeder Stufe 2^(n-x) mögliche Cores, mit n der Höhe des Baums und x der nullindizierten Ebene des Baums.
+Um diese Eigenschaft optimal auszunutzen verteilt der Dispatcher die Werte falls beide Kinder bereit sind an das Kind, das nicht den letzten Wert erhalten hat.
+So verteilt sich die Last möglichst gleichmäßig im Baum und damit auf die Cores.
+
+Damit ist diese Lösung die beste der getesteten Varianten und erlaubt eine Taktfrequenz von über 100 MHz.
 
 ### 4.2 Core
 
@@ -70,18 +102,10 @@ In Testbenches muss es jedoch beachtet werden.
 
 Der Arbiter führt die Ergebnisse der parallelen Cores wieder zusammen.
 Dabei soll ein Paket anhand der Pixelposition priorisiert werden.
+Für den Arbiter gilt das gleiche wie für den Dispatcher bezüglich der Einschränkungen durch die FIFO Konfiguration.
+Auch hier wurden wie beim Dispatcher mehrere Herangehensweisen getestet.
+Das Ergebnis ist sehr ähnlich, da die Auswirkungen von langen Pfaden aufgrund der Priorisierung noch stärker wirken als beim Dispatcher.
 
-Diese Logik kostet allerdings ohne Pipeline zu viel Zeit um sie auf der Taktfreuquenz der Cores umzusetzen.
-Um zusätzlich Ressourcen zu sparen und aufgrund Einschränkungen in der Konfiguration der asynchronen FIFO IPs ist es auch nicht wie anfangs geplant möglich die Logik in der Ausgangstaktfrequenz umzusetzen.
-
-Anstatt anhand von Prioritäten vorzugehen wurde zuerst ein alternativer Ansatz getestet.
-Dieser basiert auf dem Round Robin Prinzip.
-Jeder Arbiter merkt sich welcher der beiden Master zuletzt gesendet hat.
-Wenn beide senden wollen wird der Master bevorzugt behandelt, der nicht zuletzt gesendet hat.
-Somit ist Starvation ausgeschlossen.
-So wird das Bild im Framebuffer zwar nicht strikt der Reihenfolge von links oben nach rechts unten aufgebaut, aber der Durchsatz bleibt gleich.
-Aufgrund des Framebuffers und der Tatsache, dass es kein Starvation gibt, ist die Abweichung in der Reihenfolge kein Problem, da genug zeitlicher Spielraum vorhanden ist mit einem Frame Vorsprung vor der VGA Ausgabe.
-
-Dennoch limitiert der Pfad die Taktfrequenz des Cores.
-Deshalb wurde der Arbiter gepipelined.
-Somit konnte die Pixelprosiiton als Priorisierung doch umgesetzt werden.
+Es wurde ein Skid Buffer gewählt und eine Priorisierung anhand der Pixelposition.
+Da es nur eine Priorisierung ist und die Ergebnisse unterschiedlich lange berechnet werden, gibt es keine Garantie auf eine korrekte Reihenfolge der Pixel.
+Das nachfolgende System muss diese Einschränkung entsprechend beachten.

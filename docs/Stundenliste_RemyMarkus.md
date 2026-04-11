@@ -22,8 +22,8 @@
 | 07.04.2026 | 4.2.2 | 2 | Rework Dispatcher + Arbiter mit Skid Buffer |
 | 08.04.2026 | 3.2.2 | 1 | Überlegungen Initialwertarchitektur und Logik |
 | 11.04.2026 | 4.2.1 | 1 | IP Packagen und Rework Projektstruktur |
-| 11.04.2026 | 9 | 4 | Projektstruktur überarbeitet um den IP Ansatz zu unterstützen + CI Testautomatisierung hinzugefügt |
-
+| 11.04.2026 | 9 | 5 | Projektstruktur überarbeitet um den IP Ansatz zu unterstützen + CI Testautomatisierung hinzugefügt |
+| 11.04.2026 | 10 | 2 | Clock- und Resetsignale im Block Design verbunden und Synchronisierer + TB dafür geschrieben |
 
 ## Feature Nummerierung
 

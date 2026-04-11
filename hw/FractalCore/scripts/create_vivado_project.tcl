@@ -44,7 +44,8 @@ set rtl_files [concat \
     [find_files $general_files_dir/rtl "*.v"] \
     [find_files $general_files_dir/rtl "*.sv"] \
 ]
-set rtl_and_ip_files [concat $rtl_files $ip_files]
+set bd_files [find_files $project_data_dir/bd "*.bd"]
+set rtl_and_ip_files [concat $rtl_files $ip_files $bd_files]
 set sim_files [concat \
     [find_files $project_data_dir/sim "*.vhd"] \
     [find_files $project_data_dir/sim "*.v"] \

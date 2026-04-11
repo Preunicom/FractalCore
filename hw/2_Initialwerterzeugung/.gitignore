@@ -4,6 +4,7 @@
 !bd/**
 bd/**/*.*
 !bd/**/*.bd
+!bd/**/ip/**/*.xci
 # IPs
 !ip/
 !ip/**

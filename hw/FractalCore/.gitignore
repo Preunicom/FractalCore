@@ -2,13 +2,14 @@
 # Contraints
 !constraints/
 !constraints/**
-bd/**/*.*
-!bd/**/*.xdc
+constraints/**/*.*
+!constraints/**/*.xdc
 # Block designs
 !bd/
 !bd/**
 bd/**/*.*
 !bd/**/*.bd
+!bd/**/ip/**/*.xci
 # IPs
 !ip/
 !ip/**
