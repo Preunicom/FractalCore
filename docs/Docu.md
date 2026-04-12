@@ -13,13 +13,29 @@ Dabei sind ein paar Designentscheidungen gesondert aufzuführen:
 - Es werden 18 Bit Festkommazahlen für Real- und Imaginärteil der Zahlen verwendet, da die DSP des Arty A7 Multiplikationen mit maximal 25x18 Bit durchführen können.
 - Die Festkommazahlen sind signed und im Format 3.15 gewählt.
 Damit sind Werte im Bereich [-8,8[ möglich, was die relevanten Stellen abdeckt und dennoch eine hohe Präzision ermöglicht.
-- Dia VGA Auflösung beträgt 640x480 Pixel und damit werden 10 (horizontal) bzw. 9 (vertical) Bit benötigt um die Pixel zu numerieren
+- Dia VGA Auflösung beträgt 640x480 Pixel und damit werden 10 (horizontal) bzw. 9 (vertikal) Bits benötigt um die Pixel zu numerieren
 - Um eine Priorisierung bei der Arbitrierung auf Basis des Pixels sowie die Zuordnung im Framebuffer zu gewährleisten wird das Frame zum Pixel mit 2 Bit übertragen (=> Frame mod 4).
 2 Bit deshalb, um bei der Arbitrierung zu entscheiden welcher Frame weiter in der Zukunft liegt falls zwei Pixel in verschiedenen Frames liegen.
 - Da der Pmod VGA 12 Bit Farben unterstützt wurden die Bitbreiten der Farben entsprechend gewält.
 - Um die langsamen Folgenberechnungen schneller zu berechnen sowie das VGA Timing einzuhalten werden verschiedene Clock Domainen verwendet.
-- Die Abbruchbedingung liegt bei maximal 255 Takten.
-Abhängig von der Geschwindigkeit werden ggf. weniger verwendet.
+- Die Abbruchbedingung liegt bei maximal 100 Iterationen.
+Es wurden dennoch 8 Bit Datenbreite für die Anzahl an Takte bis zur konvergenz gewählt um die maximale Anzahl an Iterationen gegebenenfalls einfach erhöhen zu können, falls die Farbgebung bei 100 Iterationen nicht zufriedenstellend sein sollte.
+
+## 0. Gesamtsystem
+
+Um den verschiedenen Taktdomainen entsprechende Takt- und Resetsignale zur Verfügung zu stellen werden zwei Clocking Wizard IPs verwendet.
+Der erste stellt allen Taktdomainen außer VGA das Taktsignal zur Verfügung.
+Da der MMCM des ersten Clocking Wizards nicht parallel zu den anderen Taktsignalen auch 25,175 MHz erzuegen kann, wurde für den VGA Pixeltakt ein eigener Clocking Wizard mit MMCM verwendet.
+Dieser erzeugt zwar auch keine 25,175 MHz, aber er liegt nur <0,01 MHz daneben, was ausreichend genau ist.
+Als Resetsignale wird das locked signal der Clocking Wizards verwendet.
+Da dieses nicht synchron in den Taktdomains sein muss, wird es mit zwei FlipFlops auf die jeweilige Taktdomaine synchronisiert um Metastabilität zu vermeiden.
+Außerdem werden die beiden Taktdomainen für den Microblaze und die AXI Lite Verbindungen als ein SoC Signal vom Clocking Wizard erzeugt um die Komplexität des Systems möglichst gering zu halten.
+
+## 1. MicroBlaze
+
+## 2. UART Schnittstelle
+
+## 3. Initialwertkoponente
 
 ## 4. Berechnung
 
@@ -109,3 +125,7 @@ Das Ergebnis ist sehr ähnlich, da die Auswirkungen von langen Pfaden aufgrund d
 Es wurde ein Skid Buffer gewählt und eine Priorisierung anhand der Pixelposition.
 Da es nur eine Priorisierung ist und die Ergebnisse unterschiedlich lange berechnet werden, gibt es keine Garantie auf eine korrekte Reihenfolge der Pixel.
 Das nachfolgende System muss diese Einschränkung entsprechend beachten.
+
+## 6. Farbcodierung
+
+## 7. VGA
