@@ -2,7 +2,13 @@
 
 | Datum | Feature | Dauer [h] | Beschreibung | 
 |-------|---------|-----------|--------------|
+| 18.03.2026 | 8 | 4 | Recherche Umsetzungsmachbarkeit und -herangehensweise |
+| 19.03.2026 | 4.2.2 | 4 | Analyse und Planung Berechnungsgeschwindigkeit |
+| 20.03.2026 | 4.2.2 | 2 | Analyse Gesamttiming |
 | 21.03.2026 | 8 | 2 | Schnittstellenentwurf (+Diagramm) |
+| |  |  |  |
+| **KW 12** | **-** | **12** | **Zwischensumme** |
+| |  |  |  |
 | 22.03.2026 | 8 | 3 | Schnittstellenentwurf (+Diagramm) |
 | 25.03.2026 | 8 | 2 | Projektantrag & Systementwurf |
 | 25.03.2026 | 8 | 1 | Schnittstellenentwurf |
@@ -15,15 +21,26 @@
 | 29.03.2026 | 5 | 4 | Arbiter + TB |
 | 29.03.2026 | 4.2.1 | 1 | Generate Schleifen für Dispatcher, Core und Arbiter |
 | 29.03.2026 | 4.2.3 | 2 | TB Calculation |
+| |  |  |  |
+| **KW 13** | **-** | **49** | **Zwischensumme** |
+| |  |  |  |
 | 30.03.2026 | 5 | 3 | Arbiter Pipeline + Rework TB Arbiter |
 | 30.03.2026 | 4.2.1 | 1 | Dispatcher Pipeline + Rework TB Dispatcher |
 | 30.03.2026 | 4.2.2 | 1 | Skid Buffer + TB Skid Buffer |
 | 04.04.2026 | 4.2.2 | 1 | Skid Buffer + TB Skid Buffer |
+| |  |  |  |
+| **KW 14** | **-** | **55** | **Zwischensumme** |
+| |  |  |  |
 | 07.04.2026 | 4.2.2 | 2 | Rework Dispatcher + Arbiter mit Skid Buffer |
 | 08.04.2026 | 3.2.2 | 1 | Überlegungen Initialwertarchitektur und Logik |
 | 11.04.2026 | 4.2.1 | 1 | IP Packagen und Rework Projektstruktur |
 | 11.04.2026 | 9 | 5 | Projektstruktur überarbeitet um den IP Ansatz zu unterstützen + CI Testautomatisierung hinzugefügt |
 | 11.04.2026 | 10 | 2 | Clock- und Resetsignale im Block Design verbunden und Synchronisierer + TB dafür geschrieben |
+| 11.04.2026 | 3.2.1.1 | 1 | AXIL Wrapper erstellt |
+| |  |  |  |
+| **KW 14** | **-** | **67** | **Zwischensumme** |
+| |  |  |  |
+
 
 ## Feature Nummerierung
 
