@@ -37,8 +37,11 @@
 | 11.04.2026 | 9 | 5 | Projektstruktur überarbeitet um den IP Ansatz zu unterstützen + CI Testautomatisierung hinzugefügt |
 | 11.04.2026 | 10 | 2 | Clock- und Resetsignale im Block Design verbunden und Synchronisierer + TB dafür geschrieben |
 | 11.04.2026 | 3.2.1.1 | 1 | AXIL Wrapper erstellt |
+| 12.04.2026 | 8 | 1 | Anpassung Schnittstellendefinition |
+| 12.04.2026 | 3.2.2 | 1 | Architekturentwurf |
+| 12.04.2026 | 9 | 1 | Fixed CI workflow |
 | |  |  |  |
-| **KW 14** | **-** | **67** | **Zwischensumme** |
+| **KW 14** | **-** | **70** | **Zwischensumme** |
 | |  |  |  |
 
 
