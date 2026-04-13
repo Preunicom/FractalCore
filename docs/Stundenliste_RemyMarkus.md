@@ -43,6 +43,10 @@
 | |  |  |  |
 | **KW 14** | **-** | **70** | **Zwischensumme** |
 | |  |  |  |
+| 13.04.2026 | 4.2.1 | 1 | Fixed Bugs |
+| |  |  |  |
+| **KW 15** | **-** | **71** | **Zwischensumme** |
+| |  |  |  |
 
 
 ## Feature Nummerierung
