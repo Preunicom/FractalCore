@@ -82,7 +82,7 @@ begin
         report "This TB supports a maximum of 63 iterations per case! Adjust c_AMOUNT_STIMULI_PER_CASE corresponding!"
         severity failure;
     
-    UUT: entity work.Calculation
+    UUT: entity work.Mengenberechnung
     generic map (
         g_AMOUNT_CORES => c_AMOUNT_CORES
     )
