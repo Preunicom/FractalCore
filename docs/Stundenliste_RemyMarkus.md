@@ -41,11 +41,17 @@
 | 12.04.2026 | 3.2.2 | 1 | Architekturentwurf |
 | 12.04.2026 | 9 | 1 | Fixed CI workflow |
 | |  |  |  |
-| **KW 14** | **-** | **70** | **Zwischensumme** |
+| **KW 15** | **-** | **70** | **Zwischensumme** |
 | |  |  |  |
 | 13.04.2026 | 4.2.1 | 1 | Fixed Bugs |
+| 15.04.2026 | 9 | 1 | Projektbesprechung - Struktur und Anzeige |
+| 15.04.2026 | 3.2.1.2 | 1 | Dynamic LFSR Implementierung |
 | |  |  |  |
-| **KW 15** | **-** | **71** | **Zwischensumme** |
+| **KW 16** | **-** | **73** | **Zwischensumme** |
+| |  |  |  |
+| 20.04.2026 | 3.1 | 7 | Pixel Mapping + TB|
+| |  |  |  |
+| **KW 17** | **-** | **80** | **Zwischensumme** |
 | |  |  |  |
 
 

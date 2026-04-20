@@ -1,3 +1,5 @@
+# @author Markus Remy
+
 proc find_files {dir pattern} {
     set result {}
     foreach f [glob -nocomplain -directory $dir -types f $pattern] {

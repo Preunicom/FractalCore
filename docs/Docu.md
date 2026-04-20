@@ -1,5 +1,18 @@
 # FractalCore
 
+## Zuständigkeiten
+
+Das Projekt FractalCore wurde von Thomas Schiergl und Markus Remy im Rahmen der Veranstaltung Ausgewählte Projekte der Informatik an der OTH Regensburg selbstständig umgsetzt.
+Die Arbeitsaufteilung wurde wie folgt gewählt:
+- Systementwurf : Markus Remy und Thomas Schiergl
+- Projektstruktur + CI: Markus Remy
+- Konfigurationsmodul: Thomas Schiergl
+- Initialwerterzeugung: Markus Remy
+- Mengenberechnung: Markus Remy
+- Farbcodierung: Thomas Schiergl
+- Anzeige: Thomas Schiergl
+- Systemintegration: Thomas Schiergl und Markus Remy
+
 ## Systementwurf und Schnittstellendefinition
 
 Das System besteht aus folgenden Komponenten:  
@@ -21,6 +34,8 @@ Damit sind Werte im Bereich [-8,8[ möglich, was die relevanten Stellen abdeckt 
 - Die Abbruchbedingung liegt bei maximal 100 Iterationen.
 Es wurden dennoch 8 Bit Datenbreite für die Anzahl an Takte bis zur konvergenz gewählt um die maximale Anzahl an Iterationen gegebenenfalls einfach erhöhen zu können, falls die Farbgebung bei 100 Iterationen nicht zufriedenstellend sein sollte.
 
+_@author: Markus Remy_
+
 ## 0. Gesamtsystem
 
 Um den verschiedenen Taktdomainen entsprechende Takt- und Resetsignale zur Verfügung zu stellen werden zwei Clocking Wizard IPs verwendet.
@@ -30,6 +45,8 @@ Dieser erzeugt zwar auch keine 25,175 MHz, aber er liegt nur <0,01 MHz daneben, 
 Als Resetsignale wird das locked signal der Clocking Wizards verwendet.
 Da dieses nicht synchron in den Taktdomains sein muss, wird es mit zwei FlipFlops auf die jeweilige Taktdomaine synchronisiert um Metastabilität zu vermeiden.
 Außerdem werden die beiden Taktdomainen für den Microblaze und die AXI Lite Verbindungen als ein SoC Signal vom Clocking Wizard erzeugt um die Komplexität des Systems möglichst gering zu halten.
+
+_@author: Markus Remy_
 
 ## 1. MicroBlaze
 
@@ -46,6 +63,8 @@ Da aufgrund Einschränkungen in der Konfiguration die asynchronen FIFOs nicht di
 Damit ist der Dispatcher in der Clock Domaine der Cores und muss entprechend hoch getaktet werden können.
 Es wurden verschiedene Ansätze getestet um eine möglichst hohe Taktfrequenz zu erreichen.
 
+_@author: Markus Remy_
+
 #### Baumstruktur
 
 Allen Ansätzen gemeinsam hatte die Binärbaum Struktur.
@@ -54,12 +73,16 @@ Die Entscheidung welcher Ausgang verwendet wird hängt dabei von der Herangehens
 So ist das Problem einfach zu lösen aber dennoch skalierbar mit der Anzahl an Cores.
 Dafür werden die einzelnen Dispatcher als Knoten in einem Binärbaum interpretiert mit den Cores als Blätter des Baums.
 
+_@author: Markus Remy_
+
 #### Trivialer Ansatz
 
 Der triviale Ansatz ist das ganze ohne Pipelining umzusetzen.
 Dabei werden die Steuersignale sowie die Daten in beide Richtungen kombinatorisch durchgereicht.
 Dieser Ansatz erziehlt die gleichmäßigste Verteilung auf die Cores, da Cores die Daten benötigen noch im selben Takt die Daten erhalten.
 Diese Geschwindigkeit und Flexibilität ermöglicht jedoch nur sehr niedrige Taktfrequenzen und ist damit nicht geeignet.
+
+_@author: Markus Remy_
 
 #### Gepipelinter Datenpfad
 
@@ -73,6 +96,8 @@ Zusätzlich muss Logik implementiert werden um das ready Signal des Cores zu erh
 Falls ein Core mehrere freie Slots hat, muss die Anzahl an freien Slots mit der Höhe des Baums multipliziert werden um die Wartetakte z uermitteln, da erst nach dem Empfangen der Daten am Core die nächste Anfrage erkannt wird.
 
 Zusammengefasst eignet sich diese Möglichkeit nicht aufgrund ihrer Komplexität sowie auf der weiterhin niedrigen Taktfrequenz.
+
+_@author: Markus Remy_
 
 #### Skid Buffer
 
@@ -88,6 +113,8 @@ Um diese Eigenschaft optimal auszunutzen verteilt der Dispatcher die Werte falls
 So verteilt sich die Last möglichst gleichmäßig im Baum und damit auf die Cores.
 
 Damit ist diese Lösung die beste der getesteten Varianten und erlaubt eine Taktfrequenz von über 100 MHz.
+
+_@author: Markus Remy_
 
 ### 4.2 Core
 
@@ -106,6 +133,8 @@ Eine mögliche Alternative wären Gleitkommazahlen, die aber auf dem FPGA sehr a
 Diese Rechenungenauigkeit sollte dich jedoch nicht so stark auf die Visualisierung auswirken, da nur Pixel am Rand der Menge betroffen sind.
 Dort sind die Farben zwar etwas im Farbschema verschoben, was aber bei einem Farbschema mit Farbverlauf nicht so stark ins Gewicht fallen sollte.
 
+_@author: Markus Remy_
+
 #### Async FIFO IP
 
 Der AXI Stream Async FIFO führt das Reset Signal intern in die zweite Clock Domaine über wobei er es synchronisieren muss.
@@ -113,6 +142,8 @@ Dafür benötigt er einen ausreichend langen Reset Puls um nach dem Reset direkt
 
 Das ist auf der Hardware irrelevant, da das Reset Signal in diesem Aufbau durch den Clocking Wizard erzeugt wird und damit lange genug anliegt.
 In Testbenches muss es jedoch beachtet werden.
+
+_@author: Markus Remy_
 
 ## 5. Arbiter
 
@@ -125,6 +156,8 @@ Das Ergebnis ist sehr ähnlich, da die Auswirkungen von langen Pfaden aufgrund d
 Es wurde ein Skid Buffer gewählt und eine Priorisierung anhand der Pixelposition.
 Da es nur eine Priorisierung ist und die Ergebnisse unterschiedlich lange berechnet werden, gibt es keine Garantie auf eine korrekte Reihenfolge der Pixel.
 Das nachfolgende System muss diese Einschränkung entsprechend beachten.
+
+_@author: Markus Remy_
 
 ## 6. Farbcodierung
 

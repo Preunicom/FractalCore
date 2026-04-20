@@ -22,6 +22,8 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
+-- This entity pipelines all signals (also the control signals) of AXI Stream data.
+-- It buffers the data if the slave is unexpectedly not ready for it.
 entity Skid_Buffer is
     generic(
         g_DATA_WIDTH : natural 
