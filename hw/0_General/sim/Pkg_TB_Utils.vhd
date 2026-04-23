@@ -31,6 +31,11 @@ package Pkg_TB_Utils is
         signal i_ready : in std_logic
     );
 
+    procedure wait_for_enabled_clock(
+        signal i_clk : in std_logic;
+        signal i_en : in std_logic
+    );
+
 end package;
 
 package body Pkg_TB_Utils is
@@ -44,6 +49,19 @@ package body Pkg_TB_Utils is
         loop
             wait until rising_edge(i_clk);
             if i_valid = '1' and i_ready = '1' then
+                exit;
+            end if;
+        end loop;
+    end procedure;
+
+    procedure wait_for_enabled_clock(
+        signal i_clk : in std_logic;
+        signal i_en : in std_logic
+    ) is
+    begin
+        loop
+            wait until rising_edge(i_clk);
+            if i_en = '1' then
                 exit;
             end if;
         end loop;

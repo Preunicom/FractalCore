@@ -55,6 +55,7 @@ set sim_files [concat \
     [find_files $general_files_dir/sim "*.v"] \
     [find_files $general_files_dir/sim "*.sv"] \
 ]
+set constr_file [lindex [find_files $project_data_dir/constraints "*.xdc"] 0]
 
 # ================ SOURCES ================
 if {[string equal [get_filesets -quiet sources_1] ""]} {
@@ -88,6 +89,21 @@ if {[info exists proj_top_module]} {
 }
 set_property -name "top_auto_set" -value "0" -objects $obj
 
+# ================ CONSTRAINTS ================
+if {[llength $constr_file] > 0} {
+    if {[string equal [get_filesets -quiet constrs_1] ""]} {
+    create_fileset -constrset constrs_1
+    }
+    set obj [get_filesets constrs_1]
+
+    set file "$constr_file"
+    set file_added [add_files -norecurse -fileset $obj [list $file]]
+    set file_obj [get_files $file]
+    set_property -name "file_type" -value "XDC" -objects $file_obj
+
+    set obj [get_filesets constrs_1]
+    set_property -name "target_part" -value $proj_part -objects $obj
+}
 # ================ SIMULATION ================
 if {[string equal [get_filesets -quiet sim_1] ""]} {
   create_fileset -simset sim_1
