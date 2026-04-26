@@ -36,6 +36,11 @@ package Pkg_TB_Utils is
         signal i_en : in std_logic
     );
 
+    procedure wait_for_clock_cycles(
+        signal i_clk : in std_logic;
+        constant amount : in integer
+    );
+
 end package;
 
 package body Pkg_TB_Utils is
@@ -64,6 +69,16 @@ package body Pkg_TB_Utils is
             if i_en = '1' then
                 exit;
             end if;
+        end loop;
+    end procedure;
+
+    procedure wait_for_clock_cycles(
+        signal i_clk : in std_logic;
+        constant amount : in integer
+    ) is 
+    begin
+        for i in 0 to amount - 1 loop
+            wait until rising_edge(i_clk);
         end loop;
     end procedure;
 

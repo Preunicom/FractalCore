@@ -54,8 +54,13 @@
 | 22.04.2026 | 8 | 1 | Systemintegration - Teambesprechung |
 | 22.04.2026 | 3.2.1.2 | 1 | Animationsschrittlogik |
 | 23.04.2026 | 3.2.2.2 | 2 | Diamond Mode TB |
+| 24.04.2026 | 3.2.2.2 | 3 | Julia C Generation TB |
+| 25.04.2026 | 3.2.2.2 | 1 | Julia C Generation TB |
+| 25.04.2026 | 3.1 | 1 | Architektur Ziel- und Wert Overlay für die Minimap überarbeiten|
+| 26.04.2026 | 3.1 | 1 | Architektur Ziel- und Wert Overlay für die Minimap überarbeiten |
+| 26.04.2026 | 3.2.2.2 | 2 | Pixel Gen. TB & Coord. Gen. TB |
 | |  |  |  |
-| **KW 17** | **-** | **83** | **Zwischensumme** |
+| **KW 17** | **-** | **91** | **Zwischensumme** |
 | |  |  |  |
 
 
