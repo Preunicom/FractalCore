@@ -54,6 +54,8 @@ _@author: Markus Remy_
 
 ## 3. Initialwertkoponente
 
+TODO: Beschreiben wieso highlight Data funktioniert und wie
+
 ## 4. Berechnung
 
 ### 4.1 Dispatcher

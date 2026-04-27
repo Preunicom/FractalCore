@@ -60,7 +60,12 @@
 | 26.04.2026 | 3.1 | 1 | Architektur Ziel- und Wert Overlay für die Minimap überarbeiten |
 | 26.04.2026 | 3.2.2.2 | 2 | Pixel Gen. TB & Coord. Gen. TB |
 | |  |  |  |
-| **KW 17** | **-** | **91** | **Zwischensumme** |
+| **KW 17** | **-** | **93** | **Zwischensumme** |
+| |  |  |  |
+| 27.04.2026 | 3.2.1.2 | 2 | Minimap Pixel Highlight Berechnung |
+| 27.04.2026 | 3.2.1.2 | 2 | Minimap Pixel Highlight Berechnung TB |
+| |  |  |  |
+| **KW 18** | **-** | **97** | **Zwischensumme** |
 | |  |  |  |
 
 
