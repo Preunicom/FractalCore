@@ -21,6 +21,8 @@
 library IEEE;
 	use IEEE.STD_LOGIC_1164.all;
 	use IEEE.numeric_std.all;
+library work;
+    use work.Pkg_Utils.all;
 
 -- Maps pixel to coordinates and provides both information
 entity Value_Combination is
@@ -50,7 +52,9 @@ entity Value_Combination is
         o_z0_real : std_logic_vector(17 downto 0);
         o_z0_img : std_logic_vector(17 downto 0);
         o_c_real : std_logic_vector(17 downto 0);
-        o_c_img : std_logic_vector(17 downto 0)
+        o_c_img : std_logic_vector(17 downto 0);
+        -- Highlight data
+        o_highlight : t_highlight_info
 	);
 end entity;
 
@@ -88,3 +92,6 @@ end architecture;
 -- TODO: Output the overlay pixel to thomas with pixel x/y values.
 
 -- TODO: Update TBs
+
+-- TODO: Calc. highlight: 
+-- entfernung zu aktuellem Pixel < dist*2 für col und row und in minimap --> Highlight

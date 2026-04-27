@@ -4,11 +4,11 @@
 -- 
 -- Create Date: 03/25/2026 03:20:00 PM
 -- Design Name: 
--- Module Name: Pkg_Core - Behavioral
+-- Module Name: Pkg_TB_Utils - Behavioral
 -- Project Name: FractalCore
 -- Target Devices: Arty A7 100T
 -- Tool Versions: 2023.2
--- Description: Provides an record of the PixelData
+-- Description: Provides utils for testbenched
 -- 
 -- Dependencies: 
 -- 
