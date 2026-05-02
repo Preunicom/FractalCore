@@ -32,21 +32,20 @@ end TB_Highlight_Calculation;
 architecture Testbench of TB_Highlight_Calculation is
     constant tbase : time := 10 ns;
     -- STIMULI
-    signal s_resetn              : std_logic;
-    signal s_clk                 : std_logic := '0';
-    signal s_en                  : std_logic;
-    signal s_frame_idx           : std_logic_vector(1 downto 0);
-    signal s_pixel_col           : std_logic_vector(9 downto 0);
-    signal s_pixel_row           : std_logic_vector(8 downto 0);
-    signal s_pixel_coord_re      : std_logic_vector(17 downto 0);
-    signal s_pixel_coord_im      : std_logic_vector(17 downto 0);
-    signal s_c_coord_re          : std_logic_vector(17 downto 0);
-    signal s_c_coord_im          : std_logic_vector(17 downto 0);
-    signal s_target_coord_re     : std_logic_vector(17 downto 0);
-    signal s_target_coord_im     : std_logic_vector(17 downto 0);
-    signal s_is_in_minimap       : std_logic;
-    signal s_minimap_en          : std_logic;
-    signal s_pixel_distance      : std_logic_vector(7 downto 0);
+    signal s_resetn               : std_logic;
+    signal s_clk                  : std_logic := '0';
+    signal s_valid                : std_logic;
+    signal s_frame_idx            : std_logic_vector(1 downto 0);
+    signal s_pixel_col            : std_logic_vector(9 downto 0);
+    signal s_pixel_row            : std_logic_vector(8 downto 0);
+    signal s_pixel_coord_re       : std_logic_vector(17 downto 0);
+    signal s_pixel_coord_im       : std_logic_vector(17 downto 0);
+    signal s_c_coord_re           : std_logic_vector(17 downto 0);
+    signal s_c_coord_im           : std_logic_vector(17 downto 0);
+    signal s_target_coord_re      : std_logic_vector(17 downto 0);
+    signal s_target_coord_im      : std_logic_vector(17 downto 0);
+    signal s_is_in_minimap        : std_logic;
+    signal s_pixel_distance       : std_logic_vector(7 downto 0);
 
     signal tb_frame_idx           : integer;
     signal tb_pixel_col           : integer;
@@ -108,7 +107,7 @@ begin
     port map (
         i_resetn          => s_resetn,
         i_clk             => s_clk,
-        i_en              => s_en,
+        i_valid           => s_valid,
         i_frame_idx       => s_frame_idx,
         i_pixel_col       => s_pixel_col,
         i_pixel_row       => s_pixel_row,
@@ -116,10 +115,9 @@ begin
         i_pixel_coord_im  => s_pixel_coord_im,
         i_c_coord_re      => s_c_coord_re,
         i_c_coord_im      => s_c_coord_im,
-        i_target_coord_re => s_target_coord_re,
-        i_target_coord_im => s_target_coord_im,
+        i_c_target_coord_re => s_target_coord_re,
+        i_c_target_coord_im => s_target_coord_im,
         i_is_in_minimap   => s_is_in_minimap,
-        i_minimap_en      => s_minimap_en,
         i_pixel_distance  => s_pixel_distance,
         o_highlight_info  => c_highlight_info
     );
@@ -128,9 +126,9 @@ begin
     s_resetn <= '0', '1' after 1*tbase;
 
     s_frame_idx        <= std_logic_vector(to_unsigned(tb_frame_idx, 2));
-    s_pixel_col        <= std_logic_vector(to_unsigned(tb_pixel_col, 10));        
+    s_pixel_col        <= std_logic_vector(to_unsigned(tb_pixel_col, 10));
     s_pixel_row        <= std_logic_vector(to_unsigned(tb_pixel_row, 9));
-    s_pixel_coord_re   <= std_logic_vector(to_signed(tb_pixel_coord_re, 18));    
+    s_pixel_coord_re   <= std_logic_vector(to_signed(tb_pixel_coord_re, 18));
     s_pixel_coord_im   <= std_logic_vector(to_signed(tb_pixel_coord_im, 18));
     s_c_coord_re       <= std_logic_vector(to_signed(tb_c_coord_re, 18));
     s_c_coord_im       <= std_logic_vector(to_signed(tb_c_coord_im, 18));
@@ -142,7 +140,7 @@ begin
 	begin
         wait until s_resetn = '1';
         -- Frame 0
-        s_en <= '0';
+        s_valid <= '0';
         tb_frame_idx <= 0;
         tb_pixel_col <= 1;
         tb_pixel_row <= 10;
@@ -154,9 +152,8 @@ begin
         tb_target_coord_im <= 1000;
         tb_pixel_distance  <= 25;
         s_is_in_minimap <= '1';
-        s_minimap_en <= '1';
         wait until rising_edge(s_clk);
-        s_en <= '1';
+        s_valid <= '1';
         tb_frame_idx <= 0;
         tb_pixel_col <= 1;
         tb_pixel_row <= 10;
@@ -168,9 +165,8 @@ begin
         tb_target_coord_im <= 1000;
         tb_pixel_distance  <= 25;
         s_is_in_minimap <= '1';
-        s_minimap_en <= '1';
         wait until rising_edge(s_clk);
-        s_en <= '1';
+        s_valid <= '1';
         tb_frame_idx <= 0;
         tb_pixel_col <= 2;
         tb_pixel_row <= 20;
@@ -182,9 +178,8 @@ begin
         tb_target_coord_im <= 1000;
         tb_pixel_distance  <= 25;
         s_is_in_minimap <= '0';
-        s_minimap_en <= '1';
         wait until rising_edge(s_clk);
-        s_en <= '1';
+        s_valid <= '1';
         tb_frame_idx <= 0;
         tb_pixel_col <= 3;
         tb_pixel_row <= 30;
@@ -196,9 +191,8 @@ begin
         tb_target_coord_im <= 1000;
         tb_pixel_distance  <= 25;
         s_is_in_minimap <= '1';
-        s_minimap_en <= '1';
         wait until rising_edge(s_clk);
-        s_en <= '1';
+        s_valid <= '1';
         tb_frame_idx <= 0;
         tb_pixel_col <= 4;
         tb_pixel_row <= 40;
@@ -210,10 +204,9 @@ begin
         tb_target_coord_im <= 1300;
         tb_pixel_distance  <= 25;
         s_is_in_minimap <= '1';
-        s_minimap_en <= '1';
         wait until rising_edge(s_clk);
         -- Frame 1
-        s_en <= '1';
+        s_valid <= '1';
         tb_frame_idx <= 1;
         tb_pixel_col <= 5;
         tb_pixel_row <= 50;
@@ -225,10 +218,9 @@ begin
         tb_target_coord_im <= 1700;
         tb_pixel_distance  <= 100;
         s_is_in_minimap <= '1';
-        s_minimap_en <= '1';
         wait until rising_edge(s_clk);
         -- Frame 2
-        s_en <= '1';
+        s_valid <= '1';
         tb_frame_idx <= 2;
         tb_pixel_col <= 6;
         tb_pixel_row <= 60;
@@ -240,9 +232,8 @@ begin
         tb_target_coord_im <= 1300;
         tb_pixel_distance  <= 25;
         s_is_in_minimap <= '0';
-        s_minimap_en <= '0';
         wait until rising_edge(s_clk);
-        s_en <= '1';
+        s_valid <= '1';
         tb_frame_idx <= 2;
         tb_pixel_col <= 7;
         tb_pixel_row <= 70;
@@ -253,11 +244,10 @@ begin
         tb_target_coord_re <= 100;
         tb_target_coord_im <= 1000;
         tb_pixel_distance  <= 25;
-        s_is_in_minimap <= '1';
-        s_minimap_en <= '0';
+        s_is_in_minimap <= '0';
         wait until rising_edge(s_clk);
         -- Frame 3
-        s_en <= '1';
+        s_valid <= '1';
         tb_frame_idx <= 3;
         tb_pixel_col <= 8;
         tb_pixel_row <= 80;
@@ -269,9 +259,8 @@ begin
         tb_target_coord_im <= 1000;
         tb_pixel_distance  <= 25;
         s_is_in_minimap <= '0';
-        s_minimap_en <= '1';
         wait until rising_edge(s_clk);
-        s_en <= '1';
+        s_valid <= '1';
         tb_frame_idx <= 3;
         tb_pixel_col <= 9;
         tb_pixel_row <= 90;
@@ -283,9 +272,8 @@ begin
         tb_target_coord_im <= 1000;
         tb_pixel_distance  <= 25;
         s_is_in_minimap <= '1';
-        s_minimap_en <= '1';
         wait until rising_edge(s_clk);
-        s_en <= '1';
+        s_valid <= '1';
         tb_frame_idx <= 3;
         tb_pixel_col <= 9;
         tb_pixel_row <= 90;
@@ -297,10 +285,9 @@ begin
         tb_target_coord_im <= 1000;
         tb_pixel_distance  <= 25;
         s_is_in_minimap <= '0';
-        s_minimap_en <= '1';
         wait until rising_edge(s_clk);
         -- Frame 0
-        s_en <= '1';
+        s_valid <= '1';
         tb_frame_idx <= 0;
         tb_pixel_col <= 9;
         tb_pixel_row <= 90;
@@ -312,7 +299,6 @@ begin
         tb_target_coord_im <= 1000;
         tb_pixel_distance  <= 25;
         s_is_in_minimap <= '0';
-        s_minimap_en <= '0';
         wait until rising_edge(s_clk);
         wait;
     end process;
@@ -321,73 +307,73 @@ begin
 	begin
         wait until s_resetn = '1';
         wait until rising_edge(s_clk); -- Reset values
-        check_highlight_data(c_highlight_info(0), '0', 0, 0, 0, 0, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '0', 0, 0, 0, 0, "Frame: 1");
-        check_highlight_data(c_highlight_info(2), '0', 0, 0, 0, 0, "Frame: 2");
-        check_highlight_data(c_highlight_info(3), '0', 0, 0, 0, 0, "Frame: 3");
+        check_highlight_data(c_highlight_info(0), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 0");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
+        check_highlight_data(c_highlight_info(3), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 3");
         -- Frame 0
         wait until rising_edge(s_clk); -- Not enabled
-        check_highlight_data(c_highlight_info(0), '1', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '0', 0, 0, 0, 0, "Frame: 1");
-        check_highlight_data(c_highlight_info(2), '0', 0, 0, 0, 0, "Frame: 2");
-        check_highlight_data(c_highlight_info(3), '0', 0, 0, 0, 0, "Frame: 3");
+        check_highlight_data(c_highlight_info(0), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 0");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
+        check_highlight_data(c_highlight_info(3), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 3");
         wait until rising_edge(s_clk); -- Set current pixel highlight
         check_highlight_data(c_highlight_info(0), '1', 1, 10, (2**10)-1, (2**9)-1, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '0', 0, 0, 0, 0, "Frame: 1");
-        check_highlight_data(c_highlight_info(2), '0', 0, 0, 0, 0, "Frame: 2");
-        check_highlight_data(c_highlight_info(3), '0', 0, 0, 0, 0, "Frame: 3");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
+        check_highlight_data(c_highlight_info(3), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 3");
         wait until rising_edge(s_clk); -- Stays (not in minimap)
         check_highlight_data(c_highlight_info(0), '1', 1, 10, (2**10)-1, (2**9)-1, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '0', 0, 0, 0, 0, "Frame: 1");
-        check_highlight_data(c_highlight_info(2), '0', 0, 0, 0, 0, "Frame: 2");
-        check_highlight_data(c_highlight_info(3), '0', 0, 0, 0, 0, "Frame: 3");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
+        check_highlight_data(c_highlight_info(3), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 3");
         wait until rising_edge(s_clk); -- Set target highlight
         check_highlight_data(c_highlight_info(0), '1', 1, 10, 3, 30, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '0', 0, 0, 0, 0, "Frame: 1");
-        check_highlight_data(c_highlight_info(2), '0', 0, 0, 0, 0, "Frame: 2");
-        check_highlight_data(c_highlight_info(3), '0', 0, 0, 0, 0, "Frame: 3");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
+        check_highlight_data(c_highlight_info(3), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 3");
         wait until rising_edge(s_clk); -- Stays (not near enough)
         check_highlight_data(c_highlight_info(0), '1', 1, 10, 3, 30, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '0', 0, 0, 0, 0, "Frame: 1");
-        check_highlight_data(c_highlight_info(2), '0', 0, 0, 0, 0, "Frame: 2");
-        check_highlight_data(c_highlight_info(3), '0', 0, 0, 0, 0, "Frame: 3");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
+        check_highlight_data(c_highlight_info(3), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 3");
         --Frame 1
         wait until rising_edge(s_clk); -- New frame with minimap
         check_highlight_data(c_highlight_info(0), '1', 1, 10, 3, 30, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '1', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
-        check_highlight_data(c_highlight_info(2), '0', 0, 0, 0, 0, "Frame: 2");
-        check_highlight_data(c_highlight_info(3), '0', 0, 0, 0, 0, "Frame: 3");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
+        check_highlight_data(c_highlight_info(3), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 3");
         --Frame 2
         wait until rising_edge(s_clk);  -- New frame without minimap
         check_highlight_data(c_highlight_info(0), '1', 1, 10, 3, 30, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '1', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
         check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
-        check_highlight_data(c_highlight_info(3), '0', 0, 0, 0, 0, "Frame: 3");
+        check_highlight_data(c_highlight_info(3), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 3");
         wait until rising_edge(s_clk); -- Frame with no minimap
         check_highlight_data(c_highlight_info(0), '1', 1, 10, 3, 30, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '1', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
         check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
-        check_highlight_data(c_highlight_info(3), '0', 0, 0, 0, 0, "Frame: 3");
+        check_highlight_data(c_highlight_info(3), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 3");
         --Frame 3
         wait until rising_edge(s_clk); -- New frame with minimap
         check_highlight_data(c_highlight_info(0), '1', 1, 10, 3, 30, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '1', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
         check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
-        check_highlight_data(c_highlight_info(3), '1', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 3");
+        check_highlight_data(c_highlight_info(3), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 3");
         wait until rising_edge(s_clk); -- Pixel and target set
         check_highlight_data(c_highlight_info(0), '1', 1, 10, 3, 30, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '1', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
         check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
         check_highlight_data(c_highlight_info(3), '1', 9, 90, 9, 90, "Frame: 3");
         wait until rising_edge(s_clk); -- Not in minimap
         check_highlight_data(c_highlight_info(0), '1', 1, 10, 3, 30, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '1', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
         check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
         check_highlight_data(c_highlight_info(3), '1', 9, 90, 9, 90, "Frame: 3");
         -- Frame 0
         wait until rising_edge(s_clk); -- No minimap
         check_highlight_data(c_highlight_info(0), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 0");
-        check_highlight_data(c_highlight_info(1), '1', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
+        check_highlight_data(c_highlight_info(1), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 1");
         check_highlight_data(c_highlight_info(2), '0', (2**10)-1,(2**9)-1, (2**10)-1,(2**9)-1, "Frame: 2");
         check_highlight_data(c_highlight_info(3), '1', 9, 90, 9, 90, "Frame: 3");
         wait until rising_edge(s_clk);

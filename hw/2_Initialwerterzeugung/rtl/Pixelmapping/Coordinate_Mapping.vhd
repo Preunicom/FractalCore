@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 04/25/2026 08:16:00 AM
 -- Design Name: 
--- Module Name: Coordinate_Generation - Behavioral
+-- Module Name: Coordinate_Mapping - Behavioral
 -- Project Name: FractalCore
 -- Target Devices: Arty A7 100T
 -- Tool Versions: 2023.2
@@ -22,7 +22,7 @@ library IEEE;
 	use IEEE.STD_LOGIC_1164.all;
 	use IEEE.numeric_std.all;
 
-entity Coordinate_Generation is
+entity Coordinate_Mapping is
     port (
 		i_resetn                : in  std_logic;
 		i_clk                   : in  std_logic;
@@ -30,19 +30,21 @@ entity Coordinate_Generation is
         i_frame_idx             : in std_logic_vector(1 downto 0);
         i_pixel_col             : in std_logic_vector(9 downto 0);
         i_pixel_row             : in std_logic_vector(8 downto 0);
-        i_is_in_minimap         : in std_logic;
+        i_is_in_minimap_area    : in std_logic;
         i_minimap_en            : in std_logic;
-        i_pixel_distance        : in  std_logic_vector(7 downto 0);
+        i_pixel_distance        : in std_logic_vector(7 downto 0);
         o_valid                 : out std_logic;
         o_frame_idx             : out std_logic_vector(1 downto 0);
         o_pixel_col             : out std_logic_vector(9 downto 0);
         o_pixel_row             : out std_logic_vector(8 downto 0);
         o_pixel_coord_re        : out std_logic_vector(17 downto 0);
-        o_pixel_coord_im        : out std_logic_vector(17 downto 0)
-	);
+        o_pixel_coord_im        : out std_logic_vector(17 downto 0);
+        o_is_in_minimap         : out std_logic;
+        o_pixel_distance        : out std_logic_vector(7 downto 0)
+    );
 end entity;
 
-architecture Behavioral of Coordinate_Generation is
+architecture Behavioral of Coordinate_Mapping is
     constant c_FRAME_WIDTH : unsigned(9 downto 0) := to_unsigned(640, 10);
     constant c_FRAME_HEIGHT : unsigned(8 downto 0) := to_unsigned(480, 9);
     constant c_FIRST_PIXEL_RE_COORD : signed(9 downto 0) := -(signed('0' & c_FRAME_WIDTH(9 downto 1))); -- - (WIDTH / 2)
@@ -79,7 +81,7 @@ begin
             else
                 if i_fetch_next = '1' then
                     if r_last_frame_idx /= i_frame_idx then
-                        -- Only update pixel distance and minimal en at new frame
+                        -- Only update pixel distance and minimap_en at new frame
                         r_current_pixel_distance <= i_pixel_distance;
                         r_minimap_en <= i_minimap_en;
                     end if;
@@ -89,7 +91,7 @@ begin
                     r_pixel_col_idx <= i_pixel_col;
                     r_pixel_row_idx <= i_pixel_row;
                     r_frame_idx <= i_frame_idx;
-                    if i_is_in_minimap = '1' and (r_minimap_en = '1' or (r_last_frame_idx /= i_frame_idx and i_minimap_en = '1')) then
+                    if i_is_in_minimap_area = '1' and (r_minimap_en = '1' or (r_last_frame_idx /= i_frame_idx and i_minimap_en = '1')) then
                         -- Set the mini map status for the Julia set Mandelbrot overview map (shift mid of mini map re/im part to zero)
                         r_is_in_mini_map <= '1';
                         -- Min value is -320 + 0 + 240 = -80, Max value is -320 + 160 + 240 = +80 --> Needs 8 bits
@@ -136,6 +138,8 @@ begin
                     o_pixel_col <= r_pixel_col_idx;
                     o_pixel_row <= r_pixel_row_idx;
                     o_frame_idx <= r_frame_idx;
+                    o_is_in_minimap <= r_is_in_mini_map;
+                    o_pixel_distance <= r_current_pixel_distance;
                 end if;
             end if;
         end if;

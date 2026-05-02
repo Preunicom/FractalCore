@@ -16,7 +16,7 @@ set script_dir [file dirname [info script]]
 set project_data_dir [file normalize "$script_dir/.."]
 
 set proj_name "2_Initialwerterzeugung"
-#set proj_top_module "TODO_SET"
+set proj_top_module "Initialwerterzeugung"
 set proj_part "xc7a100tcsg324-1"
 set proj_dir "[file normalize "$project_data_dir/../../xilinx/vivado/$proj_name"]"
 set proj_IP_dir "[file normalize "$project_data_dir/ip"]"

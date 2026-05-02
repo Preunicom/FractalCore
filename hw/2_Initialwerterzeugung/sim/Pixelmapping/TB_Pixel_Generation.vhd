@@ -38,7 +38,7 @@ architecture Testbench of TB_Pixel_Generation is
     signal c_pixel_col : std_logic_vector(9 downto 0);
     signal c_pixel_row : std_logic_vector(8 downto 0);
     signal c_frame_idx : std_logic_vector(1 downto 0);
-    signal c_is_in_minimap : std_logic;
+    signal c_is_in_minimap_area : std_logic;
 
     signal tb_pixel_col : integer;
     signal tb_pixel_row : integer;
@@ -58,13 +58,13 @@ architecture Testbench of TB_Pixel_Generation is
 begin
     UUT: entity work.Pixel_Generation
     port map (
-        i_resetn         => s_resetn,
-        i_clk            => s_clk,
-        i_fetch_next     => s_fetch_next,
-        o_frame_idx      => c_frame_idx,
-        o_pixel_col      => c_pixel_col,
-        o_pixel_row      => c_pixel_row,
-        o_is_in_minimap  => c_is_in_minimap
+        i_resetn                => s_resetn,
+        i_clk                   => s_clk,
+        i_fetch_next            => s_fetch_next,
+        o_frame_idx             => c_frame_idx,
+        o_pixel_col             => c_pixel_col,
+        o_pixel_row             => c_pixel_row,
+        o_is_in_minimap_area    => c_is_in_minimap_area
     );
 
     s_resetn <= '0', '1' after 1*tbase;
@@ -178,11 +178,11 @@ begin
         while True loop
             wait until rising_edge(s_clk);
             if tb_pixel_col <= 160 and tb_pixel_row >= 360 then 
-                assert c_is_in_minimap = '1' 
+                assert c_is_in_minimap_area = '1' 
                     report "Pixel not flaged as mini map area pixel but pixel should be!"
                     severity failure;
             else
-                assert c_is_in_minimap = '0' 
+                assert c_is_in_minimap_area = '0' 
                     report "Pixel flaged as mini map area pixel but pixel should not be!"
                     severity failure;
             end if;

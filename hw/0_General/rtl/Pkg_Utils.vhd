@@ -34,11 +34,13 @@ package Pkg_Utils is
     end record;
 
     constant c_HIGHLIGHT_PIXEL_RESET : t_highlight_pixel := (
+        -- Set valid to invalid and set pixel to highest pixel, so it won't trigger something too early if both values are set valid when one is still invalid.
+        -- This works as both pixels or no pixel have to be found.
         valid => '0',
-        current_pixel_col => (others => '0'),
-        current_pixel_row => (others => '0'),
-        target_pixel_col => (others => '0'),
-        target_pixel_row => (others => '0')
+        current_pixel_col => (others => '1'),
+        current_pixel_row => (others => '1'),
+        target_pixel_col => (others => '1'),
+        target_pixel_row => (others => '1')
     );
 
     type t_highlight_info is array (0 to 3) of t_highlight_pixel;

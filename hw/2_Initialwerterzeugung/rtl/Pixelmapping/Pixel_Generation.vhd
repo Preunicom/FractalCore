@@ -31,7 +31,7 @@ entity Pixel_Generation is
         o_frame_idx             : out std_logic_vector(1 downto 0);
         o_pixel_col             : out std_logic_vector(9 downto 0);
         o_pixel_row             : out std_logic_vector(8 downto 0);
-        o_is_in_minimap         : out std_logic
+        o_is_in_minimap_area    : out std_logic
 	);
 end entity;
 
@@ -75,8 +75,8 @@ begin
     o_pixel_col <= std_logic_vector(r_col_idx);
     o_pixel_row <= std_logic_vector(r_row_idx);
     o_frame_idx <= std_logic_vector(r_frame_idx);
-    o_is_in_minimap <= '1' when r_col_idx <= c_MINI_MAP_AREA_END_RE and 
-                                 r_row_idx >= c_MINI_MAP_AREA_START_IM
-                            else '0';
+    o_is_in_minimap_area <= '1' when r_col_idx <= c_MINI_MAP_AREA_END_RE and 
+                                r_row_idx >= c_MINI_MAP_AREA_START_IM
+                                else '0';
 
 end architecture;

@@ -64,8 +64,11 @@
 | |  |  |  |
 | 27.04.2026 | 3.2.1.2 | 2 | Minimap Pixel Highlight Berechnung |
 | 27.04.2026 | 3.2.1.2 | 2 | Minimap Pixel Highlight Berechnung TB |
+| 29.04.2026 | 9 | 1 | Teambesprechung Initialwerte <-> VGA Overlay |
+| 01.05.2026 | 3.2.2 | 2 | Pipeline Design: C hinzufügen zu Pixeldaten |
+| 02.05.2026 | 3.2.2 | 5 | Start Value Mapping TB |
 | |  |  |  |
-| **KW 18** | **-** | **97** | **Zwischensumme** |
+| **KW 18** | **-** | **105** | **Zwischensumme** |
 | |  |  |  |
 
 
