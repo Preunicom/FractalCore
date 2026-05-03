@@ -45,8 +45,6 @@ architecture Testbench of TB_Pixel_Generation is
     signal tb_frame_idx : integer;
     signal tb_last_col : integer;
     signal tb_last_row : integer;
-    signal tb_last_frame_idx : integer;
-    signal tb_last_fetch_next : std_logic;
 
     signal tb_test_ended_frame_idx : boolean := false;
     signal tb_test_ended_col : boolean := false;
@@ -103,13 +101,10 @@ begin
             if s_resetn = '0' then
                 tb_last_col <= 639;
                 tb_last_row <= 479;
-                tb_last_frame_idx <= 3;
             else
                 if s_fetch_next = '1' then
                     tb_last_col <= tb_pixel_col;
                     tb_last_row <= tb_pixel_row;
-                    tb_last_frame_idx <= tb_frame_idx;
-                    tb_last_fetch_next <= s_fetch_next;
                 end if;
             end if;
         end if;
@@ -130,7 +125,7 @@ begin
                 tb_test_ended_col <= true;
             else
                 assert tb_pixel_col = tb_last_col or
-                    (tb_pixel_col = tb_last_col + 1 and tb_last_fetch_next = '1')
+                    (tb_pixel_col = tb_last_col + 1)
                     report "Pixel column changed without fetch next!" & LF
                         & "Exp.:" & to_string(tb_last_col) & LF
                         & "Got.:" & to_string(tb_pixel_col)
@@ -163,7 +158,7 @@ begin
                 end if;
             else
                 assert tb_pixel_row = tb_last_row or
-                    (tb_pixel_col = tb_last_col + 1 and tb_last_fetch_next = '1')
+                    (tb_pixel_row = tb_last_row + 1)
                     report "Wrong pixel row received while fetch disabled!" & LF
                         & "Exp.:" & to_string(tb_last_row) & LF
                         & "Got.:" & to_string(tb_pixel_row)

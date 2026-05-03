@@ -512,7 +512,7 @@ begin
         wait_for_enabled_clock(s_clk, tb_test_clock_en);
         check_data("10", 3, 13, 4, 14, 1, 1, 1, 1, 10, 10, '0', 1, "Step 4"); -- LFSR
         wait_for_enabled_clock(s_clk, tb_test_clock_en);
-        check_data("10", 4, 14, 4, 14, 2, 2, 2, 2, 10, 10, '0', 1, "Step 5"); -- Diamond but no new frame
+        check_data("10", 4, 14, 4, 14, 1, 1, 1, 1, 10, 10, '0', 1, "Step 5"); -- Diamond but no new frame
         wait_for_enabled_clock(s_clk, tb_test_clock_en);
         check_data("11", 5, 15, 5, 15, 3, 1, 3, 1, 10, 0, '0', 1, "Step 6"); -- Diamond
         wait_for_enabled_clock(s_clk, tb_test_clock_en);

@@ -104,8 +104,12 @@ architecture Behavioral of Start_Value_Mapping is
 
     signal w_target_re          : std_logic_vector(17 downto 0);
     signal w_target_im          : std_logic_vector(17 downto 0);
-    signal w_current_coord_re   : std_logic_vector(17 downto 0);
-    signal w_current_coord_im   : std_logic_vector(17 downto 0);
+    signal w_current_c_coord_re : std_logic_vector(17 downto 0);
+    signal w_current_c_coord_im : std_logic_vector(17 downto 0);
+
+    signal r_frame_c_coord_re   : std_logic_vector(17 downto 0);
+    signal r_frame_c_coord_im   : std_logic_vector(17 downto 0);
+    signal r_is_new_frame       : std_logic;
 
 begin
     C_GEN: Julia_C_Generation
@@ -125,8 +129,8 @@ begin
         i_diamond_width    => i_diamond_width,
         o_target_re        => w_target_re,
         o_target_im        => w_target_im,
-        o_current_coord_re => w_current_coord_re,
-        o_current_coord_im => w_current_coord_im
+        o_current_coord_re => w_current_c_coord_re,
+        o_current_coord_im => w_current_c_coord_im
     );
 
     -- Strobe en if Julia set mode and new frame --> next data in c_gen
@@ -152,15 +156,18 @@ begin
                 r_pixel_distance <= (others => '0');
                 r_c_mode <= '0';
                 r_set_mode <= '0';
+                r_is_new_frame <= '0';
             else
                 if i_fetch_next = '1' then
                     r_valid <= i_valid;
+                    r_is_new_frame <= '0'; -- Reset new frame flag at next pipeline shift
                     if i_valid = '1' then
                         -- Data valid --> Process it
                         if r_frame_idx /= i_frame_idx then
                             -- New frame
                             r_c_mode <= i_mode(0); -- Set c mode for full frame
                             r_set_mode <= i_mode(1); -- Set set mode for full frame
+                            r_is_new_frame <= '1';
                         end if;
                         r_frame_idx <= i_frame_idx;
                         r_pixel_col <= i_pixel_col;
@@ -209,14 +216,23 @@ begin
                         -- Julia set mode
                         o_pixel_coord_z0_re <= r_pixel_coord_re;
                         o_pixel_coord_z0_im <= r_pixel_coord_im;
-                        o_pixel_coord_c_re <= w_current_coord_re;
-                        o_pixel_coord_c_im <= w_current_coord_im;
+                        if r_is_new_frame = '1' then
+                            o_pixel_coord_c_re <= w_current_c_coord_re;
+                            o_pixel_coord_c_im <= w_current_c_coord_im;
+                            r_frame_c_coord_re <= w_current_c_coord_re;
+                            r_frame_c_coord_im <= w_current_c_coord_im;
+                        else
+                            o_pixel_coord_c_re <= r_frame_c_coord_re;
+                            o_pixel_coord_c_im <= r_frame_c_coord_im;
+                        end if;
                     end if;
                     -- Generated c values
                     o_c_target_re <= w_target_re;
                     o_c_target_im <= w_target_im;
-                    o_c_coord_re <= w_current_coord_re; -- Stays c even if minimap pixel
-                    o_c_coord_im <= w_current_coord_im; -- Stays c even if minimap pixel
+                    if r_is_new_frame = '1' then
+                        o_c_coord_re <= w_current_c_coord_re; -- Stays c even if minimap pixel
+                        o_c_coord_im <= w_current_c_coord_im; -- Stays c even if minimap pixel
+                    end if;
                 end if;
             end if;
         end if;
