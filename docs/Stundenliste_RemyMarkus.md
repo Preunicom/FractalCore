@@ -71,6 +71,14 @@
 | |  |  |  |
 | **KW 18** | **-** | **109** | **Zwischensumme** |
 | |  |  |  |
+| 04.05.2026 | 3.2.1.1 | 2 | Registerbeschreibung für AXIL Wrapper der Initialwerterzeugung |
+| 06.05.2026 | 3.2.1.1 | 2 | AXIL Wrapper Initialwerterzeugung |
+| |  |  |  |
+| **KW 19** | **-** | **113** | **Zwischensumme** |
+| |  |  |  |
+| |  |  |  |
+| **KW 20** | **-** | **113** | **Zwischensumme** |
+| |  |  |  |
 
 
 ## Feature Nummerierung

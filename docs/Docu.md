@@ -54,7 +54,78 @@ _@author: Markus Remy_
 
 ## 3. Initialwertkoponente
 
-TODO: Beschreiben wieso highlight Data funktioniert und wie
+Um ein animiertes Bild zu erzeugen werden nach einer ausgewählten Strategie Startwerte auf die Pixel verteilt.
+Dafür werden z_0 und c Werte festgelegt.
+Je nach Modus erfüllen diese unterschiedliche Eigenschaften.
+Die Modi sowie die zughörigen Einstellungen können via AXI Lite konfiguriert werden.
+Die genaueren Beschreibungen der dafür notwendigen Register sind in der entsprechenden [Registerbeschreibung](./Registerbeschreibungen/Initialwerterzeugung/) genauer beschrieben.
+
+_@author: Markus Remy_
+
+### 3.1 Julia Modus (0X)
+
+Der Julia Modus wird mit den Steuerbits ``0X`` ausgewählt.
+Für die Visualisierung wird die Julia Menge verwendet.
+Dabei entspricht der Startwert für z_0 der Pixelkoordiante.
+C wird pro Frame dem gleichen Wert zugewiesen und entpsricht einem Punkt, der für die Animation mit einer gewählten Strategie verschoben wird.
+Zusätzlich wird, falls aktiviert, in der linken unteren Ecke eine Minimap angezeigt werden, in der markiert ist, wo sich das c derzeit befindet.
+
+_@author: Markus Remy_
+
+#### 3.1.1 Diamond Modus (00)
+
+Im Diamond Modus wird das c im Koordinatensystem mit dem reelen Anteil als X-Achse und dem imaginären Anteil als Y-Achse in einer Rautenform verschoben.
+Dabei kann die Breite und Höhe eingestellt werden.
+Wenn die Breite ungleich der Höhe ist, ist die Raute nicht mehr gleichförmig, sondern die Seite wird im 45° Winkel abgefahren bis die Zielachse des kleineren Wertes erreicht ist.
+Dann nähert sich der Wert auf der Achse dem Ziel an.
+
+_@author: Markus Remy_
+
+#### 3.1.2 LFSR Modus (01)
+
+Im LFSR Modus wird das Ziel der aktuellen Bewegung anhand eines 18 Bit LFSR bestimmt.
+Dieses kann umfänglich konfiguriert werden.
+Die Schiebebewegung erfolgt dabei in Richtung MSB.
+Bei entsprechender Konfiguration lassen sich so 262143 Pseudo Zufallswerte pro LFSR erreichen.
+Jede Koordinatenachse hat dabei ein eigenes LFSR.
+Wenn der Zielwert eines der LFSR erreicht ist, wechselt dieses zum nächsten Ziel. 
+Das andere bleibt unverändert bis der zugehörige Koordinatenanteil des c den Wert erreicht hat.
+Die daraus resultierende Vielfalt an Bewegungsmuster ist somit sehr groß und führt zu keinen Wiederholungen von Mustern in absehbarer Zeit.
+
+_@author: Markus Remy_
+
+### 3.2 Mandelbrot Modus (1X)
+
+Im Mandelbrot Modus wird statisch das Mandelbrot angezeigt.
+Dabei erfolgt keine Animation und die Minimap ist nicht verfügbar.
+Als Startwerte wird für z_0 der Wert 0 verwendet und für c die Pixelkoordinate.
+
+_@author: Markus Remy_
+
+### 3.3 Minimap
+
+Um die Minimap umzusetzen müssen zwei Pixelbereiche hervorgehboben werden.
+Zusätzlich muss das untere linke Eck als Startwerte Mandelbrot Startwerte bekommen.
+Da die Koordinaten in diesem Fall nicht direkt als c Startwert verwendet werden können, muss der Bereich auf die Fläche des gesamten Bildschirms gemappt werden.
+Andernfalls würde nur der linke untere Teil des Mandelbrotausschnitts angezeigt werden.
+
+Um diesen Effekt zu erreichen wird der Minimap Bereich mit einem viermal höheren Koordiantenabstand berechnet.
+Da der Bereich genau ein Viertel der Höhe und ein Viertel der Breite des Bereichs ausgibt entspricht das genau dem Bildbereich.
+
+Um die beiden Pixelbereiche für das aktuelle c und das Ziel c hervorzuheben, muss der zugehörige Pixel bestimmt werden.
+Dies wird mit einer Abstandsrechnung erreicht.
+Da bekannt ist, wie groß der Koordinatenabstand zwischen zwei Pixel ist, wird für jeden Pixel während der Erzeugung geprüft ob er näher als der Halbe Abstand im reelen und imaginären von c oder dem c Zielwert entfernt ist.
+Sollte das der Fall sein wird der Pixel abgespeichert und mit dem aktuellen Frameindex nach außen hin weitergegeben.
+
+Diese Information wird dann direkt von der Anzeige verarbeitet und ein Overlay über die Daten erzeugt.
+
+Da die Werte schneller bei der Anzeigeeinheit sind als die Berechnung der Iterationen für die Pixel, liegen die beiden Werte vor der Iterationsanzahl vor.
+Das könnte zu Race Conditions führen.
+
+Da der Wert jedoch pro Frameindex gespeichert wird, müsste der Wert Pixel von drei Bildern überholen um einen Einfluss auf das falsche ausgegebene Bid zu haben.
+Das liegt daran, dass der Frameindex sich alle 4 Bilder wiederholt.
+Es ist aber nicht möglich so viele Pixel gleichzeitig im System zu speichern.
+Dementsprechend kann der Wert diese Pixelanzahl auch nicht überholen und damit können auch keine Race Conditions entstehen.
 
 ## 4. Berechnung
 
