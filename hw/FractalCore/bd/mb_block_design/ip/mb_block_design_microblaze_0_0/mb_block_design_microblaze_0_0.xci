@@ -9,7 +9,7 @@
     "parameters": {
       "component_parameters": {
         "C_SCO": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "C_FREQ": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "C_FREQ": [ { "value": "100000000", "value_src": "propagated", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_DATA_SIZE": [ { "value": "32", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_LMB_DATA_SIZE": [ { "value": "32", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_ADDR_SIZE": [ { "value": "32", "resolve_type": "user", "format": "long", "usage": "all" } ],
@@ -54,8 +54,8 @@
         "C_TRACE": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_LOCKSTEP_SELECT": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_ENABLE_DISCRETE_PORTS": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "C_M_AXI_DC_USER_SIGNALS": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "C_M_AXI_IC_USER_SIGNALS": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "C_M_AXI_DC_USER_SIGNALS": [ { "value": "0", "value_src": "propagated", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "C_M_AXI_IC_USER_SIGNALS": [ { "value": "0", "value_src": "propagated", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "G_TEMPLATE_LIST": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "G_USE_EXCEPTIONS": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_USE_MSR_INSTR": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
@@ -89,10 +89,10 @@
         "C_DEBUG_EXTERNAL_TRACE": [ { "value": "0", "value_permission": "bd_and_user", "resolve_type": "user", "format": "long", "enabled": false, "usage": "all" } ],
         "C_DEBUG_TRACE_ASYNC_RESET": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_DEBUG_PROFILE_SIZE": [ { "value": "0", "resolve_type": "user", "format": "long", "enabled": false, "usage": "all" } ],
-        "C_INTERRUPT_IS_EDGE": [ { "value": "0", "value_permission": "bd", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "C_EDGE_IS_POSITIVE": [ { "value": "1", "value_permission": "bd", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "C_INTERRUPT_IS_EDGE": [ { "value": "0", "value_src": "propagated", "value_permission": "bd", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "C_EDGE_IS_POSITIVE": [ { "value": "1", "value_src": "propagated", "value_permission": "bd", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_ASYNC_INTERRUPT": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "C_ASYNC_WAKEUP": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "C_ASYNC_WAKEUP": [ { "value": "3", "value_src": "propagated", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_RESET_MSR_IE": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_RESET_MSR_BIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_RESET_MSR_ICE": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
@@ -213,18 +213,18 @@
         "C_MMU_TLB_ACCESS": [ { "value": "3", "resolve_type": "user", "format": "long", "enabled": false, "usage": "all" } ],
         "C_MMU_ZONES": [ { "value": "16", "resolve_type": "user", "format": "long", "enabled": false, "usage": "all" } ],
         "C_MMU_PRIVILEGED_INSTR": [ { "value": "0", "resolve_type": "user", "format": "long", "enabled": false, "usage": "all" } ],
-        "C_USE_INTERRUPT": [ { "value": "0", "value_permission": "bd_and_user", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "C_USE_INTERRUPT": [ { "value": "2", "value_src": "propagated", "value_permission": "bd_and_user", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_INTERRUPT_MON": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "C_USE_EXT_BRK": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "C_USE_EXT_NM_BRK": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "C_USE_NON_SECURE": [ { "value": "1", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "C_USE_EXT_BRK": [ { "value": "0", "value_src": "propagated", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "C_USE_EXT_NM_BRK": [ { "value": "0", "value_src": "propagated", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "C_USE_NON_SECURE": [ { "value": "0", "value_src": "propagated", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_USE_BRANCH_TARGET_CACHE": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_BRANCH_TARGET_CACHE_SIZE": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "Component_Name": [ { "value": "mb_block_design_microblaze_0_0", "resolve_type": "user", "usage": "all" } ]
       },
       "model_parameters": {
         "C_SCO": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "C_FREQ": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_FREQ": [ { "value": "100000000", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_USE_CONFIG_RESET": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_NUM_SYNC_FF_CLK": [ { "value": "2", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_NUM_SYNC_FF_CLK_IRQ": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
@@ -283,10 +283,10 @@
         "C_FSL_EXCEPTION": [ { "value": "0", "resolve_type": "generated", "format": "long", "enabled": false, "usage": "all" } ],
         "C_USE_STACK_PROTECTION": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_IMPRECISE_EXCEPTIONS": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "C_USE_INTERRUPT": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "C_USE_EXT_BRK": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "C_USE_EXT_NM_BRK": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "C_USE_NON_SECURE": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_USE_INTERRUPT": [ { "value": "2", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_USE_EXT_BRK": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_USE_EXT_NM_BRK": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_USE_NON_SECURE": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_USE_MMU": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_MMU_DTLB_SIZE": [ { "value": "4", "resolve_type": "generated", "format": "long", "enabled": false, "usage": "all" } ],
         "C_MMU_ITLB_SIZE": [ { "value": "2", "resolve_type": "generated", "format": "long", "enabled": false, "usage": "all" } ],
@@ -317,7 +317,7 @@
         "C_INTERRUPT_IS_EDGE": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_EDGE_IS_POSITIVE": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_ASYNC_INTERRUPT": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "C_ASYNC_WAKEUP": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
+        "C_ASYNC_WAKEUP": [ { "value": "3", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_M0_AXIS_DATA_WIDTH": [ { "value": "32", "format": "long", "usage": "all" } ],
         "C_S0_AXIS_DATA_WIDTH": [ { "value": "32", "format": "long", "usage": "all" } ],
         "C_M1_AXIS_DATA_WIDTH": [ { "value": "32", "format": "long", "usage": "all" } ],
@@ -484,7 +484,7 @@
             "FREQ_HZ": [ { "value": "100000000", "value_permission": "bd", "resolve_type": "user", "format": "long", "usage": "all" } ],
             "FREQ_TOLERANCE_HZ": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "PHASE": [ { "value": "0.0", "value_permission": "bd", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
-            "CLK_DOMAIN": [ { "value": "", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "CLK_DOMAIN": [ { "value": "/System_Clock_Generation_clk_out1", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
             "ASSOCIATED_PORT": [ { "value": "", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
             "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
           },
@@ -511,7 +511,7 @@
           "mode": "slave",
           "parameters": {
             "SENSITIVITY": [ { "value": "LEVEL_HIGH", "value_permission": "bd", "resolve_type": "generated", "usage": "all" } ],
-            "LOW_LATENCY": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "usage": "all" } ]
+            "LOW_LATENCY": [ { "value": "1", "value_src": "propagated", "value_permission": "bd", "resolve_type": "generated", "usage": "all" } ]
           },
           "port_maps": {
             "ACK": [ { "physical_name": "Interrupt_Ack" } ],
@@ -599,7 +599,7 @@
             "HAS_BRESP": [ { "value": "1", "value_src": "auto", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "HAS_RRESP": [ { "value": "1", "value_src": "auto", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "PHASE": [ { "value": "0.0", "value_permission": "bd", "resolve_type": "generated", "format": "float", "is_ips_inferred": true, "is_static_object": false } ],
-            "CLK_DOMAIN": [ { "value": "", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
+            "CLK_DOMAIN": [ { "value": "/System_Clock_Generation_clk_out1", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
             "RUSER_BITS_PER_BYTE": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "WUSER_BITS_PER_BYTE": [ { "value": "0", "value_permission": "bd", "resolve_type": "generated", "format": "long", "is_ips_inferred": true, "is_static_object": false } ],
             "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ]
@@ -666,6 +666,13 @@
               "access": "read-write"
             }
           }
+        }
+      }
+    },
+    "contents": {
+      "cpus": {
+        "microblaze": {
+          "address_space_refs": "Data"
         }
       }
     }

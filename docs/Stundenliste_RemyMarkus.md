@@ -71,6 +71,16 @@
 | |  |  |  |
 | **KW 18** | **-** | **109** | **Zwischensumme** |
 | |  |  |  |
+| 04.05.2026 | 3.2.1.1 | 2 | Registerbeschreibung für AXIL Wrapper der Initialwerterzeugung |
+| 06.05.2026 | 3.2.1.1 | 2 | AXIL Wrapper Initialwerterzeugung |
+| |  |  |  |
+| **KW 19** | **-** | **113** | **Zwischensumme** |
+| |  |  |  |
+| 13.05.2026 | 10 | 1 | AXIL Wrapper Initialwerterzeugung CDC |
+| 13.05.2026 | 3.2.1 | 3 | AXIL TB |
+| |  |  |  |
+| **KW 20** | **-** | **117** | **Zwischensumme** |
+| |  |  |  |
 
 
 ## Feature Nummerierung

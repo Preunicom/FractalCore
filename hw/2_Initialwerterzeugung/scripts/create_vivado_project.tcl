@@ -57,6 +57,7 @@ set sim_files [concat \
     [find_files $general_files_dir/sim "*.v"] \
     [find_files $general_files_dir/sim "*.sv"] \
 ]
+set sim_bd_files [find_files $project_data_dir/sim/bd "*.bd"]
 set constr_file [lindex [find_files $project_data_dir/constraints "*.xdc"] 0]
 
 # ================ SOURCES ================
@@ -73,7 +74,11 @@ foreach file $rtl_files {
     set file_obj [get_files $file]
     if {[string match "*.vhd" $file]} {
         set_property -name "file_type" -value "VHDL" -objects $file_obj
-    } 
+    }  elseif {[string match "*.v" $file]} {
+        set_property -name "file_type" -value "Verilog" -objects $file_obj
+    } elseif {[string match "*.sv" $file]} {
+        set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
+    }
 }
 
 foreach file $ip_files {
@@ -116,11 +121,18 @@ set obj [get_filesets sim_1]
 if {[llength $sim_files] > 0} {
     add_files -norecurse -fileset $obj $sim_files
 }
+if {[llength $sim_bd_files] > 0} {
+    add_files -norecurse -fileset $obj $sim_bd_files
+}
 
 foreach file $sim_files {
     set file_obj [get_files $file]
     if {[string match "*.vhd" $file]} {
         set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
+    } elseif {[string match "*.v" $file]} {
+        set_property -name "file_type" -value "Verilog" -objects $file_obj
+    } elseif {[string match "*.sv" $file]} {
+        set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
     }
 }
 
