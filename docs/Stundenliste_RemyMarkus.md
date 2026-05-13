@@ -76,8 +76,10 @@
 | |  |  |  |
 | **KW 19** | **-** | **113** | **Zwischensumme** |
 | |  |  |  |
+| 13.05.2026 | 10 | 1 | AXIL Wrapper Initialwerterzeugung CDC |
+| 13.05.2026 | 3.2.1 | 3 | AXIL TB |
 | |  |  |  |
-| **KW 20** | **-** | **113** | **Zwischensumme** |
+| **KW 20** | **-** | **117** | **Zwischensumme** |
 | |  |  |  |
 
 
