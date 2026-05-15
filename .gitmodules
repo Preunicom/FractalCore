@@ -1,0 +1,3 @@
+[submodule "hw/ip_repo_vivado_library"]
+	path = hw/ip_repo_vivado_library
+	url = git@github.com:Digilent/vivado-library.git

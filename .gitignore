@@ -1,6 +1,7 @@
 *
 # Allow GitHub related files
 !.gitignore
+!.gitmodules
 !.github
 !.github/**/*
 !README.md

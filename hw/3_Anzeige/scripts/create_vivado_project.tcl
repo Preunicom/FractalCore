@@ -16,15 +16,13 @@ proc find_files {dir pattern} {
 set script_dir [file dirname [info script]]
 set project_data_dir [file normalize "$script_dir/.."]
 
-set proj_name "FractalCore"
-set proj_top_module "FractalCore_wrapper"
+set proj_name "3_Anzeige"
+#set proj_top_module "TODO_SET"
 set proj_part "xc7z020clg400-1"
-set board_part "digilentinc.com:arty-z7-20:part0:1.1"
 set proj_dir "[file normalize "$project_data_dir/../../xilinx/vivado/$proj_name"]"
 set proj_IP_dir "[file normalize "$project_data_dir/ip"]"
 set general_files_dir "[file normalize "$project_data_dir/../0_General"]"
 set ip_repo_path "[file normalize "$project_data_dir/../ip_repo"]"
-set vivado_ip_repo_path "[file normalize "$project_data_dir/../ip_repo_vivado_library"]"
 
 # ================ MISC ================
 file delete -force $proj_dir
@@ -36,7 +34,6 @@ set obj [current_project]
 set_property -name "customized_default_ip_location" -value $proj_IP_dir -objects $obj
 set_property -name "enable_vhdl_2008" -value "1" -objects $obj
 set_property -name "part" -value $proj_part -objects $obj
-set_property -name "board_part" -value $board_part -objects $obj
 set_property -name "simulator_language" -value "Mixed" -objects $obj
 set_property -name "target_language" -value "VHDL" -objects $obj
 set_property -name "source_mgmt_mode" -value "All" -objects $obj
@@ -63,17 +60,16 @@ set sim_files [concat \
 ]
 set constr_file [lindex [find_files $project_data_dir/constraints "*.xdc"] 0]
 
-
 # ================ SOURCES ================
 if {[string equal [get_filesets -quiet sources_1] ""]} {
   create_fileset -srcset sources_1
 }
 
-
 set obj [get_filesets sources_1]
 if {[llength $rtl_and_ip_files] > 0} {
     add_files -norecurse -fileset $obj $rtl_and_ip_files
 }
+
 foreach file $rtl_files {
     set file_obj [get_files $file]
     if {[string match "*.vhd" $file]} {
@@ -115,7 +111,6 @@ if {[llength $constr_file] > 0} {
     set obj [get_filesets constrs_1]
     set_property -name "target_part" -value $proj_part -objects $obj
 }
-
 # ================ SIMULATION ================
 if {[string equal [get_filesets -quiet sim_1] ""]} {
   create_fileset -simset sim_1
@@ -141,5 +136,5 @@ foreach file $sim_files {
 set_property -name "xsim.simulate.runtime" -value "0ns" -objects $obj
 
 # ================ IP REPO ================
-set_property ip_repo_paths [list $ip_repo_path $vivado_ip_repo_path] [current_project]
+set_property ip_repo_paths [list $ip_repo_path] [current_project]
 update_ip_catalog

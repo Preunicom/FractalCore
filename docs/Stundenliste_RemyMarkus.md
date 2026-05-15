@@ -126,3 +126,8 @@
 8) Systementwurf & Schnittstellendefinition (15h)
 9) Systemintegration (20h)
 10) Clock Domains Crossing (20h)
+
+# Stundenliste Arty Z7-20 Portierung
+| Datum | Dauer [h] | Beschreibung | 
+|-------|---------|-----------|--------------|
+| 15.05.2026 | 3 | Portieren der Projektstruktur auf den Arty Z7-20 und das Haupt-Block-Design auf Zynq |
