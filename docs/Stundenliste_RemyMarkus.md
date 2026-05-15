@@ -32,20 +32,54 @@
 | **KW 14** | **-** | **55** | **Zwischensumme** |
 | |  |  |  |
 | 07.04.2026 | 4.2.2 | 2 | Rework Dispatcher + Arbiter mit Skid Buffer |
-| 08.04.2026 | 3.2.2 | 1 | Überlegungen Initialwertarchitektur und Logik |
+| 08.04.2026 | 3.2.1.2 | 1 | Überlegungen Initialwertarchitektur und Logik |
 | 11.04.2026 | 4.2.1 | 1 | IP Packagen und Rework Projektstruktur |
 | 11.04.2026 | 9 | 5 | Projektstruktur überarbeitet um den IP Ansatz zu unterstützen + CI Testautomatisierung hinzugefügt |
 | 11.04.2026 | 10 | 2 | Clock- und Resetsignale im Block Design verbunden und Synchronisierer + TB dafür geschrieben |
 | 11.04.2026 | 3.2.1.1 | 1 | AXIL Wrapper erstellt |
 | 12.04.2026 | 8 | 1 | Anpassung Schnittstellendefinition |
-| 12.04.2026 | 3.2.2 | 1 | Architekturentwurf |
+| 12.04.2026 | 3.2.1.2 | 1 | Architekturentwurf |
 | 12.04.2026 | 9 | 1 | Fixed CI workflow |
 | |  |  |  |
-| **KW 14** | **-** | **70** | **Zwischensumme** |
+| **KW 15** | **-** | **70** | **Zwischensumme** |
 | |  |  |  |
 | 13.04.2026 | 4.2.1 | 1 | Fixed Bugs |
+| 15.04.2026 | 9 | 1 | Projektbesprechung - Struktur und Anzeige |
+| 15.04.2026 | 3.2.1.2 | 1 | Dynamic LFSR Implementierung |
 | |  |  |  |
-| **KW 15** | **-** | **71** | **Zwischensumme** |
+| **KW 16** | **-** | **73** | **Zwischensumme** |
+| |  |  |  |
+| 20.04.2026 | 3.1 | 7 | Pixel Mapping + TB|
+| 22.04.2026 | 3.2.1.2 | 1 | Diamond Mode Impl.|
+| 22.04.2026 | 8 | 1 | Systemintegration - Teambesprechung |
+| 22.04.2026 | 3.2.1.2 | 1 | Animationsschrittlogik |
+| 23.04.2026 | 3.2.2.2 | 2 | Diamond Mode TB |
+| 24.04.2026 | 3.2.2.2 | 3 | Julia C Generation TB |
+| 25.04.2026 | 3.2.2.2 | 1 | Julia C Generation TB |
+| 25.04.2026 | 3.1 | 1 | Architektur Ziel- und Wert Overlay für die Minimap überarbeiten|
+| 26.04.2026 | 3.1 | 1 | Architektur Ziel- und Wert Overlay für die Minimap überarbeiten |
+| 26.04.2026 | 3.2.2.2 | 2 | Pixel Gen. TB & Coord. Gen. TB |
+| |  |  |  |
+| **KW 17** | **-** | **93** | **Zwischensumme** |
+| |  |  |  |
+| 27.04.2026 | 3.2.1.2 | 2 | Minimap Pixel Highlight Berechnung |
+| 27.04.2026 | 3.2.1.2 | 2 | Minimap Pixel Highlight Berechnung TB |
+| 29.04.2026 | 9 | 1 | Teambesprechung Initialwerte <-> VGA Overlay |
+| 01.05.2026 | 3.2.2 | 2 | Pipeline Design: C hinzufügen zu Pixeldaten |
+| 02.05.2026 | 3.2.2 | 6 | Start Value Mapping TB |
+| 03.05.2026 | 3.2.2 | 3 | Pixel Data Generation Pipeline + TB |
+| |  |  |  |
+| **KW 18** | **-** | **109** | **Zwischensumme** |
+| |  |  |  |
+| 04.05.2026 | 3.2.1.1 | 2 | Registerbeschreibung für AXIL Wrapper der Initialwerterzeugung |
+| 06.05.2026 | 3.2.1.1 | 2 | AXIL Wrapper Initialwerterzeugung |
+| |  |  |  |
+| **KW 19** | **-** | **113** | **Zwischensumme** |
+| |  |  |  |
+| 13.05.2026 | 10 | 1 | AXIL Wrapper Initialwerterzeugung CDC |
+| 13.05.2026 | 3.2.1 | 3 | AXIL TB |
+| |  |  |  |
+| **KW 20** | **-** | **117** | **Zwischensumme** |
 | |  |  |  |
 
 
