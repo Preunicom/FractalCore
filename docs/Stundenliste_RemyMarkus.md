@@ -131,3 +131,9 @@
 | Datum | Dauer [h] | Beschreibung | 
 |-------|---------|-----------|--------------|
 | 15.05.2026 | 3 | Portieren der Projektstruktur auf den Arty Z7-20 und das Haupt-Block-Design auf Zynq |
+| 15.05.2026 | 1 | Erstellen FIFO IPs und Framebuffer |
+| 17.05.2026 | 3 | TB FIFO IP und TB Framebuffer |
+| 18.05.2026 | 1 | Result Frame Sorting + TB |
+| 18.05.2026 | 2 | Framebuffer Manager |
+| 19.05.2026 | 5 | VGA Control  + Anzeige|
+| 19.05.2026 | 3 | VGA Control TB |

@@ -138,3 +138,10 @@ set_property -name "xsim.simulate.runtime" -value "0ns" -objects $obj
 # ================ IP REPO ================
 set_property ip_repo_paths [list $ip_repo_path] [current_project]
 update_ip_catalog
+
+# ================ BD Wrapper ================
+foreach file $bd_files {
+    set file_obj [get_files $file]
+    set wrapper_file [make_wrapper -files $file_obj -top]
+    add_files -norecurse $wrapper_file
+}
