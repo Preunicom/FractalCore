@@ -137,3 +137,5 @@
 | 18.05.2026 | 2 | Framebuffer Manager |
 | 19.05.2026 | 5 | VGA Control  + Anzeige|
 | 19.05.2026 | 3 | VGA Control TB |
+| 20.05.2026 | 1 | VGA Control TB |
+| 20.05.2026 | 1 | Highlight Logik Implementierung |

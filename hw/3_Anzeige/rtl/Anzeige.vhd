@@ -22,6 +22,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library work;
+use work.Pkg_Utils.all;
+
 entity Anzeige is
 	generic (
 		-- Users to add parameters here
@@ -55,7 +58,32 @@ entity Anzeige is
 		o_vga_red         				: out std_logic_vector(7 downto 0);
 		o_vga_green						: out std_logic_vector(7 downto 0);
 		o_vga_blue						: out std_logic_vector(7 downto 0);
-
+		-- Highlight data to Visualization
+		-- CH 0
+		i_highlight_ch0_valid : in std_logic;
+		i_highlight_ch0_current_pixel_col : in std_logic_vector(9 downto 0);
+        i_highlight_ch0_current_pixel_row : in std_logic_vector(8 downto 0);
+        i_highlight_ch0_target_pixel_col : in std_logic_vector(9 downto 0);
+        i_highlight_ch0_target_pixel_row : in std_logic_vector(8 downto 0);
+		-- CH 1
+		i_highlight_ch1_valid : in std_logic;
+		i_highlight_ch1_current_pixel_col : in std_logic_vector(9 downto 0);
+        i_highlight_ch1_current_pixel_row : in std_logic_vector(8 downto 0);
+        i_highlight_ch1_target_pixel_col : in std_logic_vector(9 downto 0);
+        i_highlight_ch1_target_pixel_row : in std_logic_vector(8 downto 0);
+		-- CH 2
+		i_highlight_ch2_valid : in std_logic;
+		i_highlight_ch2_current_pixel_col : in std_logic_vector(9 downto 0);
+        i_highlight_ch2_current_pixel_row : in std_logic_vector(8 downto 0);
+        i_highlight_ch2_target_pixel_col : in std_logic_vector(9 downto 0);
+        i_highlight_ch2_target_pixel_row : in std_logic_vector(8 downto 0);
+		-- CH 3
+		i_highlight_ch3_valid : in std_logic;
+		i_highlight_ch3_current_pixel_col : in std_logic_vector(9 downto 0);
+        i_highlight_ch3_current_pixel_row : in std_logic_vector(8 downto 0);
+        i_highlight_ch3_target_pixel_col : in std_logic_vector(9 downto 0);
+        i_highlight_ch3_target_pixel_row : in std_logic_vector(8 downto 0);
+		-- User ports ends
 
 		-- User ports ends
 		-- Do not modify the ports beyond this line
@@ -133,6 +161,8 @@ architecture arch_imp of Anzeige is
 			i_is_convergent : in std_logic;
 			i_cycles_until_divergent : in std_logic_vector(7 downto 0);
 			o_ready : out std_logic;
+			-- Highlight data
+			i_highlight_info : in t_highlight_info;
 			-- VGA data
 			i_vga_clk : in std_logic;
 			i_vga_reset : in std_logic;
@@ -140,7 +170,9 @@ architecture arch_imp of Anzeige is
 			o_vga_v_sync : out std_logic;
 			o_vga_blank : out std_logic;
 			o_vga_is_convergent : out std_logic;
-			o_vga_cycles_until_divergent : out std_logic_vector(7 downto 0)
+			o_vga_cycles_until_divergent : out std_logic_vector(7 downto 0);
+			o_vga_is_highlighted : out std_logic;
+			o_vga_is_highlighted_target : out std_logic
 		);
 	end component;
 	signal w_vga_h_sync                 : std_logic;
@@ -151,6 +183,9 @@ architecture arch_imp of Anzeige is
 	signal r_vga_blank                  : std_logic;
 	signal w_vga_is_convergent          : std_logic;
 	signal w_vga_cycles_until_divergent : std_logic_vector(7 downto 0);
+	signal w_vga_is_highlighted			: std_logic;
+	signal w_vga_is_highlighted_target	: std_logic;
+	signal w_highlight_info 			: t_highlight_info;
 	signal w_bram_addr : std_logic_vector(7 downto 0);
 	signal w_bram_en : std_logic;
 	signal w_bram_data_rgb : std_logic_vector(23 downto 0);
@@ -200,22 +235,38 @@ begin
 		i_is_convergent              => i_is_convergent,
 		i_cycles_until_divergent     => i_cycles_until_divergent,
 		o_ready                      => o_ready,
-		i_vga_clk                    => i_vga_clk,
+		i_highlight_info             => w_highlight_info,
+  		i_vga_clk                    => i_vga_clk,
 		i_vga_reset                  => i_vga_rst,
 		o_vga_h_sync                 => w_vga_h_sync,
 		o_vga_v_sync                 => w_vga_v_sync,
 		o_vga_blank                  => w_vga_blank,
 		o_vga_is_convergent          => w_vga_is_convergent,
-		o_vga_cycles_until_divergent => w_vga_cycles_until_divergent
+		o_vga_cycles_until_divergent => w_vga_cycles_until_divergent,
+		o_vga_is_highlighted         => w_vga_is_highlighted,
+		o_vga_is_highlighted_target  => w_vga_is_highlighted_target
 	);
 
 	w_bram_en <= not w_vga_blank;
-	w_bram_addr <= w_vga_cycles_until_divergent when w_vga_is_convergent = '0' else x"65"; -- 101 if convergent
+
+	ADDR: process
+	begin
+		if w_vga_is_highlighted = '1' then
+			w_bram_addr <= x"66"; -- 102 if highlight
+		elsif w_vga_is_highlighted_target = '1' then
+			w_bram_addr <= x"67"; -- 103 if highlight target
+		elsif w_vga_is_convergent = '1' then
+			w_bram_addr <= x"65";  -- 101 if convergent
+		else
+			w_bram_addr <= w_vga_cycles_until_divergent; -- 0-100 else
+		end if;
+	end process;
 
 	o_vga_red <= w_bram_data_rgb(7 downto 0) when r_vga_blank = '0' else (others => '0');
 	o_vga_green <= w_bram_data_rgb(15 downto 8) when r_vga_blank = '0' else (others => '0');
 	o_vga_blue  <= w_bram_data_rgb(23 downto 16) when r_vga_blank = '0' else (others => '0');
 
+	-- Delay control signal to match color BRAM read cycle
 	DELAY_CTRL_SIG: process(i_vga_clk)
 	begin
 		if rising_edge(i_vga_clk) then
@@ -234,5 +285,30 @@ begin
 	o_vga_blank <= r_vga_blank;
 	o_vga_h_sync <= r_vga_h_sync;
 	o_vga_v_sync <= r_vga_v_sync;
+
+	-- Map highlight inputs to signal
+	w_highlight_info(0).valid 				<= i_highlight_ch0_valid;
+	w_highlight_info(0).current_pixel_col 	<= i_highlight_ch0_current_pixel_col;
+	w_highlight_info(0).current_pixel_row 	<= i_highlight_ch0_current_pixel_row;
+	w_highlight_info(0).target_pixel_col 	<= i_highlight_ch0_target_pixel_col;
+	w_highlight_info(0).target_pixel_row 	<= i_highlight_ch0_target_pixel_row;
+
+	w_highlight_info(1).valid 				<= i_highlight_ch1_valid;
+	w_highlight_info(1).current_pixel_col 	<= i_highlight_ch1_current_pixel_col;
+	w_highlight_info(1).current_pixel_row 	<= i_highlight_ch1_current_pixel_row;
+	w_highlight_info(1).target_pixel_col 	<= i_highlight_ch1_target_pixel_col;
+	w_highlight_info(1).target_pixel_row 	<= i_highlight_ch1_target_pixel_row;
+
+	w_highlight_info(2).valid 				<= i_highlight_ch2_valid;
+	w_highlight_info(2).current_pixel_col 	<= i_highlight_ch2_current_pixel_col;
+	w_highlight_info(2).current_pixel_row 	<= i_highlight_ch2_current_pixel_row;
+	w_highlight_info(2).target_pixel_col 	<= i_highlight_ch2_target_pixel_col;
+	w_highlight_info(2).target_pixel_row 	<= i_highlight_ch2_target_pixel_row;
+
+	w_highlight_info(3).valid 				<= i_highlight_ch3_valid;
+	w_highlight_info(3).current_pixel_col 	<= i_highlight_ch3_current_pixel_col;
+	w_highlight_info(3).current_pixel_row 	<= i_highlight_ch3_current_pixel_row;
+	w_highlight_info(3).target_pixel_col 	<= i_highlight_ch3_target_pixel_col;
+	w_highlight_info(3).target_pixel_row 	<= i_highlight_ch3_target_pixel_row;
 
 end arch_imp;

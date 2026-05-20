@@ -271,7 +271,7 @@ begin
         i_write_en => w_to_buf_write_en,
         i_addr_w   => w_to_buf_addr,
         i_data_w   => w_to_buf_data,
-        i_clk_r    => not i_vga_clk, -- Read on falling edge --> Result in same clock cycle then control signals
+        i_clk_r    => i_vga_clk,
         i_en_r     => i_buf_read_en,
         i_addr_r   => w_buf_addr_r,
         o_data_r   => w_buf_out
