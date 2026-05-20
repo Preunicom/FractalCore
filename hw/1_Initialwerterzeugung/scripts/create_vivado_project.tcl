@@ -50,12 +50,12 @@ set rtl_files [concat \
 set bd_files [find_files $project_data_dir/bd "*.bd"]
 set rtl_and_ip_files [concat $rtl_files $ip_files $bd_files]
 set sim_files [concat \
-    [find_files $project_data_dir/sim "*.vhd"] \
-    [find_files $project_data_dir/sim "*.v"] \
-    [find_files $project_data_dir/sim "*.sv"] \
-    [find_files $general_files_dir/sim "*.vhd"] \
-    [find_files $general_files_dir/sim "*.v"] \
-    [find_files $general_files_dir/sim "*.sv"] \
+    [find_files $project_data_dir/sim/rtl "*.vhd"] \
+    [find_files $project_data_dir/sim/rtl "*.v"] \
+    [find_files $project_data_dir/sim/rtl "*.sv"] \
+    [find_files $general_files_dir/sim/rtl "*.vhd"] \
+    [find_files $general_files_dir/sim/rtl "*.v"] \
+    [find_files $general_files_dir/sim/rtl "*.sv"] \
 ]
 set sim_bd_files [find_files $project_data_dir/sim/bd "*.bd"]
 set constr_file [lindex [find_files $project_data_dir/constraints "*.xdc"] 0]

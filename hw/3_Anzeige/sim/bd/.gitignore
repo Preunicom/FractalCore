@@ -1,0 +1,4 @@
+*.*
+!*.bd
+!/**/ip/**/*.xci
+!.gitignore

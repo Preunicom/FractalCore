@@ -51,13 +51,14 @@ set rtl_files [concat \
 set bd_files [find_files $project_data_dir/bd "*.bd"]
 set rtl_and_ip_files [concat $rtl_files $ip_files $bd_files]
 set sim_files [concat \
-    [find_files $project_data_dir/sim "*.vhd"] \
-    [find_files $project_data_dir/sim "*.v"] \
-    [find_files $project_data_dir/sim "*.sv"] \
-    [find_files $general_files_dir/sim "*.vhd"] \
-    [find_files $general_files_dir/sim "*.v"] \
-    [find_files $general_files_dir/sim "*.sv"] \
+    [find_files $project_data_dir/sim/rtl "*.vhd"] \
+    [find_files $project_data_dir/sim/rtl "*.v"] \
+    [find_files $project_data_dir/sim/rtl "*.sv"] \
+    [find_files $general_files_dir/sim/rtl "*.vhd"] \
+    [find_files $general_files_dir/sim/rtl "*.v"] \
+    [find_files $general_files_dir/sim/rtl "*.sv"] \
 ]
+set sim_bd_files [find_files $project_data_dir/sim/bd "*.bd"]
 set constr_file [lindex [find_files $project_data_dir/constraints "*.xdc"] 0]
 
 # ================ SOURCES ================
@@ -121,6 +122,9 @@ set obj [get_filesets sim_1]
 if {[llength $sim_files] > 0} {
     add_files -norecurse -fileset $obj $sim_files
 }
+if {[llength $sim_bd_files] > 0} {
+    add_files -norecurse -fileset $obj $sim_bd_files
+}
 
 foreach file $sim_files {
     set file_obj [get_files $file]
@@ -144,4 +148,9 @@ foreach file $bd_files {
     set file_obj [get_files $file]
     set wrapper_file [make_wrapper -files $file_obj -top]
     add_files -norecurse $wrapper_file
+}
+foreach file $sim_bd_files {
+    set file_obj [get_files $file]
+    set wrapper_file [make_wrapper -files $file_obj -top]
+    add_files -norecurse -fileset [get_filesets sim_1] $wrapper_file
 }

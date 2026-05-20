@@ -81,6 +81,10 @@
 | |  |  |  |
 | **KW 20** | **-** | **117** | **Zwischensumme** |
 | |  |  |  |
+| 20.05.2026 | 9 | 1 | Teammeeting |
+| |  |  |  |
+| **KW 21** | **-** | **118** | **Zwischensumme** |
+| |  |  |  |
 
 
 ## Feature Nummerierung
@@ -139,3 +143,5 @@
 | 19.05.2026 | 3 | VGA Control TB |
 | 20.05.2026 | 1 | VGA Control TB |
 | 20.05.2026 | 1 | Highlight Logik Implementierung |
+| 20.05.2026 | 2 | AXIL Color Buffer |
+| 20.05.2026 | 4 | AXIL Color Buffer TB (Probleme mit SV) |

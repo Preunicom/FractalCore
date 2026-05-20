@@ -1,7 +1,7 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0x43475AE68BC2464C",
+      "boundary_crc": "0x43475AE682517180",
       "device": "xc7z020clg400-1",
       "name": "AXI_Color_RAM_CTRL",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
@@ -14,13 +14,77 @@
       "COLOR_RAM": ""
     },
     "interface_ports": {
+      "BRAM_PORTB_0": {
+        "mode": "Slave",
+        "vlnv_bus_definition": "xilinx.com:interface:bram:1.0",
+        "vlnv": "xilinx.com:interface:bram_rtl:1.0",
+        "parameters": {
+          "MASTER_TYPE": {
+            "value": "BRAM_CTRL"
+          },
+          "MEM_ECC": {
+            "value": "NONE",
+            "value_src": "default"
+          },
+          "MEM_SIZE": {
+            "value": "8192",
+            "value_src": "default"
+          },
+          "MEM_WIDTH": {
+            "value": "32",
+            "value_src": "default"
+          },
+          "READ_LATENCY": {
+            "value": "1",
+            "value_src": "default"
+          }
+        },
+        "port_maps": {
+          "ADDR": {
+            "physical_name": "BRAM_PORTB_0_addr",
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "CLK": {
+            "physical_name": "BRAM_PORTB_0_clk",
+            "direction": "I"
+          },
+          "DIN": {
+            "physical_name": "BRAM_PORTB_0_din",
+            "direction": "I",
+            "left": "31",
+            "right": "0"
+          },
+          "DOUT": {
+            "physical_name": "BRAM_PORTB_0_dout",
+            "direction": "O",
+            "left": "31",
+            "right": "0"
+          },
+          "EN": {
+            "physical_name": "BRAM_PORTB_0_en",
+            "direction": "I"
+          },
+          "RST": {
+            "physical_name": "BRAM_PORTB_0_rst",
+            "direction": "I"
+          },
+          "WE": {
+            "physical_name": "BRAM_PORTB_0_we",
+            "direction": "I",
+            "left": "3",
+            "right": "0"
+          }
+        }
+      },
       "S_AXI_0": {
         "mode": "Slave",
         "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
         "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
         "parameters": {
           "ADDR_WIDTH": {
-            "value": "15"
+            "value": "12"
           },
           "ARUSER_WIDTH": {
             "value": "0"
@@ -32,8 +96,7 @@
             "value": "0"
           },
           "CLK_DOMAIN": {
-            "value": "AXI_Color_RAM_CTRL_s_axi_aclk_0",
-            "value_src": "default"
+            "value": "AXI_Color_RAM_CTRL_s_axi_aclk_0"
           },
           "DATA_WIDTH": {
             "value": "32"
@@ -120,8 +183,8 @@
         "address_space_ref": "S_AXI_0",
         "base_address": {
           "minimum": "0x00000000",
-          "maximum": "0x00007FFF",
-          "width": "15"
+          "maximum": "0x00000FFF",
+          "width": "12"
         },
         "port_maps": {
           "ARADDR": {
@@ -219,107 +282,9 @@
             "direction": "I"
           }
         }
-      },
-      "BRAM_PORTB_0": {
-        "mode": "Slave",
-        "vlnv_bus_definition": "xilinx.com:interface:bram:1.0",
-        "vlnv": "xilinx.com:interface:bram_rtl:1.0",
-        "parameters": {
-          "MASTER_TYPE": {
-            "value": "BRAM_CTRL"
-          },
-          "MEM_ECC": {
-            "value": "NONE",
-            "value_src": "default"
-          },
-          "MEM_SIZE": {
-            "value": "8192",
-            "value_src": "default"
-          },
-          "MEM_WIDTH": {
-            "value": "32",
-            "value_src": "default"
-          },
-          "READ_LATENCY": {
-            "value": "1",
-            "value_src": "default"
-          }
-        },
-        "port_maps": {
-          "ADDR": {
-            "physical_name": "BRAM_PORTB_0_addr",
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "CLK": {
-            "physical_name": "BRAM_PORTB_0_clk",
-            "direction": "I"
-          },
-          "DIN": {
-            "physical_name": "BRAM_PORTB_0_din",
-            "direction": "I",
-            "left": "31",
-            "right": "0"
-          },
-          "DOUT": {
-            "physical_name": "BRAM_PORTB_0_dout",
-            "direction": "O",
-            "left": "31",
-            "right": "0"
-          },
-          "EN": {
-            "physical_name": "BRAM_PORTB_0_en",
-            "direction": "I"
-          },
-          "RST": {
-            "physical_name": "BRAM_PORTB_0_rst",
-            "direction": "I"
-          },
-          "WE": {
-            "physical_name": "BRAM_PORTB_0_we",
-            "direction": "I",
-            "left": "3",
-            "right": "0"
-          }
-        }
       }
     },
     "ports": {
-      "s_axi_aclk_0": {
-        "type": "clk",
-        "direction": "I",
-        "parameters": {
-          "ASSOCIATED_BUSIF": {
-            "value": "S_AXI_0",
-            "value_src": "default"
-          },
-          "ASSOCIATED_RESET": {
-            "value": "s_axi_aresetn_0",
-            "value_src": "default"
-          },
-          "CLK_DOMAIN": {
-            "value": "AXI_Color_RAM_CTRL_s_axi_aclk_0",
-            "value_src": "default"
-          },
-          "FREQ_HZ": {
-            "value": "100000000",
-            "value_src": "default"
-          },
-          "FREQ_TOLERANCE_HZ": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "PHASE": {
-            "value": "0.0",
-            "value_src": "default"
-          }
-        }
-      },
       "s_axi_aresetn_0": {
         "type": "rst",
         "direction": "I",
@@ -339,6 +304,38 @@
       },
       "rstb_busy_0": {
         "direction": "O"
+      },
+      "s_axi_aclk_0": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_BUSIF": {
+            "value": "S_AXI_0",
+            "value_src": "default"
+          },
+          "ASSOCIATED_RESET": {
+            "value": "s_axi_aresetn_0",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "AXI_Color_RAM_CTRL_s_axi_aclk_0"
+          },
+          "FREQ_HZ": {
+            "value": "100000000"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       }
     },
     "components": {
@@ -367,6 +364,9 @@
         "xci_path": "ip/AXI_Color_RAM_CTRL_blk_mem_gen_0_0/AXI_Color_RAM_CTRL_blk_mem_gen_0_0.xci",
         "inst_hier_path": "COLOR_RAM",
         "parameters": {
+          "Assume_Synchronous_Clk": {
+            "value": "false"
+          },
           "Memory_Type": {
             "value": "True_Dual_Port_RAM"
           },
@@ -391,8 +391,8 @@
       },
       "S_AXI_0_1": {
         "interface_ports": [
-          "S_AXI_0",
-          "AXIL_COLOR_RAM_CTRL/S_AXI"
+          "AXIL_COLOR_RAM_CTRL/S_AXI",
+          "S_AXI_0"
         ]
       }
     },
@@ -426,12 +426,12 @@
       "/": {
         "address_spaces": {
           "S_AXI_0": {
-            "range": "32K",
-            "width": "15",
+            "range": "4K",
+            "width": "12",
             "segments": {
               "SEG_AXIL_COLOR_RAM_CTRL_Mem0": {
                 "address_block": "/AXIL_COLOR_RAM_CTRL/S_AXI/Mem0",
-                "offset": "0x0000",
+                "offset": "0x000",
                 "range": "4K"
               }
             }

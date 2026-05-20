@@ -35,7 +35,7 @@ entity Anzeige is
 
 		-- Parameters of Axi Slave Bus Interface S00_AXI
 		C_S00_AXI_DATA_WIDTH	: integer	:= 32;
-		C_S00_AXI_ADDR_WIDTH	: integer	:= 9
+		C_S00_AXI_ADDR_WIDTH	: integer	:= 12
 	);
 	port (
 		-- Users to add ports here
@@ -114,7 +114,7 @@ entity Anzeige is
 	);
 end Anzeige;
 
-architecture arch_imp of Anzeige is
+architecture Behavioral of Anzeige is
 	component AXI_Color_RAM_CTRL_wrapper is
 	  port (
 		BRAM_PORTB_0_addr : in STD_LOGIC_VECTOR ( 31 downto 0 );
@@ -186,9 +186,9 @@ architecture arch_imp of Anzeige is
 	signal w_vga_is_highlighted			: std_logic;
 	signal w_vga_is_highlighted_target	: std_logic;
 	signal w_highlight_info 			: t_highlight_info;
-	signal w_bram_addr : std_logic_vector(7 downto 0);
+	signal w_bram_addr : std_logic_vector(31 downto 0);
 	signal w_bram_en : std_logic;
-	signal w_bram_data_rgb : std_logic_vector(23 downto 0);
+	signal w_bram_data_rgb : std_logic_vector(31 downto 0);
 begin
 
 	AXI_COLOR_MAP: AXI_Color_RAM_CTRL_wrapper
@@ -199,7 +199,7 @@ begin
 		BRAM_PORTB_0_dout => w_bram_data_rgb,
 		BRAM_PORTB_0_en   => w_bram_en,
 		BRAM_PORTB_0_rst  => i_vga_rst,
-		BRAM_PORTB_0_we   => '0',
+		BRAM_PORTB_0_we   => "0000",
 		S_AXI_0_araddr    => S00_AXI_araddr,
 		S_AXI_0_arprot    => S00_AXI_arprot,
 		S_AXI_0_arready   => S00_AXI_arready,
@@ -249,16 +249,18 @@ begin
 
 	w_bram_en <= not w_vga_blank;
 
-	ADDR: process
+	-- Mapping the address of the BRAM to the data to get the color
+	-- The BRAM uses byte addresses
+	ADDR: process(w_vga_is_highlighted, w_vga_is_highlighted_target, w_vga_is_convergent, w_vga_cycles_until_divergent)
 	begin
 		if w_vga_is_highlighted = '1' then
-			w_bram_addr <= x"66"; -- 102 if highlight
+			w_bram_addr <= "00" & x"0000066" & "00"; -- Register 102 if highlight
 		elsif w_vga_is_highlighted_target = '1' then
-			w_bram_addr <= x"67"; -- 103 if highlight target
+			w_bram_addr <= "00" & x"0000067" & "00"; -- Register 103 if highlight target
 		elsif w_vga_is_convergent = '1' then
-			w_bram_addr <= x"65";  -- 101 if convergent
+			w_bram_addr <= "00" & x"0000065" & "00";  -- Register 101 if convergent
 		else
-			w_bram_addr <= w_vga_cycles_until_divergent; -- 0-100 else
+			w_bram_addr <= x"00000" & "00" & w_vga_cycles_until_divergent & "00"; -- Register 0-100 else
 		end if;
 	end process;
 
@@ -271,9 +273,9 @@ begin
 	begin
 		if rising_edge(i_vga_clk) then
 			if i_vga_rst = '1' then
-				r_vga_h_sync <= (others => '0');
-				r_vga_v_sync <= (others => '0');
-				r_vga_blank <= (others => '0');
+				r_vga_h_sync <= '0';
+				r_vga_v_sync <= '0';
+				r_vga_blank <= '0';
 			else
 				r_vga_h_sync <= w_vga_h_sync;
 				r_vga_v_sync <= w_vga_v_sync;
@@ -311,4 +313,4 @@ begin
 	w_highlight_info(3).target_pixel_col 	<= i_highlight_ch3_target_pixel_col;
 	w_highlight_info(3).target_pixel_row 	<= i_highlight_ch3_target_pixel_row;
 
-end arch_imp;
+end Behavioral;
