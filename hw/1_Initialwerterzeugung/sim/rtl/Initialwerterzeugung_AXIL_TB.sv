@@ -9,7 +9,7 @@
 import axi_vip_pkg::*;
 import sim_bd_axil_vip_axi_vip_0_0_pkg::*; // check instance name in block design <blockdesign-name>_<vip-inst-name>_0_pkg)
 
-module vis_tb();
+module Initialwerterzeugung_TB();
 
   //CONSTANT DEFINITIONS
   parameter integer C_S_AXI_CONTROL_ADDR_WIDTH = 12;

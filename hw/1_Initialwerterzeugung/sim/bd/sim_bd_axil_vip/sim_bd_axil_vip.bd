@@ -2,7 +2,7 @@
   "design": {
     "design_info": {
       "boundary_crc": "0x120FE54CEBCD77E6",
-      "device": "xc7a100tcsg324-1",
+      "device": "xc7z020clg400-1",
       "name": "sim_bd_axil_vip",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "None",
