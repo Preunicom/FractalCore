@@ -1,12 +1,13 @@
 {
   "design": {
     "design_info": {
-      "boundary_crc": "0xE3B3937C4D7FAF60",
+      "boundary_crc": "0xEA49DD15FC2476C0",
       "device": "xc7z020clg400-1",
       "name": "FractalCore",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2023.2"
+      "tool_version": "2023.2",
+      "validated": "true"
     },
     "design_tree": {
       "proc_sys_reset_0": "",
@@ -18,11 +19,19 @@
       "Digital_VGA_2_DVI_Converter": "",
       "Initialwerterzeugung_0": "",
       "ps7_0_axi_periph": {
+        "xbar": "",
         "s00_couplers": {
           "auto_pc": ""
-        }
+        },
+        "m00_couplers": {},
+        "m01_couplers": {}
       },
-      "Mengenberechnung_0": ""
+      "Mengenberechnung_0": "",
+      "VGA_Clock_Gen": "",
+      "Anzeige_0": "",
+      "BLANK_2_DISPLAY_EN": "",
+      "RGB_Combiner": "",
+      "Highlight_CDC_Synchr": ""
     },
     "interface_ports": {
       "DDR": {
@@ -195,22 +204,38 @@
       }
     },
     "ports": {
-      "sys_clock": {
+      "i_sys_clk": {
         "type": "clk",
         "direction": "I",
         "parameters": {
+          "CLK_DOMAIN": {
+            "value": "FractalCore_i_sys_clk",
+            "value_src": "default"
+          },
           "FREQ_HZ": {
             "value": "125000000"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
           },
           "PHASE": {
             "value": "0.0"
           }
         }
       },
-      "sys_reset": {
+      "i_sys_reset": {
         "type": "rst",
         "direction": "I",
         "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
           "POLARITY": {
             "value": "ACTIVE_HIGH"
           }
@@ -218,11 +243,47 @@
       },
       "TMDS_Clk_p_0": {
         "type": "clk",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "TMDS_Clk_n_0": {
         "type": "clk",
-        "direction": "O"
+        "direction": "O",
+        "parameters": {
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
       },
       "TMDS_Data_p_0": {
         "direction": "O",
@@ -1983,13 +2044,13 @@
             "value": "true"
           },
           "CLKOUT3_JITTER": {
-            "value": "165.419"
+            "value": "124.615"
           },
           "CLKOUT3_PHASE_ERROR": {
             "value": "96.948"
           },
           "CLKOUT3_REQUESTED_OUT_FREQ": {
-            "value": "25.000"
+            "value": "100"
           },
           "CLKOUT3_USED": {
             "value": "true"
@@ -2006,6 +2067,18 @@
           "CLKOUT4_USED": {
             "value": "true"
           },
+          "CLKOUT5_JITTER": {
+            "value": "143.688"
+          },
+          "CLKOUT5_PHASE_ERROR": {
+            "value": "96.948"
+          },
+          "CLKOUT5_REQUESTED_OUT_FREQ": {
+            "value": "50.000"
+          },
+          "CLKOUT5_USED": {
+            "value": "false"
+          },
           "CLK_IN1_BOARD_INTERFACE": {
             "value": "sys_clock"
           },
@@ -2016,10 +2089,13 @@
             "value": "o_clk_calc"
           },
           "CLK_OUT3_PORT": {
-            "value": "o_clk_vga"
+            "value": "o_clk_vga_base"
           },
           "CLK_OUT4_PORT": {
             "value": "o_clk_dvi_serial"
+          },
+          "CLK_OUT5_PORT": {
+            "value": "o_clk_buf"
           },
           "MMCM_CLKOUT0_DIVIDE_F": {
             "value": "20.000"
@@ -2028,10 +2104,13 @@
             "value": "10"
           },
           "MMCM_CLKOUT2_DIVIDE": {
-            "value": "40"
+            "value": "10"
           },
           "MMCM_CLKOUT3_DIVIDE": {
             "value": "8"
+          },
+          "MMCM_CLKOUT4_DIVIDE": {
+            "value": "1"
           },
           "NUM_OUT_CLKS": {
             "value": "4"
@@ -2134,7 +2213,7 @@
             "direction": "I",
             "parameters": {
               "FREQ_HZ": {
-                "value": "25000000",
+                "value": "25173010",
                 "value_src": "ip_prop"
               },
               "PHASE": {
@@ -2142,7 +2221,7 @@
                 "value_src": "ip_prop"
               },
               "CLK_DOMAIN": {
-                "value": "/Clock_Gen_clk_out1",
+                "value": "/VGA_Clock_Gen_clk_out1",
                 "value_src": "ip_prop"
               }
             }
@@ -2188,7 +2267,7 @@
         "xci_name": "FractalCore_ps7_0_axi_periph_0",
         "parameters": {
           "NUM_MI": {
-            "value": "1"
+            "value": "2"
           }
         },
         "interface_ports": {
@@ -2198,6 +2277,11 @@
             "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
           },
           "M00_AXI": {
+            "mode": "Master",
+            "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+          },
+          "M01_AXI": {
             "mode": "Master",
             "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
             "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
@@ -2248,9 +2332,53 @@
           "M00_ARESETN": {
             "type": "rst",
             "direction": "I"
+          },
+          "M01_ACLK": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_BUSIF": {
+                "value": "M01_AXI"
+              },
+              "ASSOCIATED_RESET": {
+                "value": "M01_ARESETN"
+              }
+            }
+          },
+          "M01_ARESETN": {
+            "type": "rst",
+            "direction": "I"
           }
         },
         "components": {
+          "xbar": {
+            "vlnv": "xilinx.com:ip:axi_crossbar:2.1",
+            "ip_revision": "30",
+            "xci_name": "FractalCore_xbar_0",
+            "xci_path": "ip/FractalCore_xbar_0/FractalCore_xbar_0.xci",
+            "inst_hier_path": "ps7_0_axi_periph/xbar",
+            "parameters": {
+              "NUM_MI": {
+                "value": "2"
+              },
+              "NUM_SI": {
+                "value": "1"
+              },
+              "STRATEGY": {
+                "value": "0"
+              }
+            },
+            "interface_ports": {
+              "S00_AXI": {
+                "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+                "mode": "Slave",
+                "bridges": [
+                  "M00_AXI",
+                  "M01_AXI"
+                ]
+              }
+            }
+          },
           "s00_couplers": {
             "interface_ports": {
               "M_AXI": {
@@ -2352,55 +2480,493 @@
                 ]
               }
             }
+          },
+          "m00_couplers": {
+            "interface_ports": {
+              "M_AXI": {
+                "mode": "Master",
+                "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
+                "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+              },
+              "S_AXI": {
+                "mode": "Slave",
+                "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
+                "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+              }
+            },
+            "ports": {
+              "M_ACLK": {
+                "type": "clk",
+                "direction": "I",
+                "parameters": {
+                  "ASSOCIATED_BUSIF": {
+                    "value": "M_AXI"
+                  },
+                  "ASSOCIATED_RESET": {
+                    "value": "M_ARESETN"
+                  }
+                }
+              },
+              "M_ARESETN": {
+                "type": "rst",
+                "direction": "I"
+              },
+              "S_ACLK": {
+                "type": "clk",
+                "direction": "I",
+                "parameters": {
+                  "ASSOCIATED_BUSIF": {
+                    "value": "S_AXI"
+                  },
+                  "ASSOCIATED_RESET": {
+                    "value": "S_ARESETN"
+                  }
+                }
+              },
+              "S_ARESETN": {
+                "type": "rst",
+                "direction": "I"
+              }
+            },
+            "interface_nets": {
+              "m00_couplers_to_m00_couplers": {
+                "interface_ports": [
+                  "S_AXI",
+                  "M_AXI"
+                ]
+              }
+            }
+          },
+          "m01_couplers": {
+            "interface_ports": {
+              "M_AXI": {
+                "mode": "Master",
+                "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
+                "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+              },
+              "S_AXI": {
+                "mode": "Slave",
+                "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
+                "vlnv": "xilinx.com:interface:aximm_rtl:1.0"
+              }
+            },
+            "ports": {
+              "M_ACLK": {
+                "type": "clk",
+                "direction": "I",
+                "parameters": {
+                  "ASSOCIATED_BUSIF": {
+                    "value": "M_AXI"
+                  },
+                  "ASSOCIATED_RESET": {
+                    "value": "M_ARESETN"
+                  }
+                }
+              },
+              "M_ARESETN": {
+                "type": "rst",
+                "direction": "I"
+              },
+              "S_ACLK": {
+                "type": "clk",
+                "direction": "I",
+                "parameters": {
+                  "ASSOCIATED_BUSIF": {
+                    "value": "S_AXI"
+                  },
+                  "ASSOCIATED_RESET": {
+                    "value": "S_ARESETN"
+                  }
+                }
+              },
+              "S_ARESETN": {
+                "type": "rst",
+                "direction": "I"
+              }
+            },
+            "interface_nets": {
+              "m01_couplers_to_m01_couplers": {
+                "interface_ports": [
+                  "S_AXI",
+                  "M_AXI"
+                ]
+              }
+            }
           }
         },
         "interface_nets": {
+          "m00_couplers_to_ps7_0_axi_periph": {
+            "interface_ports": [
+              "m00_couplers/M_AXI",
+              "M00_AXI"
+            ]
+          },
+          "m01_couplers_to_ps7_0_axi_periph": {
+            "interface_ports": [
+              "m01_couplers/M_AXI",
+              "M01_AXI"
+            ]
+          },
           "ps7_0_axi_periph_to_s00_couplers": {
             "interface_ports": [
               "S00_AXI",
               "s00_couplers/S_AXI"
             ]
           },
-          "s00_couplers_to_ps7_0_axi_periph": {
+          "s00_couplers_to_xbar": {
             "interface_ports": [
               "s00_couplers/M_AXI",
-              "M00_AXI"
+              "xbar/S00_AXI"
+            ]
+          },
+          "xbar_to_m00_couplers": {
+            "interface_ports": [
+              "xbar/M00_AXI",
+              "m00_couplers/S_AXI"
+            ]
+          },
+          "xbar_to_m01_couplers": {
+            "interface_ports": [
+              "xbar/M01_AXI",
+              "m01_couplers/S_AXI"
             ]
           }
         },
         "nets": {
-          "S00_ACLK_1": {
-            "ports": [
-              "S00_ACLK",
-              "s00_couplers/S_ACLK"
-            ]
-          },
-          "S00_ARESETN_1": {
-            "ports": [
-              "S00_ARESETN",
-              "s00_couplers/S_ARESETN"
-            ]
-          },
           "ps7_0_axi_periph_ACLK_net": {
             "ports": [
-              "M00_ACLK",
-              "s00_couplers/M_ACLK"
+              "ACLK",
+              "xbar/aclk",
+              "s00_couplers/S_ACLK",
+              "s00_couplers/M_ACLK",
+              "m00_couplers/M_ACLK",
+              "m01_couplers/M_ACLK",
+              "m00_couplers/S_ACLK",
+              "m01_couplers/S_ACLK"
             ]
           },
           "ps7_0_axi_periph_ARESETN_net": {
             "ports": [
-              "M00_ARESETN",
-              "s00_couplers/M_ARESETN"
+              "ARESETN",
+              "xbar/aresetn",
+              "s00_couplers/S_ARESETN",
+              "s00_couplers/M_ARESETN",
+              "m00_couplers/M_ARESETN",
+              "m01_couplers/M_ARESETN",
+              "m00_couplers/S_ARESETN",
+              "m01_couplers/S_ARESETN"
             ]
           }
         }
       },
       "Mengenberechnung_0": {
         "vlnv": "user.org:user:Mengenberechnung:1.0",
-        "ip_revision": "4",
+        "ip_revision": "2",
         "xci_name": "FractalCore_Mengenberechnung_0_0",
         "xci_path": "ip/FractalCore_Mengenberechnung_0_0/FractalCore_Mengenberechnung_0_0.xci",
         "inst_hier_path": "Mengenberechnung_0"
+      },
+      "VGA_Clock_Gen": {
+        "vlnv": "xilinx.com:ip:clk_wiz:6.0",
+        "ip_revision": "13",
+        "xci_name": "FractalCore_clk_wiz_0_1",
+        "xci_path": "ip/FractalCore_clk_wiz_0_1/FractalCore_clk_wiz_0_1.xci",
+        "inst_hier_path": "VGA_Clock_Gen",
+        "parameters": {
+          "CLKOUT1_JITTER": {
+            "value": "319.783"
+          },
+          "CLKOUT1_PHASE_ERROR": {
+            "value": "246.739"
+          },
+          "CLKOUT1_REQUESTED_OUT_FREQ": {
+            "value": "25.175"
+          },
+          "CLK_OUT1_PORT": {
+            "value": "o_clk_vga"
+          },
+          "MMCM_CLKFBOUT_MULT_F": {
+            "value": "36.375"
+          },
+          "MMCM_CLKOUT0_DIVIDE_F": {
+            "value": "36.125"
+          },
+          "MMCM_DIVCLK_DIVIDE": {
+            "value": "4"
+          },
+          "RESET_PORT": {
+            "value": "resetn"
+          },
+          "RESET_TYPE": {
+            "value": "ACTIVE_LOW"
+          }
+        }
+      },
+      "Anzeige_0": {
+        "vlnv": "user.org:user:Anzeige:1.1",
+        "ip_revision": "4",
+        "xci_name": "FractalCore_Anzeige_0_0",
+        "xci_path": "ip/FractalCore_Anzeige_0_0/FractalCore_Anzeige_0_0.xci",
+        "inst_hier_path": "Anzeige_0",
+        "interface_ports": {
+          "s00_axi": {
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "mode": "Slave",
+            "memory_map_ref": "s00_axi"
+          }
+        }
+      },
+      "BLANK_2_DISPLAY_EN": {
+        "vlnv": "xilinx.com:ip:util_vector_logic:2.0",
+        "ip_revision": "3",
+        "xci_name": "FractalCore_util_vector_logic_0_1",
+        "xci_path": "ip/FractalCore_util_vector_logic_0_1/FractalCore_util_vector_logic_0_1.xci",
+        "inst_hier_path": "BLANK_2_DISPLAY_EN",
+        "parameters": {
+          "C_OPERATION": {
+            "value": "not"
+          },
+          "C_SIZE": {
+            "value": "1"
+          }
+        }
+      },
+      "RGB_Combiner": {
+        "vlnv": "xilinx.com:ip:xlconcat:2.1",
+        "ip_revision": "5",
+        "xci_name": "FractalCore_xlconcat_0_0",
+        "xci_path": "ip/FractalCore_xlconcat_0_0/FractalCore_xlconcat_0_0.xci",
+        "inst_hier_path": "RGB_Combiner",
+        "parameters": {
+          "IN0_WIDTH": {
+            "value": "8"
+          },
+          "IN1_WIDTH": {
+            "value": "8"
+          },
+          "IN2_WIDTH": {
+            "value": "8"
+          },
+          "NUM_PORTS": {
+            "value": "3"
+          }
+        }
+      },
+      "Highlight_CDC_Synchr": {
+        "vlnv": "xilinx.com:module_ref:Highlight_CDC_Synchronizer:1.0",
+        "ip_revision": "1",
+        "xci_name": "FractalCore_Highlight_CDC_Synchr_1_0",
+        "xci_path": "ip/FractalCore_Highlight_CDC_Synchr_1_0/FractalCore_Highlight_CDC_Synchr_1_0.xci",
+        "inst_hier_path": "Highlight_CDC_Synchr",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "Highlight_CDC_Synchronizer",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "i_dest_clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "FREQ_HZ": {
+                "value": "25173010",
+                "value_src": "ip_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "ip_prop"
+              },
+              "CLK_DOMAIN": {
+                "value": "/VGA_Clock_Gen_clk_out1",
+                "value_src": "ip_prop"
+              }
+            }
+          },
+          "i_highlight_ch0_valid": {
+            "direction": "I"
+          },
+          "i_highlight_ch0_current_pixel_col": {
+            "direction": "I",
+            "left": "9",
+            "right": "0"
+          },
+          "i_highlight_ch0_current_pixel_row": {
+            "direction": "I",
+            "left": "8",
+            "right": "0"
+          },
+          "i_highlight_ch0_target_pixel_col": {
+            "direction": "I",
+            "left": "9",
+            "right": "0"
+          },
+          "i_highlight_ch0_target_pixel_row": {
+            "direction": "I",
+            "left": "8",
+            "right": "0"
+          },
+          "i_highlight_ch1_valid": {
+            "direction": "I"
+          },
+          "i_highlight_ch1_current_pixel_col": {
+            "direction": "I",
+            "left": "9",
+            "right": "0"
+          },
+          "i_highlight_ch1_current_pixel_row": {
+            "direction": "I",
+            "left": "8",
+            "right": "0"
+          },
+          "i_highlight_ch1_target_pixel_col": {
+            "direction": "I",
+            "left": "9",
+            "right": "0"
+          },
+          "i_highlight_ch1_target_pixel_row": {
+            "direction": "I",
+            "left": "8",
+            "right": "0"
+          },
+          "i_highlight_ch2_valid": {
+            "direction": "I"
+          },
+          "i_highlight_ch2_current_pixel_col": {
+            "direction": "I",
+            "left": "9",
+            "right": "0"
+          },
+          "i_highlight_ch2_current_pixel_row": {
+            "direction": "I",
+            "left": "8",
+            "right": "0"
+          },
+          "i_highlight_ch2_target_pixel_col": {
+            "direction": "I",
+            "left": "9",
+            "right": "0"
+          },
+          "i_highlight_ch2_target_pixel_row": {
+            "direction": "I",
+            "left": "8",
+            "right": "0"
+          },
+          "i_highlight_ch3_valid": {
+            "direction": "I"
+          },
+          "i_highlight_ch3_current_pixel_col": {
+            "direction": "I",
+            "left": "9",
+            "right": "0"
+          },
+          "i_highlight_ch3_current_pixel_row": {
+            "direction": "I",
+            "left": "8",
+            "right": "0"
+          },
+          "i_highlight_ch3_target_pixel_col": {
+            "direction": "I",
+            "left": "9",
+            "right": "0"
+          },
+          "i_highlight_ch3_target_pixel_row": {
+            "direction": "I",
+            "left": "8",
+            "right": "0"
+          },
+          "o_highlight_ch0_valid": {
+            "direction": "O"
+          },
+          "o_highlight_ch0_current_pixel_col": {
+            "direction": "O",
+            "left": "9",
+            "right": "0"
+          },
+          "o_highlight_ch0_current_pixel_row": {
+            "direction": "O",
+            "left": "8",
+            "right": "0"
+          },
+          "o_highlight_ch0_target_pixel_col": {
+            "direction": "O",
+            "left": "9",
+            "right": "0"
+          },
+          "o_highlight_ch0_target_pixel_row": {
+            "direction": "O",
+            "left": "8",
+            "right": "0"
+          },
+          "o_highlight_ch1_valid": {
+            "direction": "O"
+          },
+          "o_highlight_ch1_current_pixel_col": {
+            "direction": "O",
+            "left": "9",
+            "right": "0"
+          },
+          "o_highlight_ch1_current_pixel_row": {
+            "direction": "O",
+            "left": "8",
+            "right": "0"
+          },
+          "o_highlight_ch1_target_pixel_col": {
+            "direction": "O",
+            "left": "9",
+            "right": "0"
+          },
+          "o_highlight_ch1_target_pixel_row": {
+            "direction": "O",
+            "left": "8",
+            "right": "0"
+          },
+          "o_highlight_ch2_valid": {
+            "direction": "O"
+          },
+          "o_highlight_ch2_current_pixel_col": {
+            "direction": "O",
+            "left": "9",
+            "right": "0"
+          },
+          "o_highlight_ch2_current_pixel_row": {
+            "direction": "O",
+            "left": "8",
+            "right": "0"
+          },
+          "o_highlight_ch2_target_pixel_col": {
+            "direction": "O",
+            "left": "9",
+            "right": "0"
+          },
+          "o_highlight_ch2_target_pixel_row": {
+            "direction": "O",
+            "left": "8",
+            "right": "0"
+          },
+          "o_highlight_ch3_valid": {
+            "direction": "O"
+          },
+          "o_highlight_ch3_current_pixel_col": {
+            "direction": "O",
+            "left": "9",
+            "right": "0"
+          },
+          "o_highlight_ch3_current_pixel_row": {
+            "direction": "O",
+            "left": "8",
+            "right": "0"
+          },
+          "o_highlight_ch3_target_pixel_col": {
+            "direction": "O",
+            "left": "9",
+            "right": "0"
+          },
+          "o_highlight_ch3_target_pixel_row": {
+            "direction": "O",
+            "left": "8",
+            "right": "0"
+          }
+        }
       }
     },
     "interface_nets": {
@@ -2427,12 +2993,67 @@
           "ps7_0_axi_periph/M00_AXI",
           "Initialwerterzeugung_0/s00_axi"
         ]
+      },
+      "ps7_0_axi_periph_M01_AXI": {
+        "interface_ports": [
+          "ps7_0_axi_periph/M01_AXI",
+          "Anzeige_0/s00_axi"
+        ]
       }
     },
     "nets": {
+      "Anzeige_0_o_ready": {
+        "ports": [
+          "Anzeige_0/o_ready",
+          "Mengenberechnung_0/i_ready"
+        ]
+      },
+      "Anzeige_0_o_vga_blank": {
+        "ports": [
+          "Anzeige_0/o_vga_blank",
+          "BLANK_2_DISPLAY_EN/Op1"
+        ]
+      },
+      "Anzeige_0_o_vga_blue": {
+        "ports": [
+          "Anzeige_0/o_vga_blue",
+          "RGB_Combiner/In2"
+        ]
+      },
+      "Anzeige_0_o_vga_green": {
+        "ports": [
+          "Anzeige_0/o_vga_green",
+          "RGB_Combiner/In1"
+        ]
+      },
+      "Anzeige_0_o_vga_h_sync": {
+        "ports": [
+          "Anzeige_0/o_vga_h_sync",
+          "Digital_VGA_2_DVI_Converter/vid_pHSync"
+        ]
+      },
+      "Anzeige_0_o_vga_red": {
+        "ports": [
+          "Anzeige_0/o_vga_red",
+          "RGB_Combiner/In0"
+        ]
+      },
+      "Anzeige_0_o_vga_v_sync": {
+        "ports": [
+          "Anzeige_0/o_vga_v_sync",
+          "Digital_VGA_2_DVI_Converter/vid_pVSync"
+        ]
+      },
+      "BLANK_2_DISPLAY_EN_Res": {
+        "ports": [
+          "BLANK_2_DISPLAY_EN/Res",
+          "Digital_VGA_2_DVI_Converter/vid_pVDE"
+        ]
+      },
       "Clock_Gen_locked": {
         "ports": [
           "Clock_Gen/locked",
+          "VGA_Clock_Gen/resetn",
           "ResetN_Init/i_data",
           "ResetN_Calc/i_data",
           "ResetN_VGA/i_data"
@@ -2441,8 +3062,12 @@
       "Clock_Gen_o_clk_calc": {
         "ports": [
           "Clock_Gen/o_clk_calc",
+          "Mengenberechnung_0/i_clk_calc",
           "ResetN_Calc/i_clk_out",
-          "Mengenberechnung_0/i_clk_calc"
+          "Initialwerterzeugung_0/i_clk_init",
+          "Anzeige_0/i_clk_buf",
+          "Mengenberechnung_0/i_clk_init",
+          "Mengenberechnung_0/i_clk_buf"
         ]
       },
       "Clock_Gen_o_clk_dvi_serial": {
@@ -2454,17 +3079,22 @@
       "Clock_Gen_o_clk_init": {
         "ports": [
           "Clock_Gen/o_clk_init",
-          "ResetN_Init/i_clk_out",
-          "Initialwerterzeugung_0/i_clk_init",
-          "Mengenberechnung_0/i_clk_init"
+          "ResetN_Init/i_clk_out"
         ]
       },
       "Clock_Gen_o_clk_vga": {
         "ports": [
-          "Clock_Gen/o_clk_vga",
-          "ResetN_VGA/i_clk_out",
+          "VGA_Clock_Gen/o_clk_vga",
           "Digital_VGA_2_DVI_Converter/PixelClk",
-          "Mengenberechnung_0/i_clk_vga"
+          "Highlight_CDC_Synchr/i_dest_clk",
+          "Anzeige_0/i_clk_vga",
+          "ResetN_VGA/i_clk_out"
+        ]
+      },
+      "Clock_Gen_o_clk_vga_base": {
+        "ports": [
+          "Clock_Gen/o_clk_vga_base",
+          "VGA_Clock_Gen/clk_in1"
         ]
       },
       "Digital_VGA_2_DVI_Converter_TMDS_Clk_n": {
@@ -2491,6 +3121,126 @@
           "TMDS_Data_p_0"
         ]
       },
+      "Highlight_CDC_Synchr_o_highlight_ch0_current_pixel_col": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch0_current_pixel_col",
+          "Anzeige_0/i_highlight_ch0_current_pixel_col"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch0_current_pixel_row": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch0_current_pixel_row",
+          "Anzeige_0/i_highlight_ch0_current_pixel_row"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch0_target_pixel_col": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch0_target_pixel_col",
+          "Anzeige_0/i_highlight_ch0_target_pixel_col"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch0_target_pixel_row": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch0_target_pixel_row",
+          "Anzeige_0/i_highlight_ch0_target_pixel_row"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch0_valid": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch0_valid",
+          "Anzeige_0/i_highlight_ch0_valid"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch1_current_pixel_col": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch1_current_pixel_col",
+          "Anzeige_0/i_highlight_ch1_current_pixel_col"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch1_current_pixel_row": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch1_current_pixel_row",
+          "Anzeige_0/i_highlight_ch1_current_pixel_row"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch1_target_pixel_col": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch1_target_pixel_col",
+          "Anzeige_0/i_highlight_ch1_target_pixel_col"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch1_target_pixel_row": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch1_target_pixel_row",
+          "Anzeige_0/i_highlight_ch1_target_pixel_row"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch1_valid": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch1_valid",
+          "Anzeige_0/i_highlight_ch1_valid"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch2_current_pixel_col": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch2_current_pixel_col",
+          "Anzeige_0/i_highlight_ch2_current_pixel_col"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch2_current_pixel_row": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch2_current_pixel_row",
+          "Anzeige_0/i_highlight_ch2_current_pixel_row"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch2_target_pixel_col": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch2_target_pixel_col",
+          "Anzeige_0/i_highlight_ch2_target_pixel_col"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch2_target_pixel_row": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch2_target_pixel_row",
+          "Anzeige_0/i_highlight_ch2_target_pixel_row"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch2_valid": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch2_valid",
+          "Anzeige_0/i_highlight_ch2_valid"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch3_current_pixel_col": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch3_current_pixel_col",
+          "Anzeige_0/i_highlight_ch3_current_pixel_col"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch3_current_pixel_row": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch3_current_pixel_row",
+          "Anzeige_0/i_highlight_ch3_current_pixel_row"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch3_target_pixel_col": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch3_target_pixel_col",
+          "Anzeige_0/i_highlight_ch3_target_pixel_col"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch3_target_pixel_row": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch3_target_pixel_row",
+          "Anzeige_0/i_highlight_ch3_target_pixel_row"
+        ]
+      },
+      "Highlight_CDC_Synchr_o_highlight_ch3_valid": {
+        "ports": [
+          "Highlight_CDC_Synchr/o_highlight_ch3_valid",
+          "Anzeige_0/i_highlight_ch3_valid"
+        ]
+      },
       "Initialwerterzeugung_0_o_c_img": {
         "ports": [
           "Initialwerterzeugung_0/o_c_img",
@@ -2501,6 +3251,126 @@
         "ports": [
           "Initialwerterzeugung_0/o_c_real",
           "Mengenberechnung_0/i_c_real"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch0_current_pixel_col": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch0_current_pixel_col",
+          "Highlight_CDC_Synchr/i_highlight_ch0_current_pixel_col"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch0_current_pixel_row": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch0_current_pixel_row",
+          "Highlight_CDC_Synchr/i_highlight_ch0_current_pixel_row"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch0_target_pixel_col": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch0_target_pixel_col",
+          "Highlight_CDC_Synchr/i_highlight_ch0_target_pixel_col"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch0_target_pixel_row": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch0_target_pixel_row",
+          "Highlight_CDC_Synchr/i_highlight_ch0_target_pixel_row"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch0_valid": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch0_valid",
+          "Highlight_CDC_Synchr/i_highlight_ch0_valid"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch1_current_pixel_col": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch1_current_pixel_col",
+          "Highlight_CDC_Synchr/i_highlight_ch1_current_pixel_col"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch1_current_pixel_row": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch1_current_pixel_row",
+          "Highlight_CDC_Synchr/i_highlight_ch1_current_pixel_row"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch1_target_pixel_col": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch1_target_pixel_col",
+          "Highlight_CDC_Synchr/i_highlight_ch1_target_pixel_col"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch1_target_pixel_row": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch1_target_pixel_row",
+          "Highlight_CDC_Synchr/i_highlight_ch1_target_pixel_row"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch1_valid": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch1_valid",
+          "Highlight_CDC_Synchr/i_highlight_ch1_valid"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch2_current_pixel_col": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch2_current_pixel_col",
+          "Highlight_CDC_Synchr/i_highlight_ch2_current_pixel_col"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch2_current_pixel_row": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch2_current_pixel_row",
+          "Highlight_CDC_Synchr/i_highlight_ch2_current_pixel_row"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch2_target_pixel_col": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch2_target_pixel_col",
+          "Highlight_CDC_Synchr/i_highlight_ch2_target_pixel_col"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch2_target_pixel_row": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch2_target_pixel_row",
+          "Highlight_CDC_Synchr/i_highlight_ch2_target_pixel_row"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch2_valid": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch2_valid",
+          "Highlight_CDC_Synchr/i_highlight_ch2_valid"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch3_current_pixel_col": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch3_current_pixel_col",
+          "Highlight_CDC_Synchr/i_highlight_ch3_current_pixel_col"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch3_current_pixel_row": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch3_current_pixel_row",
+          "Highlight_CDC_Synchr/i_highlight_ch3_current_pixel_row"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch3_target_pixel_col": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch3_target_pixel_col",
+          "Highlight_CDC_Synchr/i_highlight_ch3_target_pixel_col"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch3_target_pixel_row": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch3_target_pixel_row",
+          "Highlight_CDC_Synchr/i_highlight_ch3_target_pixel_row"
+        ]
+      },
+      "Initialwerterzeugung_0_o_highlight_ch3_valid": {
+        "ports": [
+          "Initialwerterzeugung_0/o_highlight_ch3_valid",
+          "Highlight_CDC_Synchr/i_highlight_ch3_valid"
         ]
       },
       "Initialwerterzeugung_0_o_valid": {
@@ -2539,39 +3409,74 @@
           "Mengenberechnung_0/i_z0_real"
         ]
       },
+      "Mengenberechnung_0_o_cycles_until_divergent": {
+        "ports": [
+          "Mengenberechnung_0/o_cycles_until_divergent",
+          "Anzeige_0/i_cycles_until_divergent"
+        ]
+      },
+      "Mengenberechnung_0_o_is_convergent": {
+        "ports": [
+          "Mengenberechnung_0/o_is_convergent",
+          "Anzeige_0/i_is_convergent"
+        ]
+      },
       "Mengenberechnung_0_o_ready": {
         "ports": [
           "Mengenberechnung_0/o_ready",
           "Initialwerterzeugung_0/i_ready"
         ]
       },
+      "Mengenberechnung_0_o_valid": {
+        "ports": [
+          "Mengenberechnung_0/o_valid",
+          "Anzeige_0/i_valid"
+        ]
+      },
+      "Mengenberechnung_0_o_video_frame_idx": {
+        "ports": [
+          "Mengenberechnung_0/o_video_frame_idx",
+          "Anzeige_0/i_video_frame_idx"
+        ]
+      },
+      "Mengenberechnung_0_o_video_pix_col": {
+        "ports": [
+          "Mengenberechnung_0/o_video_pix_col",
+          "Anzeige_0/i_video_pix_col"
+        ]
+      },
+      "Mengenberechnung_0_o_video_pix_row": {
+        "ports": [
+          "Mengenberechnung_0/o_video_pix_row",
+          "Anzeige_0/i_video_pix_row"
+        ]
+      },
       "ResetN_Calc_o_data": {
         "ports": [
           "ResetN_Calc/o_data",
-          "Mengenberechnung_0/i_resetn_calc"
-        ]
-      },
-      "ResetN_Init_o_data": {
-        "ports": [
-          "ResetN_Init/o_data",
-          "Initialwerterzeugung_0/i_resetn_init",
-          "Mengenberechnung_0/i_resetn_init"
+          "Mengenberechnung_0/i_rstn_calc",
+          "Anzeige_0/i_rstn_buf",
+          "Initialwerterzeugung_0/i_rstn_init",
+          "Mengenberechnung_0/i_rstn_init",
+          "Mengenberechnung_0/i_rstn_buf"
         ]
       },
       "ResetN_VGA_o_data": {
         "ports": [
           "ResetN_VGA/o_data",
           "Digital_VGA_2_DVI_Converter/aRst_n",
-          "Mengenberechnung_0/i_resetn_vga"
+          "Anzeige_0/i_rstn_vga"
         ]
       },
       "proc_sys_reset_0_peripheral_aresetn": {
         "ports": [
           "proc_sys_reset_0/peripheral_aresetn",
           "ps7_0_axi_periph/S00_ARESETN",
-          "Initialwerterzeugung_0/s00_axi_aresetn",
           "ps7_0_axi_periph/M00_ARESETN",
-          "ps7_0_axi_periph/ARESETN"
+          "ps7_0_axi_periph/ARESETN",
+          "ps7_0_axi_periph/M01_ARESETN",
+          "Initialwerterzeugung_0/s00_axi_aresetn",
+          "Anzeige_0/s00_axi_aresetn"
         ]
       },
       "processing_system7_0_FCLK_CLK0": {
@@ -2581,8 +3486,10 @@
           "processing_system7_0/M_AXI_GP0_ACLK",
           "ps7_0_axi_periph/ACLK",
           "ps7_0_axi_periph/S00_ACLK",
+          "ps7_0_axi_periph/M00_ACLK",
+          "ps7_0_axi_periph/M01_ACLK",
           "Initialwerterzeugung_0/s00_axi_aclk",
-          "ps7_0_axi_periph/M00_ACLK"
+          "Anzeige_0/s00_axi_aclk"
         ]
       },
       "processing_system7_0_FCLK_RESET0_N": {
@@ -2593,14 +3500,20 @@
       },
       "reset_rtl_1": {
         "ports": [
-          "sys_reset",
+          "i_sys_reset",
           "Clock_Gen/reset"
         ]
       },
       "sys_clock_1": {
         "ports": [
-          "sys_clock",
+          "i_sys_clk",
           "Clock_Gen/clk_in1"
+        ]
+      },
+      "xlconcat_0_dout": {
+        "ports": [
+          "RGB_Combiner/dout",
+          "Digital_VGA_2_DVI_Converter/vid_pData"
         ]
       }
     },
@@ -2609,6 +3522,11 @@
         "address_spaces": {
           "Data": {
             "segments": {
+              "SEG_Anzeige_0_reg0": {
+                "address_block": "/Anzeige_0/s00_axi/reg0",
+                "offset": "0x40001000",
+                "range": "4K"
+              },
               "SEG_Initialwerterzeugung_0_reg0": {
                 "address_block": "/Initialwerterzeugung_0/s00_axi/reg0",
                 "offset": "0x40000000",

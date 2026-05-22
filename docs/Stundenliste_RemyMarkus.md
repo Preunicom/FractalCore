@@ -139,9 +139,12 @@
 | 17.05.2026 | 3 | TB FIFO IP und TB Framebuffer |
 | 18.05.2026 | 1 | Result Frame Sorting + TB |
 | 18.05.2026 | 2 | Framebuffer Manager |
-| 19.05.2026 | 5 | VGA Control  + Anzeige|
+| 19.05.2026 | 5 | VGA Control + Anzeige|
 | 19.05.2026 | 3 | VGA Control TB |
 | 20.05.2026 | 1 | VGA Control TB |
 | 20.05.2026 | 1 | Highlight Logik Implementierung |
 | 20.05.2026 | 2 | AXIL Color Buffer |
 | 20.05.2026 | 4 | AXIL Color Buffer TB (Probleme mit SV) |
+| 21.05.2026 | 1 | BRAM Optimierung (IP statt inferieren --> Halb so viele BRAMs) + CDC mit Grey Code |
+| 21.05.2026 | 1 | Top Level BD |
+| 21.05.2026 | 3 | Ports vereinheitlichen, Timing Analyse des Gesamtsystems |

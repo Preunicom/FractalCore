@@ -59,7 +59,7 @@ set sim_files [concat \
     [find_files $general_files_dir/sim/rtl "*.sv"] \
 ]
 set sim_bd_files [find_files $project_data_dir/sim/bd "*.bd"]
-set constr_file [lindex [find_files $project_data_dir/constraints "*.xdc"] 0]
+set constr_files  [find_files $project_data_dir/constraints "*.xdc"]
 
 # ================ SOURCES ================
 if {[string equal [get_filesets -quiet sources_1] ""]} {
@@ -98,16 +98,18 @@ if {[info exists proj_top_module]} {
 set_property -name "top_auto_set" -value "0" -objects $obj
 
 # ================ CONSTRAINTS ================
-if {[llength $constr_file] > 0} {
+if {[llength $constr_files] > 0} {
     if {[string equal [get_filesets -quiet constrs_1] ""]} {
-    create_fileset -constrset constrs_1
+        create_fileset -constrset constrs_1
     }
     set obj [get_filesets constrs_1]
 
-    set file "$constr_file"
-    set file_added [add_files -norecurse -fileset $obj [list $file]]
-    set file_obj [get_files $file]
-    set_property -name "file_type" -value "XDC" -objects $file_obj
+    foreach file $constr_files {
+        set file "$constr_files"
+        set file_added [add_files -norecurse -fileset $obj [list $file]]
+        set file_obj [get_files $file]
+        set_property -name "file_type" -value "XDC" -objects $file_obj
+    }
 
     set obj [get_filesets constrs_1]
     set_property -name "target_part" -value $proj_part -objects $obj

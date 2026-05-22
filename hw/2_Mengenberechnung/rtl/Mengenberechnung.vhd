@@ -30,11 +30,11 @@ entity Mengenberechnung is
         g_AMOUNT_CORES: natural := 40
     );
     port(
-        i_resetn_calc : in std_logic;
         i_clk_calc : in std_logic;
+        i_rstn_calc : in std_logic;
         -- Input AXI Stream like interface
         i_clk_init: in std_logic;
-        i_resetn_init: in std_logic;
+        i_rstn_init: in std_logic;
         i_valid : in std_logic;
         i_video_pix_col : in std_logic_vector(9 downto 0);
         i_video_pix_row : in std_logic_vector(8 downto 0);
@@ -45,8 +45,8 @@ entity Mengenberechnung is
         i_c_img : in std_logic_vector(17 downto 0);
         o_ready : out std_logic;
         -- Output AXI Stream like interface
-        i_clk_vga : in std_logic;
-        i_resetn_vga : in std_logic;
+        i_clk_buf : in std_logic;
+        i_rstn_buf : in std_logic;
         i_ready : in std_logic;
         o_valid : out std_logic;
         o_video_pix_col : out std_logic_vector(9 downto 0);
@@ -179,7 +179,7 @@ begin
 
     DISPATCH_FIFO: AXIS_ASyncFIFO_Dispatcher
     port map (
-        s_axis_aresetn => i_resetn_init,
+        s_axis_aresetn => i_rstn_init,
         s_axis_aclk    => i_clk_init,
         s_axis_tvalid  => i_valid,
         s_axis_tready  => o_ready,
@@ -195,7 +195,7 @@ begin
     gen_DISP: for idx in 0 to g_AMOUNT_CORES - 2 generate
         DISP: Dispatcher
         port map (
-            i_resetn        => i_resetn_calc,
+            i_resetn        => i_rstn_calc,
             i_clk           => i_clk_calc,
             i_valid         => w_disp_valid(idx),
             i_pixel_data    => w_disp_data_array(idx),
@@ -213,7 +213,7 @@ begin
     gen_CORE: for idx in g_AMOUNT_CORES - 1 to 2 * (g_AMOUNT_CORES - 1) generate
         COR: Core
         port map (
-            i_resetn                 => i_resetn_calc,
+            i_resetn                 => i_rstn_calc,
             i_clk                    => i_clk_calc,
             i_pixel_data             => w_disp_data_array(idx),
             i_valid                  => w_disp_valid(idx),
@@ -227,7 +227,7 @@ begin
     gen_ARBIT: for idx in g_AMOUNT_CORES - 2 downto 0 generate
         ARB: Arbiter
         port map (
-            i_resetn            => i_resetn_calc,
+            i_resetn            => i_rstn_calc,
             i_clk               => i_clk_calc,
             i_m1_valid          => w_arbit_valid((idx * 2) + 1),
             o_m1_ready          => w_arbit_ready((idx * 2) + 1),
@@ -245,12 +245,12 @@ begin
 
     ARBITE_FIFO: AXIS_ASyncFIFO_Arbiter
     port map (
-        s_axis_aresetn => i_resetn_vga,
+        s_axis_aresetn => i_rstn_buf, -- Reseting by the buffer domain as the data is buffered data
         s_axis_aclk    => i_clk_calc,
         s_axis_tvalid  => w_arbit_valid(0),
         s_axis_tready  => w_arbit_ready(0),
         s_axis_tdata   => w_arbit_fifo_pixel_data_in,
-        m_axis_aclk    => i_clk_vga,
+        m_axis_aclk    => i_clk_buf,
         m_axis_tvalid  => o_valid,
         m_axis_tready  => i_ready,
         m_axis_tdata   => w_arbit_fifo_pixel_data_out

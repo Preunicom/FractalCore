@@ -486,7 +486,7 @@
               }
             }
           },
-          "i_resetn_init": {
+          "i_rstn_init": {
             "direction": "I",
             "parameters": {
               "POLARITY": {
@@ -848,8 +848,8 @@
         "ports": [
           "ARESETN",
           "axi_vip_0/aresetn",
-          "Initialwerterzeugung_0/i_resetn_init",
-          "Initialwerterzeugung_0/s00_axi_aresetn"
+          "Initialwerterzeugung_0/s00_axi_aresetn",
+          "Initialwerterzeugung_0/i_rstn_init"
         ]
       },
       "i_ready_0_1": {

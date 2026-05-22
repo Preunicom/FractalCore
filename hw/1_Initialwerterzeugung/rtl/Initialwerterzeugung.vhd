@@ -20,7 +20,7 @@ entity Initialwerterzeugung is
 	port (
 		-- Users to add ports here
 		i_clk_init : in std_logic;
-		i_resetn_init : in std_logic;
+		i_rstn_init : in std_logic;
 		-- AXI Stream like interface to Mengenberechnung
         i_ready : in std_logic;
         o_valid : out std_logic;
@@ -257,7 +257,7 @@ begin
 	-- Add user logic here
 	Pixel_Gen: Pixel_Data_Generation_Pipeline
 	port map (
-		i_resetn           => i_resetn_init,
+		i_resetn           => i_rstn_init,
 		i_clk              => i_clk_init,
 		i_pixel_distance   => r_cdc_pixel_distance_stage_2,
 		i_frames_per_step  => r_cdc_frames_per_step_stage_2,
@@ -305,7 +305,7 @@ begin
 	CDC_AXI_2_INIT: process(i_clk_init)
 	begin
 		if rising_edge(i_clk_init) then
-			if i_resetn_init = '0' then
+			if i_rstn_init = '0' then
 				r_cdc_synchronizer <= '0';
 			else
 				r_cdc_synchronizer <= not r_cdc_synchronizer;
