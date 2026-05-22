@@ -148,3 +148,4 @@
 | 21.05.2026 | 1 | BRAM Optimierung (IP statt inferieren --> Halb so viele BRAMs) + CDC mit Grey Code |
 | 21.05.2026 | 1 | Top Level BD |
 | 21.05.2026 | 3 | Ports vereinheitlichen, Timing Analyse des Gesamtsystems |
+| 22.05.2026 | 1 | Reset Design überarbeiten |

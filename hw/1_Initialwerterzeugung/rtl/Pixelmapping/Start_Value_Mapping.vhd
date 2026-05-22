@@ -133,6 +133,33 @@ begin
         o_current_coord_im => w_current_c_coord_im
     );
 
+    CONTROL_PATH: process(i_clk)
+    begin
+        if rising_edge(i_clk) then
+            if i_resetn = '0' then
+                r_valid <= '0';
+                o_valid <= '0';
+                -- Max pixel values, as it starts with min values at reset --> Definitly changes in the beginning
+                r_frame_idx <= (others => '1');
+                o_frame_idx <= (others => '1');
+                r_is_new_frame <= '0';
+            else
+                if i_fetch_next = '1' then
+                    r_is_new_frame <= '0'; -- Reset new frame flag at next pipeline shift
+                    r_valid <= i_valid;
+                    o_valid <= r_valid;
+                    r_frame_idx <= i_frame_idx;
+                    o_frame_idx <= r_frame_idx;
+                    if i_valid = '1' then
+                        if r_frame_idx /= i_frame_idx then
+                            r_is_new_frame <= '1';
+                        end if;
+                    end if;
+                end if;
+            end if;
+        end if;
+    end process;
+
     -- Strobe en if Julia set mode and new frame --> next data in c_gen
     r_en_c_generation <= '1' when (r_frame_idx /= i_frame_idx) 
                                     and i_mode(1) = '0' 
@@ -141,43 +168,23 @@ begin
                             else '0';
 
     -- Pipeline the data to detect frame changes and to allow new c data to be loaded
-    INP_REG: process(i_clk)
+    DATA_PIPELINE: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                r_valid <= '0';
-                -- Max pixel values, as it starts with min values at reset --> Definitly changes in the beginning
-                r_frame_idx <= (others => '1');
-                r_pixel_col <= (others => '1');
-                r_pixel_row <= (others => '1');
-                r_pixel_coord_re <= (others => '0');
-                r_pixel_coord_im <= (others => '0');
-                r_is_in_minimap <= '0';
-                r_pixel_distance <= (others => '0');
-                r_c_mode <= '0';
-                r_set_mode <= '0';
-                r_is_new_frame <= '0';
-            else
-                if i_fetch_next = '1' then
-                    r_valid <= i_valid;
-                    r_is_new_frame <= '0'; -- Reset new frame flag at next pipeline shift
-                    if i_valid = '1' then
-                        -- Data valid --> Process it
-                        if r_frame_idx /= i_frame_idx then
-                            -- New frame
-                            r_c_mode <= i_mode(0); -- Set c mode for full frame
-                            r_set_mode <= i_mode(1); -- Set set mode for full frame
-                            r_is_new_frame <= '1';
-                        end if;
-                        r_frame_idx <= i_frame_idx;
-                        r_pixel_col <= i_pixel_col;
-                        r_pixel_row <= i_pixel_row;
-                        r_pixel_coord_re <= i_pixel_coord_re;
-                        r_pixel_coord_im <= i_pixel_coord_im;
-                        r_is_in_minimap <= i_is_in_minimap;
-                        r_pixel_distance <= i_pixel_distance;
-                    end if; -- Do not process data which is not valid as it could lead to c generation
+            if i_fetch_next = '1' and i_valid = '1' then -- Do not process data which is not valid as it could lead to c generation
+                -- Data valid --> Process it
+                if r_frame_idx /= i_frame_idx then
+                    -- New frame
+                    r_c_mode <= i_mode(0); -- Set c mode for full frame
+                    r_set_mode <= i_mode(1); -- Set set mode for full frame
                 end if;
+                r_frame_idx <= i_frame_idx;
+                r_pixel_col <= i_pixel_col;
+                r_pixel_row <= i_pixel_row;
+                r_pixel_coord_re <= i_pixel_coord_re;
+                r_pixel_coord_im <= i_pixel_coord_im;
+                r_is_in_minimap <= i_is_in_minimap;
+                r_pixel_distance <= i_pixel_distance;
             end if;
         end if;
     end process;
@@ -185,54 +192,38 @@ begin
     OUT_REG: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                o_valid <= '0';
-                -- Max pixel values, as it starts with min values at reset --> Definitly changes in the beginning
-                o_frame_idx <= (others => '1');
-                o_pixel_col <= (others => '1');
-                o_pixel_row <= (others => '1');
-                o_pixel_coord_z0_re <= (others => '0');
-                o_pixel_coord_z0_im <= (others => '0');
-                o_pixel_coord_c_re <= (others => '0');
-                o_pixel_coord_c_im <= (others => '0');
-                o_is_in_minimap <= '0';
-                o_pixel_distance <= (others => '0');
-            else
-                if i_fetch_next = '1' then
-                    o_valid <= r_valid;
-                    o_frame_idx <= r_frame_idx;
-                    o_pixel_col <= r_pixel_col;
-                    o_pixel_row <= r_pixel_row;
-                    o_pixel_distance <= r_pixel_distance;
-                    o_is_in_minimap <= r_is_in_minimap;
-                    -- Set c and z_0 depending on mode
-                    if r_set_mode = '1' or r_is_in_minimap = '1' then
-                        -- Mandelbrot mode or minimap with Mandelbrot logic
-                        o_pixel_coord_z0_re <= (others => '0');
-                        o_pixel_coord_z0_im <= (others => '0');
-                        o_pixel_coord_c_re <= r_pixel_coord_re;
-                        o_pixel_coord_c_im <= r_pixel_coord_im;
-                    else
-                        -- Julia set mode
-                        o_pixel_coord_z0_re <= r_pixel_coord_re;
-                        o_pixel_coord_z0_im <= r_pixel_coord_im;
-                        if r_is_new_frame = '1' then
-                            o_pixel_coord_c_re <= w_current_c_coord_re;
-                            o_pixel_coord_c_im <= w_current_c_coord_im;
-                            r_frame_c_coord_re <= w_current_c_coord_re;
-                            r_frame_c_coord_im <= w_current_c_coord_im;
-                        else
-                            o_pixel_coord_c_re <= r_frame_c_coord_re;
-                            o_pixel_coord_c_im <= r_frame_c_coord_im;
-                        end if;
-                    end if;
-                    -- Generated c values
-                    o_c_target_re <= w_target_re;
-                    o_c_target_im <= w_target_im;
+            if i_fetch_next = '1' then
+                o_pixel_col <= r_pixel_col;
+                o_pixel_row <= r_pixel_row;
+                o_pixel_distance <= r_pixel_distance;
+                o_is_in_minimap <= r_is_in_minimap;
+                -- Set c and z_0 depending on mode
+                if r_set_mode = '1' or r_is_in_minimap = '1' then
+                    -- Mandelbrot mode or minimap with Mandelbrot logic
+                    o_pixel_coord_z0_re <= (others => '0');
+                    o_pixel_coord_z0_im <= (others => '0');
+                    o_pixel_coord_c_re <= r_pixel_coord_re;
+                    o_pixel_coord_c_im <= r_pixel_coord_im;
+                else
+                    -- Julia set mode
+                    o_pixel_coord_z0_re <= r_pixel_coord_re;
+                    o_pixel_coord_z0_im <= r_pixel_coord_im;
                     if r_is_new_frame = '1' then
-                        o_c_coord_re <= w_current_c_coord_re; -- Stays c even if minimap pixel
-                        o_c_coord_im <= w_current_c_coord_im; -- Stays c even if minimap pixel
+                        o_pixel_coord_c_re <= w_current_c_coord_re;
+                        o_pixel_coord_c_im <= w_current_c_coord_im;
+                        r_frame_c_coord_re <= w_current_c_coord_re;
+                        r_frame_c_coord_im <= w_current_c_coord_im;
+                    else
+                        o_pixel_coord_c_re <= r_frame_c_coord_re;
+                        o_pixel_coord_c_im <= r_frame_c_coord_im;
                     end if;
+                end if;
+                -- Generated c values
+                o_c_target_re <= w_target_re;
+                o_c_target_im <= w_target_im;
+                if r_is_new_frame = '1' then
+                    o_c_coord_re <= w_current_c_coord_re; -- Stays c even if minimap pixel
+                    o_c_coord_im <= w_current_c_coord_im; -- Stays c even if minimap pixel
                 end if;
             end if;
         end if;

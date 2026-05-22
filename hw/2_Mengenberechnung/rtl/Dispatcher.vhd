@@ -100,17 +100,13 @@ begin
     SWITCH_REG: process(i_clk)
     begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                r_s1_selected <= '1';
-            else
-                if w_buf_out_valid = '1' then
-                    if r_s1_selected = '1' and i_s1_ready = '1' then
-                        -- Was successfully transmitted to s1
-                        r_s1_selected <= '0';
-                    elsif r_s1_selected = '0' and i_s2_ready = '1' then
-                        -- Was successfully transmitted to s2
-                        r_s1_selected <= '1';
-                    end if;
+            if w_buf_out_valid = '1' then
+                if r_s1_selected = '1' and i_s1_ready = '1' then
+                    -- Was successfully transmitted to s1
+                    r_s1_selected <= '0';
+                elsif r_s1_selected = '0' and i_s2_ready = '1' then
+                    -- Was successfully transmitted to s2
+                    r_s1_selected <= '1';
                 end if;
             end if;
         end if;

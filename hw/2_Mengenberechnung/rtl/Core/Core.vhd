@@ -104,7 +104,6 @@ begin
 
     STAGE_1: entity work.Core_Stage_1
     port map (
-        i_resetn     => i_resetn,
         i_clk        => i_clk,
         i_stage_data => w_s1_in_stage_data,
         o_stage_data => w_s2_in_stage_data,
@@ -117,7 +116,6 @@ begin
 
     STAGE_2: entity work.Core_Stage_2
     port map (
-        i_resetn        => i_resetn,
         i_clk           => i_clk,
         i_stage_data    => w_s2_in_stage_data,
         i_zr_add_zi     => w_zr_add_zi,
@@ -133,7 +131,6 @@ begin
 
     STAGE_3: entity work.Core_Stage_3
     port map (
-        i_resetn       => i_resetn,
         i_clk          => i_clk,
         i_stage_data   => w_s3_in_stage_data,
         i_real_mul     => w_real_mul,

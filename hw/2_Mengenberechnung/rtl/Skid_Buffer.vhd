@@ -132,20 +132,15 @@ begin
     BUF: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                o_data <= (others => '0');
-                r_buffer <= (others => '0');
-            else
-                if w_output_write_en = '1' then
-                    if r_state = s_BACKPRESSURE then
-                        o_data <= r_buffer;
-                    else
-                        o_data <= i_data;
-                    end if;
+            if w_output_write_en = '1' then
+                if r_state = s_BACKPRESSURE then
+                    o_data <= r_buffer;
+                else
+                    o_data <= i_data;
                 end if;
-                if w_buffer_write_en = '1' then
-                    r_buffer <= i_data;
-                end if;
+            end if;
+            if w_buffer_write_en = '1' then
+                r_buffer <= i_data;
             end if;
         end if;
     end process;

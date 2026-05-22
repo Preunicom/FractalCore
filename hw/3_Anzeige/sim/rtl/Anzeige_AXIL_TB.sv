@@ -261,7 +261,7 @@ module Anzeige_TB();
     error_found = 0;    
     $display("%t : Checking scalar registers", $time);
 
-    for (int i = 0; i <= 100; i++) begin
+    for (int i = 0; i <= 255; i++) begin
       current_addr = COL_ITER_BASE_ADDR + (i * 4);
       check_32bitregister_value_with_gaps(current_addr, 32'hffffffff, 32'h00000000, tmp_error_found); // All writable but only lower 24 bit have impact
       error_found |= tmp_error_found;
@@ -301,7 +301,7 @@ module Anzeige_TB();
       current_addr = COL_ITER_BASE_ADDR + (i * 4);
       blocking_write_register(current_addr, 32'h000000FF); // Red
     end
-    for (int i = 50; i <= 100; i++) begin
+    for (int i = 50; i <= 255; i++) begin
       current_addr = COL_ITER_BASE_ADDR + (i * 4);
       blocking_write_register(current_addr, 32'h0000FF00); // Green
     end

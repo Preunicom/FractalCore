@@ -29,7 +29,6 @@ use work.Pkg_Core.all;
 
 entity Core_Stage_3 is
     port(
-        i_resetn : in std_logic;
         i_clk : in std_logic;
         i_stage_data : in t_stage_data;
         i_real_mul : in signed(37 downto 0);
@@ -49,13 +48,10 @@ begin
     STAGE_DATA: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                o_stage_data <= c_STAGE_DATA_RESET;
-            else
-                o_stage_data <= i_stage_data;
-                o_stage_data.z_real <= w_res_real;
-                o_stage_data.z_img <= w_res_imag;
-            end if;
+            -- No reset necessary, as the stage will be reset to invalid in the Stage Control Unit
+            o_stage_data <= i_stage_data;
+            o_stage_data.z_real <= w_res_real;
+            o_stage_data.z_img <= w_res_imag;
         end if;
     end process;
 

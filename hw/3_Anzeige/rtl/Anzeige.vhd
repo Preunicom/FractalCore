@@ -256,13 +256,13 @@ begin
 	ADDR: process(w_vga_is_highlighted, w_vga_is_highlighted_target, w_vga_is_convergent, w_vga_cycles_until_divergent)
 	begin
 		if w_vga_is_highlighted = '1' then
-			w_bram_addr <= "00" & x"0000066" & "00"; -- Register 102 if highlight
+			w_bram_addr <= "00" & x"00002FF" & "00"; -- Register 257 if highlight
 		elsif w_vga_is_highlighted_target = '1' then
-			w_bram_addr <= "00" & x"0000067" & "00"; -- Register 103 if highlight target
+			w_bram_addr <= "00" & x"00003FF" & "00"; -- Register 258 if highlight target
 		elsif w_vga_is_convergent = '1' then
-			w_bram_addr <= "00" & x"0000065" & "00";  -- Register 101 if convergent
+			w_bram_addr <= "00" & x"00001FF" & "00";  -- Register 256 if convergent
 		else
-			w_bram_addr <= x"00000" & "00" & w_vga_cycles_until_divergent & "00"; -- Register 0-100 else
+			w_bram_addr <= x"00000" & "00" & w_vga_cycles_until_divergent & "00"; -- Register 0-255 else
 		end if;
 	end process;
 
@@ -274,15 +274,9 @@ begin
 	DELAY_CTRL_SIG: process(i_clk_vga)
 	begin
 		if rising_edge(i_clk_vga) then
-			if i_rstn_vga = '0' then
-				r_vga_h_sync <= '0';
-				r_vga_v_sync <= '0';
-				r_vga_blank <= '0';
-			else
-				r_vga_h_sync <= w_vga_h_sync;
-				r_vga_v_sync <= w_vga_v_sync;
-				r_vga_blank <= w_vga_blank;
-			end if;
+			r_vga_h_sync <= w_vga_h_sync;
+			r_vga_v_sync <= w_vga_v_sync;
+			r_vga_blank <= w_vga_blank;
 		end if;
 	end process;
 

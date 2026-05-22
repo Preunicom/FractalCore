@@ -299,23 +299,16 @@ begin
     CDC_VGA_2_WRITE: process(i_clk)
     begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                r_cdc_is_lower_half_of_frame <= '0';
-                r_stable_is_lower_half_of_frame <= '0';
-                r_cdc_frame_idx_grey_code <= "00";
-                r_stable_frame_idx_grey_code <= "00";
-            else
-                r_cdc_is_lower_half_of_frame <= r_is_lower_half_of_frame;
-                r_stable_is_lower_half_of_frame <= r_cdc_is_lower_half_of_frame;
-                r_cdc_frame_idx_grey_code <= r_frame_idx_grey_code;
-                r_stable_frame_idx_grey_code <= r_cdc_frame_idx_grey_code;
-            end if;
+            r_cdc_is_lower_half_of_frame <= r_is_lower_half_of_frame;
+            r_stable_is_lower_half_of_frame <= r_cdc_is_lower_half_of_frame;
+            r_cdc_frame_idx_grey_code <= r_frame_idx_grey_code;
+            r_stable_frame_idx_grey_code <= r_cdc_frame_idx_grey_code;
         end if;
     end process;
 
     -- Encode frame idx in gray code for cdc (always old or new state when metastable)
     -- Encode
-    with i_video_frame_idx select
+    with i_buf_frame_idx select
         r_frame_idx_grey_code <=
             "00" when "00",
             "01" when "01",

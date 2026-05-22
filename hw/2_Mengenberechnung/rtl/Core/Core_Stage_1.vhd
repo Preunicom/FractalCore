@@ -28,7 +28,6 @@ use work.Pkg_Core.all;
 
 entity Core_Stage_1 is
     port(
-        i_resetn : in std_logic;
         i_clk : in std_logic;
         i_stage_data : in t_stage_data;
         o_stage_data : out t_stage_data;
@@ -47,39 +46,29 @@ begin
     STAGE_DATA: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                o_stage_data <= c_STAGE_DATA_RESET;
-            else
-                o_stage_data <= i_stage_data;
-            end if;
+            -- No reset necessary, as the stage will be reset to invalid in the Stage Control Unit
+            o_stage_data <= i_stage_data;
         end if;
     end process;
 
     RE: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                o_zr_add_zi <= (others => '0');
-                o_zr_sub_zi <= (others => '0');
-            else
-                -- 3.15 + 3.15 = 4.15
-                o_zr_add_zi <= resize(i_stage_data.z_real, 19) + resize(i_stage_data.z_img, 19);
-                -- 3.15 - 3.15 = 4.15
-                o_zr_sub_zi <= resize(i_stage_data.z_real, 19) - resize(i_stage_data.z_img, 19);
-            end if;
+            -- No reset necessary, as the stage will be reset to invalid in the Stage Control Unit
+            -- 3.15 + 3.15 = 4.15
+            o_zr_add_zi <= resize(i_stage_data.z_real, 19) + resize(i_stage_data.z_img, 19);
+            -- 3.15 - 3.15 = 4.15
+            o_zr_sub_zi <= resize(i_stage_data.z_real, 19) - resize(i_stage_data.z_img, 19);
         end if;
     end process;
 
     IM: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                o_2zr_mul_zi <= (others => '0');
-            else
-                -- 4.15 * 3.15 = 7.30
-                -- 4.15 has more than 18 Bits, but as 3.15 has 18 bits and the DSPs on the Arty A7 supports 25x18 Bit multiplications, this is ok.
-                o_2zr_mul_zi <= w_2zr * i_stage_data.z_img;
-            end if;
+            -- No reset necessary, as the stage will be reset to invalid in the Stage Control Unit
+            -- 4.15 * 3.15 = 7.30
+            -- 4.15 has more than 18 Bits, but as 3.15 has 18 bits and the DSPs on the Arty A7 supports 25x18 Bit multiplications, this is ok.
+            o_2zr_mul_zi <= w_2zr * i_stage_data.z_img;
         end if;
     end process;
     
@@ -90,14 +79,11 @@ begin
     MAGNITUDE: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                o_zr_mul_zr <= (others => '0');
-            else
-                -- 3.15 * 3.15 = 6.30
-                o_zr_mul_zr <= i_stage_data.z_real * i_stage_data.z_real;
-                -- 3.15 * 3.15 = 6.30
-                o_zi_mul_zi <= i_stage_data.z_img * i_stage_data.z_img;
-            end if;
+            -- No reset necessary, as the stage will be reset to invalid in the Stage Control Unit
+            -- 3.15 * 3.15 = 6.30
+            o_zr_mul_zr <= i_stage_data.z_real * i_stage_data.z_real;
+            -- 3.15 * 3.15 = 6.30
+            o_zi_mul_zi <= i_stage_data.z_img * i_stage_data.z_img;
         end if;
     end process;
 

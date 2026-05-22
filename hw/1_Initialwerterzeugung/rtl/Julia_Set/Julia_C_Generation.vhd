@@ -50,7 +50,6 @@ architecture Behavioral of Julia_C_Generation is
             g_WIDTH : natural range 2 to natural'high
         );
         port (
-            i_resetn    : in  std_logic;
             i_clk       : in  std_logic;
             i_en        : in  std_logic;
             i_load_en   : in  std_logic;
@@ -93,7 +92,6 @@ begin
         g_WIDTH => 18
     )
     port map (
-        i_resetn    => i_resetn,
         i_clk       => i_clk,
         i_en        => r_next_target_re,
         i_load_en   => i_load_seed,
@@ -106,7 +104,6 @@ begin
         g_WIDTH => 18
     )
     port map (
-        i_resetn    => i_resetn,
         i_clk       => i_clk,
         i_en        => r_next_target_im,
         i_load_en   => i_load_seed,
@@ -167,57 +164,51 @@ begin
     STEP: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                r_current_re <= (others => '0');
-                r_current_im <= (others => '0');
-                r_next_target_re <= '0';
-            else
-                r_next_target_re <= '0';
-                r_next_target_im <= '0';
-                if r_next_animation_step = '1' then
-                    -- RE step
-                    if w_target_re > r_current_re then
-                        -- Step in positive direction if no overflow
-                        if w_next_re_add >= r_current_re then
-                            r_current_re <= w_next_re_add;
-                        end if;
-                        -- Target reached or overflow 
-                        if (w_target_re <= w_next_re_add) or (w_next_re_add < r_current_re) then
-                            -- Target reached or target unreachable because it is too near to an edge for the step width
-                            r_next_target_re <= '1';
-                        end if;
-                    else
-                        -- Step in negative direction if no overflow
-                        if w_next_re_sub <= r_current_re then
-                            r_current_re <= w_next_re_sub;
-                        end if;
-                        -- Target reached or overflow 
-                        if (w_target_re >= w_next_re_sub) or (w_next_re_sub > r_current_re) then
-                            -- Target reached or target unreachable because it is too near to an edge for the step width
-                            r_next_target_re <= '1';
-                        end if;
+            r_next_target_re <= '0';
+            r_next_target_im <= '0';
+            if r_next_animation_step = '1' then
+                -- RE step
+                if w_target_re > r_current_re then
+                    -- Step in positive direction if no overflow
+                    if w_next_re_add >= r_current_re then
+                        r_current_re <= w_next_re_add;
                     end if;
-                    -- IM step
-                    if w_target_im > r_current_im then
-                        -- Step in positive direction if no overflow
-                        if w_next_im_add >= r_current_im then
-                            r_current_im <= w_next_im_add;
-                        end if;
-                        -- Target reached or overflow 
-                        if (w_target_im <= w_next_im_add) or (w_next_im_add < r_current_im) then
-                            -- Target reached or target unreachable because it is too near to an edge for the step width
-                            r_next_target_im <= '1';
-                        end if;
-                    else
-                        -- Step in negative direction if no overflow
-                        if w_next_im_sub <= r_current_im then
-                            r_current_im <= w_next_im_sub;
-                        end if;
-                        -- Target reached or overflow 
-                        if (w_target_im >= w_next_im_sub) or (w_next_im_sub > r_current_im) then
-                            -- Target reached or target unreachable because it is too near to an edge for the step width
-                            r_next_target_im <= '1';
-                        end if;
+                    -- Target reached or overflow 
+                    if (w_target_re <= w_next_re_add) or (w_next_re_add < r_current_re) then
+                        -- Target reached or target unreachable because it is too near to an edge for the step width
+                        r_next_target_re <= '1';
+                    end if;
+                else
+                    -- Step in negative direction if no overflow
+                    if w_next_re_sub <= r_current_re then
+                        r_current_re <= w_next_re_sub;
+                    end if;
+                    -- Target reached or overflow 
+                    if (w_target_re >= w_next_re_sub) or (w_next_re_sub > r_current_re) then
+                        -- Target reached or target unreachable because it is too near to an edge for the step width
+                        r_next_target_re <= '1';
+                    end if;
+                end if;
+                -- IM step
+                if w_target_im > r_current_im then
+                    -- Step in positive direction if no overflow
+                    if w_next_im_add >= r_current_im then
+                        r_current_im <= w_next_im_add;
+                    end if;
+                    -- Target reached or overflow 
+                    if (w_target_im <= w_next_im_add) or (w_next_im_add < r_current_im) then
+                        -- Target reached or target unreachable because it is too near to an edge for the step width
+                        r_next_target_im <= '1';
+                    end if;
+                else
+                    -- Step in negative direction if no overflow
+                    if w_next_im_sub <= r_current_im then
+                        r_current_im <= w_next_im_sub;
+                    end if;
+                    -- Target reached or overflow 
+                    if (w_target_im >= w_next_im_sub) or (w_next_im_sub > r_current_im) then
+                        -- Target reached or target unreachable because it is too near to an edge for the step width
+                        r_next_target_im <= '1';
                     end if;
                 end if;
             end if;

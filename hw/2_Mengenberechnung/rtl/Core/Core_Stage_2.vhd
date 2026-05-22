@@ -29,7 +29,6 @@ use work.Pkg_Core.all;
 
 entity Core_Stage_2 is
     port(
-        i_resetn : in std_logic;
         i_clk : in std_logic;
         i_stage_data : in t_stage_data;
         i_zr_add_zi : in signed(18 downto 0);
@@ -51,35 +50,26 @@ begin
     STAGE_DATA: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                o_stage_data <= c_STAGE_DATA_RESET;
-            else
-                o_stage_data <= i_stage_data;
-            end if;
+            -- No reset necessary, as the stage will be reset to invalid in the Stage Control Unit
+            o_stage_data <= i_stage_data;
         end if;
     end process;
 
     RE: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                o_real_mul <= (others => '0');
-            else
-                -- 4.15 * 4.15 = 8.30
-                o_real_mul <= i_zr_add_zi * i_zr_sub_zi;
-            end if;
+            -- No reset necessary, as the stage will be reset to invalid in the Stage Control Unit
+            -- 4.15 * 4.15 = 8.30
+            o_real_mul <= i_zr_add_zi * i_zr_sub_zi;
         end if;
     end process;
 
     IM: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                o_img_res_long <= (others => '0');
-            else
-                -- 7.30 + 7.30 = 8.30
-                o_img_res_long <= resize(i_2zr_mul_zi, 38) + resize(w_ci_sign_ext, 38);
-            end if;
+            -- No reset necessary, as the stage will be reset to invalid in the Stage Control Unit
+            -- 7.30 + 7.30 = 8.30
+            o_img_res_long <= resize(i_2zr_mul_zi, 38) + resize(w_ci_sign_ext, 38);
         end if;
     end process;
     
@@ -89,12 +79,9 @@ begin
     MAGNITUDE: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                o_magnitude_res <= (others => '0');
-            else
-                -- 6.30 + 6.30 = 7.30
-                o_magnitude_res <= resize(i_zr_mul_zr, 37) + resize(i_zi_mul_zi, 37);
-            end if;
+            -- No reset necessary, as the stage will be reset to invalid in the Stage Control Unit
+            -- 6.30 + 6.30 = 7.30
+            o_magnitude_res <= resize(i_zr_mul_zr, 37) + resize(i_zi_mul_zi, 37);
         end if;
     end process;
 
