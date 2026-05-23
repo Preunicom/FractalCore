@@ -4,16 +4,16 @@
 ## - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
 ## Clock Signal
-set_property -dict { PACKAGE_PIN H16    IOSTANDARD LVCMOS33 } [get_ports { i_sys_clk }]; #IO_L13P_T2_MRCC_35 Sch=SYSCLK
-create_clock -add -name sys_clk_pin -period 8.00 -waveform {0 4} [get_ports { i_sys_clk }];
+set_property -dict { PACKAGE_PIN H16    IOSTANDARD LVCMOS33 } [get_ports { ext_clk }]; #IO_L13P_T2_MRCC_35 Sch=SYSCLK
+create_clock -add -name ext_clk_pin -period 8.00 -waveform {0 4} [get_ports { ext_clk }];
 
 #set_clock_groups -asynchronous -group [get_clocks o_clk_init*] -group [get_clocks o_clk_calc*]; # Async FIFO only CDC
-set_clock_groups -asynchronous -group [get_clocks o_clk_init*] -group [get_clocks o_clk_vga*]; # Highlight data CDC
-set_clock_groups -asynchronous -group [get_clocks o_clk_init*] -group [get_clocks clk_fpga_0]; # AXIL Interface
+#set_clock_groups -asynchronous -group [get_clocks o_clk_init*] -group [get_clocks o_clk_vga*]; # Highlight data CDC
+#set_clock_groups -asynchronous -group [get_clocks o_clk_init*] -group [get_clocks clk_fpga_0]; # AXIL Interface
 
 # set_clock_groups -asynchronous -group [get_clocks o_clk_calc*] -group [get_clocks o_clk_buf*]; # Async FIFO only CDC
 
-set_clock_groups -asynchronous -group [get_clocks o_clk_buf*] -group [get_clocks o_clk_vga*]; # Handshake in vga read position/frame idx
+#set_clock_groups -asynchronous -group [get_clocks o_clk_buf*] -group [get_clocks o_clk_vga*]; # Handshake in vga read position/frame idx
 
 ## Switches
 #set_property -dict { PACKAGE_PIN M20    IOSTANDARD LVCMOS33 } [get_ports { sw[0] }]; #IO_L7N_T1_AD2N_35 Sch=SW0
@@ -34,7 +34,7 @@ set_clock_groups -asynchronous -group [get_clocks o_clk_buf*] -group [get_clocks
 #set_property -dict { PACKAGE_PIN M14    IOSTANDARD LVCMOS33 } [get_ports { led[3] }]; #IO_L23P_T3_35 Sch=LED3
 
 ## Buttons
-set_property -dict { PACKAGE_PIN D19    IOSTANDARD LVCMOS33 } [get_ports { i_sys_reset }]; #IO_L4P_T0_35 Sch=BTN0
+set_property -dict { PACKAGE_PIN D19    IOSTANDARD LVCMOS33 } [get_ports { ext_rst }]; #IO_L4P_T0_35 Sch=BTN0
 #set_property -dict { PACKAGE_PIN D20    IOSTANDARD LVCMOS33 } [get_ports { btn[1] }]; #IO_L4N_T0_35 Sch=BTN1
 #set_property -dict { PACKAGE_PIN L20    IOSTANDARD LVCMOS33 } [get_ports { btn[2] }]; #IO_L9N_T1_DQS_AD3N_35 Sch=BTN2
 #set_property -dict { PACKAGE_PIN L19    IOSTANDARD LVCMOS33 } [get_ports { btn[3] }]; #IO_L9P_T1_DQS_AD3P_35 Sch=BTN3

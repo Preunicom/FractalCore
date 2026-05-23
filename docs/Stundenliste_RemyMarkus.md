@@ -148,4 +148,6 @@
 | 21.05.2026 | 1 | BRAM Optimierung (IP statt inferieren --> Halb so viele BRAMs) + CDC mit Grey Code |
 | 21.05.2026 | 1 | Top Level BD |
 | 21.05.2026 | 3 | Ports vereinheitlichen, Timing Analyse des Gesamtsystems |
-| 22.05.2026 | 1 | Reset Design überarbeiten |
+| 22.05.2026 | 6 | Reset Design, Projektstruktur und Tcl Skripte überarbeiten |
+| 23.05.2026 | 1 | Top Level Blockdesign überarbeiten |
+| 23.05.2026 | 2 | Bugsuche (Multiple Driven Signal) |

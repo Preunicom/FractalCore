@@ -1,0 +1,16 @@
+*
+!.gitignore
+# RTL
+!rtl/
+!rtl/**
+rtl/**/*.*
+!rtl/**/*.vhd
+!rtl/**/*.v
+!rtl/**/*.sv
+# SIM
+!sim/
+!sim/**
+sim/**/*.*
+!sim/**/*.vhd
+!sim/**/*.v
+!sim/**/*.sv

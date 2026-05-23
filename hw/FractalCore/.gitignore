@@ -1,39 +1,35 @@
 *
-# Contraints
+# Constraints
 !constraints/
 !constraints/**
 constraints/**/*.*
 !constraints/**/*.xdc
-# Block designs
-!bd/
-!bd/**
-bd/**/*.*
-!bd/**/*.bd
-!bd/**/ip/**/*.xci
-# IPs
-!ip/
-!ip/**
-ip/**/*.*
-!ip/**/*.xci
-# RTL
-!rtl/
-!rtl/**
-rtl/**/*.*
-!rtl/**/*.vhd
-!rtl/**/*.v
-!rtl/**/*.sv
+# SRC
+!src/
+!src/**
+src/**/*.*
+## RTL
+!src/rtl/**/*.vhd
+!src/rtl/**/*.v
+!src/rtl/**/*.sv
+## BD
+!src/bd/**/*.bd
+!src/bd/**/ip/**/*.xci
+## IPs
+!src/**/*.xci
 # SIM
 !sim/
 !sim/**
 sim/**/*.*
-!sim/**/*.vhd
-!sim/**/*.v
-!sim/**/*.sv
-# Scripts
-!scripts/
-!script/**
-scripts/**/*.*
-!scripts/**/*.tcl
+## RTL
+!sim/rtl/**/*.vhd
+!sim/rtl/**/*.v
+!sim/rtl/**/*.sv
+## BD
+!sim/bd/**/*.bd
+!sim/bd/**/ip/**/*.xci
+## IPs
+!sim/**/*.xci
 # Git
 !.gitignore
 !.gitkeep
