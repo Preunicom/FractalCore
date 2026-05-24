@@ -151,3 +151,4 @@
 | 22.05.2026 | 6 | Reset Design, Projektstruktur und Tcl Skripte überarbeiten |
 | 23.05.2026 | 1 | Top Level Blockdesign überarbeiten |
 | 23.05.2026 | 2 | Bugsuche (Multiple Driven Signal) |
+| 24.05.2026 | 3 | Constraints setzen für CDC |

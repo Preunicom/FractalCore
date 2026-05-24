@@ -30,14 +30,14 @@ entity CDC_Synchronizer is
 end CDC_Synchronizer;
 
 architecture Behavioral of CDC_Synchronizer is
-    signal buf : std_logic;
+    signal r_buf : std_logic;
 begin
 
     CDC_CROSS: process(i_clk_out)
 	begin
         if rising_edge(i_clk_out) then
-            buf <= i_data;
-            o_data <= buf;
+            r_buf <= i_data;
+            o_data <= r_buf;
         end if;
     end process;
 

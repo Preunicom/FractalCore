@@ -50,6 +50,7 @@ architecture Behavioral of Julia_C_Generation is
             g_WIDTH : natural range 2 to natural'high
         );
         port (
+            i_resetn    : in  std_logic;
             i_clk       : in  std_logic;
             i_en        : in  std_logic;
             i_load_en   : in  std_logic;
@@ -78,8 +79,8 @@ architecture Behavioral of Julia_C_Generation is
     signal r_next_target_combined : std_logic;
     signal r_frames_per_step_counter : unsigned(15 downto 0);
     signal r_next_animation_step : std_logic;
-    signal r_current_re : signed(17 downto 0);
-    signal r_current_im : signed(17 downto 0);
+    signal r_current_re : signed(17 downto 0) := (others => '0');
+    signal r_current_im : signed(17 downto 0) := (others => '0');
     signal w_next_re_add : signed(17 downto 0);
     signal w_next_im_add : signed(17 downto 0);
     signal w_next_re_sub : signed(17 downto 0);
@@ -92,6 +93,7 @@ begin
         g_WIDTH => 18
     )
     port map (
+        i_resetn    => i_resetn,
         i_clk       => i_clk,
         i_en        => r_next_target_re,
         i_load_en   => i_load_seed,
@@ -104,6 +106,7 @@ begin
         g_WIDTH => 18
     )
     port map (
+        i_resetn    => i_resetn,
         i_clk       => i_clk,
         i_en        => r_next_target_im,
         i_load_en   => i_load_seed,

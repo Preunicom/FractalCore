@@ -25,6 +25,7 @@ use IEEE.numeric_std.all;
 
 entity Dynamic_LFSR_Bit is
     port(
+        i_resetn : in std_logic;
         i_clk : in std_logic;
         i_en : in std_logic;
         i_load_en : in std_logic;
@@ -37,18 +38,22 @@ entity Dynamic_LFSR_Bit is
 end Dynamic_LFSR_Bit;
 
 architecture Behavioral of Dynamic_LFSR_Bit is
-    signal w_input_data : std_logic := '1';
+    signal w_input_data : std_logic;
     signal w_xor : std_logic;
 begin
 
     FLIPFLOP: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_en = '1' then
-                o_data <= w_input_data;
-            end if;
-            if i_load_en = '1' then
-                o_data <= i_load_data;
+            if i_resetn = '0' then
+                o_data <= '0';
+            else
+                if i_en = '1' then
+                    o_data <= w_input_data;
+                end if;
+                if i_load_en = '1' then
+                    o_data <= i_load_data;
+                end if;
             end if;
         end if;
     end process;

@@ -28,6 +28,7 @@ entity Dynamic_LFSR is
 		g_WIDTH : natural range 2 to natural'high
 	);
 	port (
+		i_resetn    : in  std_logic;
 		i_clk       : in  std_logic;
 		i_en        : in  std_logic;
 		i_load_en   : in  std_logic;
@@ -40,6 +41,7 @@ end entity;
 architecture Behavioral of Dynamic_LFSR is
 	component Dynamic_LFSR_Bit is
 		port (
+			i_resetn    : in  std_logic;
 			i_clk       : in  std_logic;
 			i_en        : in  std_logic;
 			i_load_en   : in  std_logic;
@@ -56,6 +58,7 @@ begin
 	begin
 		BIT: Dynamic_LFSR_Bit
 			port map (
+				i_resetn    => i_resetn,
 				i_clk       => i_clk,
 				i_en        => i_en,
 				i_load_en   => i_load_en,
@@ -69,6 +72,7 @@ begin
 
 	LSB: Dynamic_LFSR_Bit
 		port map (
+			i_resetn    => i_resetn,
 			i_clk       => i_clk,
 			i_en        => i_en,
 			i_load_en   => i_load_en,

@@ -5,15 +5,21 @@
 
 ## Clock Signal
 set_property -dict { PACKAGE_PIN H16    IOSTANDARD LVCMOS33 } [get_ports { ext_clk }]; #IO_L13P_T2_MRCC_35 Sch=SYSCLK
-create_clock -add -name ext_clk_pin -period 8.00 -waveform {0 4} [get_ports { ext_clk }];
+# create_clock -add -name ext_clk -period 8.00 -waveform {0 4} [get_ports { ext_clk }];
 
-#set_clock_groups -asynchronous -group [get_clocks o_clk_init*] -group [get_clocks o_clk_calc*]; # Async FIFO only CDC
-#set_clock_groups -asynchronous -group [get_clocks o_clk_init*] -group [get_clocks o_clk_vga*]; # Highlight data CDC
-#set_clock_groups -asynchronous -group [get_clocks o_clk_init*] -group [get_clocks clk_fpga_0]; # AXIL Interface
+# set_clock_groups -asynchronous -group [get_clocks ext_clk] -group [get_clocks clk_fpga_0];
+set_clock_groups -asynchronous -group [get_clocks -of_objects [get_pins FractalCore_i/Video_Clk_Gen/inst/mmcm_adv_inst/CLKOUT0]] -group [get_clocks clk_fpga_0];
 
-# set_clock_groups -asynchronous -group [get_clocks o_clk_calc*] -group [get_clocks o_clk_buf*]; # Async FIFO only CDC
-
-#set_clock_groups -asynchronous -group [get_clocks o_clk_buf*] -group [get_clocks o_clk_vga*]; # Handshake in vga read position/frame idx
+# Set FF to CDC mode --> Placed nearby to improve metastability resistance
+# CDC of reset (locked) signal
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_0/U0/buf_reg }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_0/U0/o_data_reg }];
+# CDC of VGA control signals
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Anzeige_0/U0/VGA_CTRL/FRAME_BUF_MANAGER/r_cdc_*_reg* }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Anzeige_0/U0/VGA_CTRL/FRAME_BUF_MANAGER/r_stable_*_reg* }];
+# CDC of highlight data
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Anzeige_0/U0/CDC_HIGHLIGHT/r_highlight_info_reg* }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Anzeige_0/U0/CDC_HIGHLIGHT/o_highlight_reg* }];
 
 ## Switches
 #set_property -dict { PACKAGE_PIN M20    IOSTANDARD LVCMOS33 } [get_ports { sw[0] }]; #IO_L7N_T1_AD2N_35 Sch=SW0

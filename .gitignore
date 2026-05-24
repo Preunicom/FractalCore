@@ -18,6 +18,7 @@
 # Allow hardware related files
 !hw
 !hw/**/
+!hw/*.xsa
 # Allow software related files
 !sw
 ## Manage Vitis files according to https://docs.amd.com/r/en-US/ug1400-vitis-embedded/Source-Control
