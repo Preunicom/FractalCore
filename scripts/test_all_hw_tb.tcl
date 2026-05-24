@@ -104,19 +104,12 @@ foreach tb $tb_files {
     set top_name [file rootname [file tail $tb]]
     set_property top $top_name [get_filesets sim_1]
 
-    puts "Top name: $top_name"
-    puts "Files in sim_1:"
-    puts [get_files -of_objects [get_filesets sim_1]]
-
     # Reset simulation environment
-    reset_simulation 
-    #-quiet
+    reset_simulation -quiet
 
-    update_compile_order -fileset sim_1 
-    #-quiet
+    update_compile_order -fileset sim_1 -quiet
 
-    launch_simulation 
-    # -quiet
+    launch_simulation -quiet
 
     # Restart simulation to also get asserts at the beginning which were already executed by launch_simulation.
     restart -quiet

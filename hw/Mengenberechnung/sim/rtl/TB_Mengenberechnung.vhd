@@ -33,18 +33,12 @@ entity TB_Mengenberechnung is
 end TB_Mengenberechnung;
 
 architecture Testbench of TB_Mengenberechnung is
-    constant tbase_init: time := 20 ns;
-    constant tbase_calc : time := 10 ns;
-    constant tbase_arbit: time := 15 ns;
+    constant tbase: time := 10 ns;
     -- STIMULI
     constant c_AMOUNT_CORES : natural := 50;
     constant c_AMOUNT_STIMULI_PER_CASE : integer := 63;
-    signal s_clk_init : std_logic := '0';
-    signal s_clk_calc : std_logic := '0';
-    signal s_clk_color : std_logic := '0';
-    signal s_resetn_init : std_logic;
-    signal s_resetn_calc : std_logic;
-    signal s_resetn_color : std_logic;
+    signal s_clk : std_logic := '0';
+    signal s_rstn : std_logic;
     signal s_valid : std_logic;
     signal s_video_pix_col : std_logic_vector(9 downto 0);
     signal s_video_pix_row : std_logic_vector(8 downto 0);
@@ -87,10 +81,8 @@ begin
         g_AMOUNT_CORES => c_AMOUNT_CORES
     )
     port map (
-        i_resetn_calc            => s_resetn_calc,
-        i_clk_calc               => s_clk_calc,
-        i_clk_init               => s_clk_init,
-        i_resetn_init            => s_resetn_init,
+        i_clk                    => s_clk,
+        i_rstn                   => s_rstn,
         i_valid                  => s_valid,
         i_video_pix_col          => s_video_pix_col,
         i_video_pix_row          => s_video_pix_row,
@@ -100,8 +92,6 @@ begin
         i_c_real                 => s_c_real,
         i_c_img                  => s_c_img,
         o_ready                  => c_ready,
-        i_clk_color              => s_clk_color,
-        i_resetn_color           => s_resetn_color,
         i_ready                  => s_ready,
         o_valid                  => c_valid,
         o_video_pix_col          => c_video_pix_col,
@@ -112,18 +102,12 @@ begin
     );
 
     -- The Async FIFO needs to sync the reset, so the usual 1 clock cycle reset is not long enough here
-    s_resetn_init <= '0', '1' after 3*tbase_init;
-    s_clk_init <= not s_clk_init after 0.5*tbase_init;
-
-    s_resetn_calc <= '0', '1' after 3*tbase_calc;
-    s_clk_calc <= not s_clk_calc after 0.5*tbase_calc;
-
-    s_resetn_color <= '0', '1' after 3*tbase_arbit;
-    s_clk_color <= not s_clk_color after 0.5*tbase_arbit;
+    s_rstn <= '0', '1' after 3*tbase;
+    s_clk <= not s_clk after 0.5*tbase;
 
     STIMULI: process
 	begin
-        wait until s_resetn_init = '1';
+        wait until s_rstn = '1';
         for i in 1 to c_AMOUNT_STIMULI_PER_CASE loop
             -- 2 iterations
             s_video_frame_idx <= "01";
@@ -135,11 +119,11 @@ begin
             s_c_img <= std_logic_vector(to_signed(1, 18) sll 13); -- 0.01 -> 0.25
             s_valid <= '1';
             s_ready <= '0';
-            wait_for_handshake(s_clk_init, s_valid, c_ready);
+            wait_for_handshake(s_clk, s_valid, c_ready);
         end loop;
         s_valid <= '0';
         for i in 1 to 10 loop
-            wait until rising_edge(s_clk_init);
+            wait until rising_edge(s_clk);
         end loop;
         for i in 1 to c_AMOUNT_STIMULI_PER_CASE loop
             -- >0 & <100 iterations
@@ -152,7 +136,7 @@ begin
             s_c_img  <= std_logic_vector(to_signed(4316, 18));   --  0.1318
             s_valid <= '1';
             s_ready <= '0';
-            wait_for_handshake(s_clk_init, s_valid, c_ready);
+            wait_for_handshake(s_clk, s_valid, c_ready);
         end loop;
         for i in 1 to c_AMOUNT_STIMULI_PER_CASE loop
             -- 0 iterations
@@ -165,7 +149,7 @@ begin
             s_c_img <= std_logic_vector(to_signed(2, 18) sll 15);
             s_valid <= '1';
             s_ready <= '0';
-            wait_for_handshake(s_clk_init, s_valid, c_ready);
+            wait_for_handshake(s_clk, s_valid, c_ready);
         end loop;
         for i in 1 to c_AMOUNT_STIMULI_PER_CASE loop
             -- Convergent --> 100 iterations
@@ -178,18 +162,18 @@ begin
             s_c_img <= std_logic_vector(to_signed(1, 18) sll 13);   --  0.25 = 0.01 -> Shift -2
             s_valid <= '1';
             s_ready <= '0';
-            wait_for_handshake(s_clk_init, s_valid, c_ready);
+            wait_for_handshake(s_clk, s_valid, c_ready);
         end loop;
         s_valid <= '0';
         s_ready <= '0';
         loop
-            wait until rising_edge(s_clk_init);
+            wait until rising_edge(s_clk);
             if c_valid = '1' then
                 exit;
             end if;
         end loop;
         for i in 1 to 10 loop
-            wait until rising_edge(s_clk_init);
+            wait until rising_edge(s_clk);
         end loop;
         s_ready <= '1';
         wait;
@@ -201,9 +185,9 @@ begin
         variable row_3 : integer := 0;
         variable row_4 : integer := 0;
 	begin
-        wait until s_resetn_color = '1';
+        wait until s_rstn = '1';
         loop
-            wait_for_handshake(s_clk_color, c_valid, s_ready);
+            wait_for_handshake(s_clk, c_valid, s_ready);
             if c_video_pix_row = std_logic_vector(to_unsigned(1, 9)) then
             ----- 0 Iterations
                 row_1 := row_1 + 1;
@@ -317,12 +301,12 @@ begin
     END_TEST_CHECK: process
     begin
        
-        wait until tb_test_ended = true for c_TB_TIMEOUT*tbase_calc;
+        wait until tb_test_ended = true for c_TB_TIMEOUT*tbase;
         if tb_test_ended = true then
             report "TEST PASSED!"
                 severity note;
             tb_test_passed <= true;
-            wait for tbase_init;
+            wait for tbase;
             finish;
         else
             assert false
