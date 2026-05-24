@@ -6,6 +6,9 @@ on:
       - master
       - dev/**
       - fea/**
+      - ArtyZ7/master
+      - ArtyZ7/dev/**
+      - ArtyZ7/fea/**
     paths:
       - 'hw/**'
       - 'scripts/**'
