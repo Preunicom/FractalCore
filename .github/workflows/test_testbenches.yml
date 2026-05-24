@@ -6,6 +6,9 @@ on:
       - master
       - dev/**
       - fea/**
+      - ArtyZ7/master
+      - ArtyZ7/dev/**
+      - ArtyZ7/fea/**
     paths:
       - 'hw/**'
       - 'scripts/**'
@@ -22,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build project
-        run: ./scripts/create_all_vivado_projects.sh
+        run: vivado -mode batch -source "./scripts/create_vivado_project.tcl"
 
       - name: Test all testbenches
         run: vivado -mode batch -source "./scripts/test_all_hw_tb.tcl"
