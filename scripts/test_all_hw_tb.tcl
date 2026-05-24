@@ -101,16 +101,16 @@ foreach tb $tb_files {
     puts "Running testbench $current_tb_index/$total_amount_tb: $tb"
     puts "------------------------------------------------------------"
 
-    # Reset simulation environment
-    reset_simulation 
-    #-quiet
-
     set top_name [file rootname [file tail $tb]]
     set_property top $top_name [get_filesets sim_1]
 
     puts "Top name: $top_name"
     puts "Files in sim_1:"
     puts [get_files -of_objects [get_filesets sim_1]]
+
+    # Reset simulation environment
+    reset_simulation 
+    #-quiet
 
     update_compile_order -fileset sim_1 
     #-quiet
