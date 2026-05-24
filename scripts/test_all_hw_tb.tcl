@@ -88,6 +88,7 @@ set_property -name {xsim.simulate.runtime} -value {0ns} -objects [get_filesets s
 set exit_code 0
 set total_amount_tb [llength $tb_files]
 set current_tb_index 0
+set failed_tbs {}
 
 puts "============================================================"
 puts " Starting simulations..."
@@ -122,6 +123,7 @@ foreach tb $tb_files {
     } else {
         puts "ERROR: VHDL Assertion Failure detected for $tb"
         incr exit_code
+        lappend failed_tbs $tb
     }
 
     # Close simulation
@@ -134,8 +136,19 @@ if {$exit_code == 0} {
 } else {
     puts "============================================================"
     puts " Tested all testbenches but $exit_code testbenches failed!"
+    puts " Failes testbenches:"
+    foreach tb $failed_tbs {
+        puts "  - $tb"
+    }
     puts "============================================================"
     set exit_code 1
 }
-
 set exit_code_result $exit_code
+
+if {$exit_code_result != 0} {
+    puts "Exited with error!"
+    exit 1
+} else {
+    puts "Exited successfully!"
+    exit 0
+}

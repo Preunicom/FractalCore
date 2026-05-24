@@ -35,7 +35,6 @@ architecture Testbench of TB_Core_Stage_2 is
     constant tbase : time := 10 ns;
     -- STIMULI
     signal s_clk : std_logic := '0';
-    signal s_resetn : std_logic;
     signal s_stage_data : t_stage_data := c_STAGE_DATA_RESET;
     signal s_zr_add_zi : signed(18 downto 0);
     signal s_zr_sub_zi : signed(18 downto 0);
@@ -57,7 +56,6 @@ begin
     
    UUT: entity work.Core_Stage_2
    port map (
-    i_resetn        => s_resetn,
     i_clk           => s_clk,
     i_stage_data    => s_stage_data,
     i_zr_add_zi     => s_zr_add_zi,
@@ -71,12 +69,10 @@ begin
     o_magnitude_res => c_magnitude_res
    );
 
-    s_resetn <= '0', '1' after 1*tbase;
     s_clk <= not s_clk after 0.5*tbase;
 
     STIMULI: process
 	begin
-        wait until s_resetn = '1';
         -- TEST 1 - Test no fractal bits and positive numbers
         s_zr_add_zi <= to_signed(2, 19) sll 15;
         s_zr_sub_zi <= to_signed(3, 19) sll 15;
@@ -98,7 +94,6 @@ begin
 
     CHECK: process
 	begin
-        wait until s_resetn = '1';
         wait until rising_edge(s_clk);
         wait until rising_edge(s_clk);
         -- TEST 1
