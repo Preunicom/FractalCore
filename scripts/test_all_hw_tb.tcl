@@ -108,6 +108,10 @@ foreach tb $tb_files {
     set top_name [file rootname [file tail $tb]]
     set_property top $top_name [get_filesets sim_1]
 
+    puts "Top name: $top_name"
+    puts "Files in sim_1:"
+    puts [get_files -of_objects [get_filesets sim_1]]
+
     update_compile_order -fileset sim_1 
     #-quiet
 
