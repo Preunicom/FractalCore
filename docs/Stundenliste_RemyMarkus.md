@@ -153,3 +153,4 @@
 | 23.05.2026 | 2 | Bugsuche (Multiple Driven Signal) |
 | 24.05.2026 | 3 | Constraints setzen für CDC |
 | 24.05.2026 | 1 | Bug Fixes |
+| 25.05.2026 | 2 | Bug Fixes, Tests und Timing Verbesserungen |

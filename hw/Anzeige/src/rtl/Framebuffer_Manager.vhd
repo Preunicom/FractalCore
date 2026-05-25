@@ -83,17 +83,17 @@ architecture Behavioral of Framebuffer_Manager is
     end component;
     -- Using IP instead of infering BRAM as it needs nearly half of BRAMs of the inferred one with same specifications.
     component Framebuffer is
-        Port ( 
-            clka : in STD_LOGIC;
-            ena : in STD_LOGIC;
-            wea : in STD_LOGIC_VECTOR ( 0 to 0 );
-            addra : in STD_LOGIC_VECTOR ( 18 downto 0 );
-            dina : in STD_LOGIC_VECTOR ( 8 downto 0 );
-            clkb : in STD_LOGIC;
-            enb : in STD_LOGIC;
-            addrb : in STD_LOGIC_VECTOR ( 18 downto 0 );
-            doutb : out STD_LOGIC_VECTOR ( 8 downto 0 )
-        );
+        port(
+        i_clk_w : in std_logic;
+        i_en_w : in std_logic;
+        i_write_en : in std_logic;
+        i_addr_w : in std_logic_vector(18 downto 0);
+        i_data_w : in std_logic_vector(8 downto 0);
+        i_clk_r : in std_logic;
+        i_en_r : in std_logic;
+        i_addr_r : in std_logic_vector(18 downto 0);
+        o_data_r : out std_logic_vector(8 downto 0)
+    );
     end component;
 
     type statetype_t is (s_FRAME_TOP_EVEN, s_FRAME_TOP_ODD, s_FRAME_LOWER_ODD, s_FRAME_LOWER_EVEN);
@@ -113,7 +113,7 @@ architecture Behavioral of Framebuffer_Manager is
     signal w_f_X1_col : std_logic_vector(9 downto 0);
     signal w_f_X1_data : std_logic_vector(8 downto 0);
 
-    signal w_to_buf_write_en : std_logic_vector(0 downto 0);
+    signal w_to_buf_write_en : std_logic;
     signal w_to_buf_row : std_logic_vector(8 downto 0);
     signal w_to_buf_col : std_logic_vector(9 downto 0);
     signal w_to_buf_data : std_logic_vector(8 downto 0);
@@ -189,13 +189,13 @@ begin
         end if;
     end process;
 
-    -- The AXI Stream liake handshake does not meet the AXI Stream specifications as its ready depends on the given data
+    -- The AXI Stream like handshake does not meet the AXI Stream specifications as its ready depends on the given data
     -- This is no problem in this case as it is designed to work with this dependency.
     CONTROL_LOGIC: process(r_state, w_stable_frame_idx, w_f_X0_frame_idx, w_f_X0_valid, w_f_X0_col, w_f_X0_row, w_f_X0_data, w_f_X1_frame_idx, w_f_X1_valid, w_f_X1_col, w_f_X1_row, w_f_X1_data)
     begin
         w_f_X0_ready <= '0';
         w_f_X1_ready <= '0';
-        w_to_buf_write_en <= (others => '0');
+        w_to_buf_write_en <= '0';
         w_to_buf_col <= (others => '0');
         w_to_buf_row <= (others => '0');
         w_to_buf_data <= (others => '0');
@@ -203,7 +203,7 @@ begin
             when s_FRAME_TOP_EVEN =>
                 if w_f_X0_frame_idx = w_stable_frame_idx then
                     w_f_X0_ready <= '1';
-                    w_to_buf_write_en(0) <= w_f_X0_valid;
+                    w_to_buf_write_en <= w_f_X0_valid;
                     w_to_buf_col <= w_f_X0_col;
                     w_to_buf_row <= w_f_X0_row;
                     w_to_buf_data <= w_f_X0_data;
@@ -211,7 +211,7 @@ begin
             when s_FRAME_TOP_ODD => 
                 if w_f_X1_frame_idx = w_stable_frame_idx then
                     w_f_X1_ready <= '1';
-                    w_to_buf_write_en(0) <= w_f_X1_valid;
+                    w_to_buf_write_en <= w_f_X1_valid;
                     w_to_buf_col <= w_f_X1_col;
                     w_to_buf_row <= w_f_X1_row;
                     w_to_buf_data <= w_f_X1_data;
@@ -220,7 +220,7 @@ begin
                 if w_f_X0_frame_idx = w_stable_frame_idx and w_f_X0_valid = '1' then
                     -- Current frame data available
                     w_f_X0_ready <= '1';
-                    w_to_buf_write_en(0) <= '1';
+                    w_to_buf_write_en <= '1';
                     w_to_buf_col <= w_f_X0_col;
                     w_to_buf_row <= w_f_X0_row;
                     w_to_buf_data <= w_f_X0_data;
@@ -228,7 +228,7 @@ begin
                     -- Only next frame data in top half available or no valid data
                     -- FIFO data must be in correct frame, or in old frame and overwritten afterwards
                     w_f_X1_ready <= '1';
-                    w_to_buf_write_en(0) <= w_f_X1_valid;
+                    w_to_buf_write_en <= w_f_X1_valid;
                     w_to_buf_col <= w_f_X1_col;
                     w_to_buf_row <= w_f_X1_row;
                     w_to_buf_data <= w_f_X1_data;
@@ -237,7 +237,7 @@ begin
                 if w_f_X1_frame_idx = w_stable_frame_idx and w_f_X1_valid = '1' then
                     -- Current frame data available
                     w_f_X1_ready <= '1';
-                    w_to_buf_write_en(0) <= '1';
+                    w_to_buf_write_en <= '1';
                     w_to_buf_col <= w_f_X1_col;
                     w_to_buf_row <= w_f_X1_row;
                     w_to_buf_data <= w_f_X1_data;
@@ -245,7 +245,7 @@ begin
                     -- Only next frame data in top half available or no valid data
                     -- FIFO data must be in correct frame, or in old frame and overwritten afterwards
                     w_f_X0_ready <= '1';
-                    w_to_buf_write_en(0) <= w_f_X0_valid;
+                    w_to_buf_write_en <= w_f_X0_valid;
                     w_to_buf_col <= w_f_X0_col;
                     w_to_buf_row <= w_f_X0_row;
                     w_to_buf_data <= w_f_X0_data;
@@ -254,22 +254,33 @@ begin
         end case;
     end process;
 
-    w_to_buf_addr <= w_to_buf_row & w_to_buf_col;
+    -- (row * 640) + col = (row * (512 + 128)) + col = (row * 512) + (row * 128) + col
+    w_to_buf_addr <= std_logic_vector(
+        resize(unsigned(w_to_buf_row & "000000000"), 19) + -- * 512
+        resize(unsigned(w_to_buf_row & "0000000"), 19) + -- * 128
+        resize(unsigned(w_to_buf_col), 19)
+    );
+
 
     -- FRAME BUFFER READ
-    w_buf_addr_r <= i_buf_row(8 downto 0) & i_buf_column(9 downto 0);
+    -- (row * 640) + col = (row * (512 + 128)) + col = (row * 512) + (row * 128) + col
+    w_buf_addr_r <= std_logic_vector(
+        resize(unsigned(i_buf_row(8 downto 0) & "000000000"), 19) + -- * 512
+        resize(unsigned(i_buf_row(8 downto 0) & "0000000"), 19) + -- * 128
+        resize(unsigned(i_buf_column(9 downto 0)), 19)
+    );
 
     FRAME_BUFFER: Framebuffer
     port map (
-        clka    => i_clk,
-        ena     => w_to_buf_write_en(0),
-        wea     => w_to_buf_write_en,
-        addra   => w_to_buf_addr,
-        dina    => w_to_buf_data,
-        clkb    => i_vga_clk,
-        enb     => i_buf_read_en,
-        addrb   => w_buf_addr_r,
-        doutb   => w_buf_out
+        i_clk_w    => i_clk,
+        i_en_w     => w_to_buf_write_en,
+        i_write_en => w_to_buf_write_en,
+        i_addr_w   => w_to_buf_addr,
+        i_data_w   => w_to_buf_data,
+        i_clk_r    => i_vga_clk,
+        i_en_r     => i_buf_read_en,
+        i_addr_r   => w_buf_addr_r,
+        o_data_r   => w_buf_out
     );
 
     o_buf_cycles_until_divergent <= w_buf_out(7 downto 0);
