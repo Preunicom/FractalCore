@@ -35,7 +35,6 @@ architecture Testbench of TB_Core_Stage_3 is
     constant tbase : time := 10 ns;
     -- STIMULI
     signal s_clk : std_logic := '0';
-    signal s_resetn : std_logic;
     signal s_stage_data : t_stage_data := c_STAGE_DATA_RESET;
     signal s_real_mul : signed(37 downto 0);
     signal s_img_res_long : signed(37 downto 0);
@@ -51,7 +50,6 @@ begin
     
     UUT: entity work.Core_Stage_3
     port map (
-        i_resetn       => s_resetn,
         i_clk          => s_clk,
         i_stage_data   => s_stage_data,
         i_real_mul     => s_real_mul,
@@ -59,12 +57,10 @@ begin
         o_stage_data   => c_stage_data
     );
 
-    s_resetn <= '0', '1' after 1*tbase;
     s_clk <= not s_clk after 0.5*tbase;
 
     STIMULI: process
 	begin
-        wait until s_resetn = '1';
         -- TEST 1 - Test no fractal bits and positive numbers
         s_real_mul <= to_signed(1, 38) sll 30;
         s_stage_data.c_real <= to_signed(2, 18) sll 15;
@@ -85,7 +81,6 @@ begin
 
     CHECK: process
 	begin
-        wait until s_resetn = '1';
         wait until rising_edge(s_clk);
         wait until rising_edge(s_clk);
         -- TEST 1

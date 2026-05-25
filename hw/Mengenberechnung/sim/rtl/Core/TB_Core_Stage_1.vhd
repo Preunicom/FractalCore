@@ -35,7 +35,6 @@ architecture Testbench of TB_Core_Stage_1 is
     constant tbase : time := 10 ns;
     -- STIMULI
     signal s_clk : std_logic := '0';
-    signal s_resetn : std_logic;
     signal s_stage_data : t_stage_data := c_STAGE_DATA_RESET;
     
     -- CHECK
@@ -54,7 +53,6 @@ begin
     
     UUT: entity work.Core_Stage_1
     port map (
-        i_resetn     => s_resetn,
         i_clk        => s_clk,
         i_stage_data => s_stage_data,
         o_stage_data => c_stage_data,
@@ -65,12 +63,10 @@ begin
         o_zi_mul_zi  => c_zi_mul_zi
     );
 
-    s_resetn <= '0', '1' after 1*tbase;
     s_clk <= not s_clk after 0.5*tbase;
 
     STIMULI: process
 	begin
-        wait until s_resetn = '1';
         s_stage_data.video_frame_idx <= "01";
         s_stage_data.video_pix_col <= "0000000010";
         s_stage_data.video_pix_row <= "000000011";
@@ -85,7 +81,6 @@ begin
 
     CHECK: process
 	begin
-        wait until s_resetn = '1';
         wait until rising_edge(s_clk);
         ---- TEST no fract bits and positive numbers
         -- RE: 2 in 3.15 
