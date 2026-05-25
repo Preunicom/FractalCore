@@ -13,6 +13,18 @@ Die Arbeitsaufteilung wurde wie folgt gewählt:
 - Anzeige: Thomas Schiergl
 - Systemintegration: Thomas Schiergl und Markus Remy
 
+Als zusätzliches Feature wurde das Projekt auf den Arty Z7-20 portiert.
+Dazu wurde das Konfigurationsmodul sowie Farbcodierung und Anzeige von Markus Remy neu entwickelt.
+Damit ergibt sich für die Portierung auf das Arty Z7-20 folgende Arbeitsaufteilung:
+- Systementwurf : Markus Remy und Thomas Schiergl
+- Projektstruktur + CI: Markus Remy
+- Konfigurationsmodul: Markus Remy
+- Initialwerterzeugung: Markus Remy
+- Mengenberechnung: Markus Remy
+- Farbcodierung: Markus Remy
+- Anzeige: Markus Remy
+- Systemintegration: Markus Remy
+
 ## Systementwurf und Schnittstellendefinition
 
 Das System besteht aus folgenden Komponenten:  
@@ -26,13 +38,16 @@ Dabei sind ein paar Designentscheidungen gesondert aufzuführen:
 - Es werden 18 Bit Festkommazahlen für Real- und Imaginärteil der Zahlen verwendet, da die DSP des Arty A7 Multiplikationen mit maximal 25x18 Bit durchführen können.
 - Die Festkommazahlen sind signed und im Format 3.15 gewählt.
 Damit sind Werte im Bereich [-8,8[ möglich, was die relevanten Stellen abdeckt und dennoch eine hohe Präzision ermöglicht.
-- Dia VGA Auflösung beträgt 640x480 Pixel und damit werden 10 (horizontal) bzw. 9 (vertikal) Bits benötigt um die Pixel zu numerieren
+- Dia VGA Auflösung beträgt 640x480 Pixel und damit werden 10 (horizontal) bzw. 9 (vertikal) Bits benötigt um die Pixel zu nummerieren
 - Um eine Priorisierung bei der Arbitrierung auf Basis des Pixels sowie die Zuordnung im Framebuffer zu gewährleisten wird das Frame zum Pixel mit 2 Bit übertragen (=> Frame mod 4).
 2 Bit deshalb, um bei der Arbitrierung zu entscheiden welcher Frame weiter in der Zukunft liegt falls zwei Pixel in verschiedenen Frames liegen.
 - Da der Pmod VGA 12 Bit Farben unterstützt wurden die Bitbreiten der Farben entsprechend gewält.
 - Um die langsamen Folgenberechnungen schneller zu berechnen sowie das VGA Timing einzuhalten werden verschiedene Clock Domainen verwendet.
 - Die Abbruchbedingung liegt bei maximal 100 Iterationen.
 Es wurden dennoch 8 Bit Datenbreite für die Anzahl an Takte bis zur konvergenz gewählt um die maximale Anzahl an Iterationen gegebenenfalls einfach erhöhen zu können, falls die Farbgebung bei 100 Iterationen nicht zufriedenstellend sein sollte.
+
+Für die Portierung auf den Arty Z7 gilt zudem:
+- Da HDMI auf Basis von DVI 8 Bit Farben unterstützt wurden die Farben entsprechend angepasst.
 
 _@author: Markus Remy_
 
@@ -235,3 +250,57 @@ _@author: Markus Remy_
 ## 6. Farbcodierung
 
 ## 7. VGA
+
+## 8. Zusatzfeature: Portierung auf Arty Z7-20
+
+Da Markus Remy mit den ihm zugeteilten Aufgaben unter den 150 Stunden war und noch Puffer hatte, wurde das Projekt auf den Arty Z7-20 portiert.
+Da dieser keine High-Speed Pmod Steckplätze hat, dafür jedoch das moderne HDMI wurde die mit der Anzeige sowie dem MicroBlaze verbundene Architektur für HDMI via DVI-D neu entwickelt.
+
+### 8.1 Anzeige mit Farbcodierung
+
+#### 8.1.1 Framebuffer 
+
+Das größte Problem des FractalCore Projekt ist die Knappheit an BRAM.
+Somit wird an jeder möglichen Stelle BRAM gespart.
+Dementsprechend muss auch bei dem Framebuffer entsprechend gehandelt werden.
+Es werden also nur 9 Bit für die Iterationsanzahl und das Konvergenzflag pro Pixel gespeichert anstelle der Farben.
+Mit den Daten wird dann zum Zeitpunkt der Ausgabe des Pixels in der Farbcodierung die Farbe ermittelt und ausgegeben.
+Zusätzlich wurde die Addressierung dicht gewählt, sodass die BRAMs voll ausgelastet sind.
+
+_@author: Markus Remy_
+
+#### 8.1.2 Sortierung der Ergebnisse
+
+Das zweite große Problem der Anzeige ist das Sortieren der Daten.
+Die Daten sind nach der Mengenberechnung unsortiert und müssen ihren ursrpünglichen Frames zugeordnet werden.
+Dazu werden zwei FIFOs verwendet.
+Der erste für gerade Frames und der zweite für ungerade.
+Damit können je Frame abwechselnd zwischen den beiden FIFOs Daten entnommen werden und ein von der Mengenberechnung vorgezogenes, kommendes Pixel des nächsten Frames blockiert nicht die nachfolgenden Pixel des letztem Frames.
+
+Die FIFOs wurden in ihrer Größe so gewählt, dass ein Pixel mit der maximaler Berechnungsdauer von 303 Takten bis zum Abbruch von allen drei Stages in den 40 Cores mit je Pixel mit Berechnugsdauern von drei Takten einmal überholt werden kann.
+
+_@author: Markus Remy_
+
+#### 8.1.3 Farbcodierung
+
+Für die Farbcodierung wurde ein True Dual Port BRAM gewählt, bei dem das PS (Processing System) über einen BRAM Controller und AXIL auf den einen Port zugreift und die PL (Programmable Logic) über den anderen.
+Dabei entsprechen die ersten 256 Addressen den Farben für die jeweilige Iteration.
+Die folgenden drei Addressen sind in der genannten Reihenfolge für die Konvergenten Pixel, die Minimap C Koordinaten und das Ziel der Minimap C Koordinaten.
+Die Farben werden dabei je Addresse in den unteren 24 der 32 Bit kodiert.
+Die ersten acht Bit sind dabei rot, die folgenden grün und die letzten acht blau.
+Die verbleibenden Bits sind Padding und werden von der PL nicht ausgelesen.
+
+So entfällt der Aufwand ein eigenes AXI Lite Interface mit 259 Registern in RTL zu entwerfen. 
+
+_@author: Markus Remy_
+
+### 8.2 Systemintegration
+
+Für das Arty Z7-20 Projekt wurde sich dazu entschieden, dass es nur drei Clock Domains gibt.
+Eine für VGA, eine für DVI und eine für den Rest.
+Das minimiert CDC und vereinfacht die Constraints.
+Das Timing wurde dadurch zwar straffer, jedoch führte das nur zu Problemen beim synchronen Reset.
+Dieses Problem wurde gelöst, indem die Resets des Datenpfades der Cores entfernt wurden und nur die Valid Flags resetted werden.
+So werden bei 40 Cores mit je drei Stages und vielen Flip Flops je der Reset entfernt, was die Platzierung entzerrt und das Timing, wenn auch nur knapp, erfüllt.
+
+_@author: Markus Remy_
