@@ -1,7 +1,7 @@
 {
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
-    "xci_name": "FractalCore_Anzeige_0_0",
+    "xci_name": "FractalCore_Anzeige_0_1",
     "cell_name": "Anzeige_0",
     "component_reference": "xilinx.com:module_ref:Anzeige:1.0",
     "ip_revision": "1",
@@ -10,7 +10,7 @@
       "component_parameters": {
         "C_S00_AXI_DATA_WIDTH": [ { "value": "32", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "C_S00_AXI_ADDR_WIDTH": [ { "value": "12", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "Component_Name": [ { "value": "FractalCore_Anzeige_0_0", "resolve_type": "user", "usage": "all" } ]
+        "Component_Name": [ { "value": "FractalCore_Anzeige_0_1", "resolve_type": "user", "usage": "all" } ]
       },
       "model_parameters": {
         "C_S00_AXI_DATA_WIDTH": [ { "value": "32", "resolve_type": "generated", "format": "long", "usage": "all" } ],
