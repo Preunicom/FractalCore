@@ -85,6 +85,10 @@ if {[llength [get_projects]] > 0} {
 open_project "$project_file"
 
 set_property -name {xsim.simulate.runtime} -value {0ns} -objects [get_filesets sim_1] 
+
+set_msg_config -severity INFO -suppress
+set_msg_config -severity WARNING -suppress
+
 set exit_code 0
 set total_amount_tb [llength $tb_files]
 set current_tb_index 0
@@ -110,24 +114,39 @@ foreach tb $tb_files {
 
     update_compile_order -fileset sim_1
 
-    launch_simulation
+    if {[catch {
 
-    # Restart simulation to also get asserts at the beginning which were already executed by launch_simulation.
-    restart
+        launch_simulation
 
-    run -all
+        # Restart simulation to also get asserts at the beginning which were already executed by launch_simulation.
+        restart
 
-    set test_passed [get_value /$top_name/tb_test_passed]
-    if {$test_passed eq "TRUE"} {
-        puts "INFO: TEST SUCCESSFULL"
-    } else {
-        puts "ERROR: VHDL Assertion Failure detected for $tb"
+        run -all
+
+        set test_passed [get_value /$top_name/tb_test_passed]
+        puts "------------------------------"
+        if {$test_passed eq "TRUE"} {
+            puts "INFO: TEST SUCCESSFULL"
+        } else {
+            puts "ERROR: VHDL Assertion Failure detected for $tb"
+            incr exit_code
+            lappend failed_tbs $tb
+        }
+        puts "------------------------------"
+
+    } error]} {
+
+        puts "------------------------------"
+        puts "Error detected for $tb"
+        puts "Reason: $error"
         incr exit_code
         lappend failed_tbs $tb
+        puts "------------------------------"
+
     }
 
     # Close simulation
-    close_sim -force
+    catch {close_sim -force}
 }
 if {$exit_code == 0} {
     puts "============================================================"
@@ -136,7 +155,7 @@ if {$exit_code == 0} {
 } else {
     puts "============================================================"
     puts " Tested all testbenches but $exit_code testbenches failed!"
-    puts " Failes testbenches:"
+    puts " Failed testbenches:"
     foreach tb $failed_tbs {
         puts "  - $tb"
     }

@@ -46,7 +46,7 @@ architecture Testbench of TB_VGA_Control is
     signal s_is_convergent                 : std_logic; 
     signal s_cycles_until_divergent        : std_logic_vector(7 downto 0); 
     signal s_vga_clk                       : std_logic := '0'; 
-    signal s_vga_reset                     : std_logic; 
+    signal s_vga_resetn                    : std_logic; 
     signal s_highlight_info                : t_highlight_info := (others => c_HIGHLIGHT_PIXEL_RESET);
 
     -- CHECK
@@ -77,7 +77,7 @@ begin
         o_ready                      => c_ready,
         i_highlight_info             => s_highlight_info,
         i_vga_clk                    => s_vga_clk,
-        i_vga_reset                  => s_vga_reset,
+        i_vga_resetn                 => s_vga_resetn,
         o_vga_h_sync                 => c_vga_h_sync,
         o_vga_v_sync                 => c_vga_v_sync,
         o_vga_blank                  => c_vga_blank,
@@ -91,7 +91,7 @@ begin
     s_resetn <= '0', '1' after 10*tbase_data;
 
     s_vga_clk <= not s_vga_clk after 0.5*tbase_vga;
-    s_vga_reset <= '1', '0' after 640*tbase_vga;
+    s_vga_resetn <= '0', '1' after 640*tbase_vga;
 
     s_highlight_info(0).valid <= '1';
     s_highlight_info(0).current_pixel_col <= std_logic_vector(to_unsigned(0, 10));
@@ -155,7 +155,7 @@ begin
         variable v_amount_highlighted_pixels : integer := 0;
         variable v_amount_highlighted_target_pixels : integer := 0;
 	begin
-        wait until s_vga_reset = '0';
+        wait until s_vga_resetn = '1';
         wait until rising_edge(s_vga_clk); -- To wait for the delay of the RAM
         for idx in 0 to 9 loop
             v_amount_highlighted_pixels := 0;
