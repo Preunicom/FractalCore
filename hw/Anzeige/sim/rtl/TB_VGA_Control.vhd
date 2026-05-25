@@ -146,7 +146,6 @@ begin
         wait;
     end process;
 
-    -- Only checking data (VGA Sync signals have to be checked manually!)
     CHECK: process
         variable v_counter: integer := 0;
         variable v_visible_pixels : integer := 0;

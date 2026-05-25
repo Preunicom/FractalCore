@@ -70,7 +70,7 @@ architecture Behavioral of Dispatcher is
     -- Dispatch
     signal w_buf_out_ready : std_logic;
     signal w_buf_out_valid : std_logic;
-    signal r_s1_selected : std_logic;
+    signal r_s1_selected : std_logic := '1';
 
     -- Helper signals
     signal w_handshake_s1 : std_logic;
