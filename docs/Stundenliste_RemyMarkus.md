@@ -137,6 +137,9 @@
 | 15.05.2026 | 3 | Portieren der Projektstruktur auf den Arty Z7-20 und das Haupt-Block-Design auf Zynq |
 | 15.05.2026 | 1 | Erstellen FIFO IPs und Framebuffer |
 | 17.05.2026 | 3 | TB FIFO IP und TB Framebuffer |
+| |  |  |  |
+| **KW 20** | **-** | **7** | **Zwischensumme** |
+| |  |  |  |
 | 18.05.2026 | 1 | Result Frame Sorting + TB |
 | 18.05.2026 | 2 | Framebuffer Manager |
 | 19.05.2026 | 5 | VGA Control + Anzeige|
@@ -153,4 +156,11 @@
 | 23.05.2026 | 2 | Bugsuche (Multiple Driven Signal) |
 | 24.05.2026 | 3 | Constraints setzen für CDC |
 | 24.05.2026 | 1 | Bug Fixes |
+| |  |  |  |
+| **KW 21** | **-** | **44** | **Zwischensumme** |
+| |  |  |  |
 | 25.05.2026 | 3 | Bug Fixes, Tests und Timing Verbesserungen |
+| 25.05.2026 | 3 | CI für Vitis |
+| |  |  |  |
+| **KW 22** | **-** | **47** | **Zwischensumme** |
+| |  |  |  |
