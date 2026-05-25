@@ -106,14 +106,14 @@ foreach tb $tb_files {
     set_property top $top_name [get_filesets sim_1]
 
     # Reset simulation environment
-    reset_simulation -quiet
+    reset_simulation
 
-    update_compile_order -fileset sim_1 -quiet
+    update_compile_order -fileset sim_1
 
-    launch_simulation -quiet
+    launch_simulation
 
     # Restart simulation to also get asserts at the beginning which were already executed by launch_simulation.
-    restart -quiet
+    restart
 
     run -all
 
@@ -127,7 +127,7 @@ foreach tb $tb_files {
     }
 
     # Close simulation
-    close_sim -force -quiet
+    close_sim -force
 }
 if {$exit_code == 0} {
     puts "============================================================"
