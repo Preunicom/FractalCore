@@ -20,14 +20,41 @@
 #include <stdio.h>
 #include "platform.h"
 #include "xil_printf.h"
-
+#include "ctrl_driver.h"
+#include "col_driver.h"
+#include "ctrl_selftest_pio.h"
+#include "col_selftest_pio.h"
 
 int main()
 {
+    CTRL_Data CTRL_Inst;
+    CTRL_Data *CTRL_InstPtr = &CTRL_Inst;
+    COL_Data COL_Inst;
+    COL_Data *COL_InstPtr = &COL_Inst;
+    XStatus Status;
+
     init_platform();
 
-    print("Hello World\n\r");
-    print("Successfully ran Hello World application");
+    xil_printf("Platform initialized!\n\r");
+
+    Status=CTRL_Init(CTRL_InstPtr, CTRL_BASEADDRESS);
+    if (Status != XST_SUCCESS){
+      xil_printf("Error during CTRL_Init(). Check/Debug manually.\n\r");
+    }
+    Status=COL_Init(COL_InstPtr, COL_BASEADDRESS);
+    if (Status != XST_SUCCESS){
+      xil_printf("Error during COL_Init(). Check/Debug manually.\n\r");
+    }
+
+    test_system();
+
+    xil_printf("End of tests reached. Cleaning up...\n\r");
+
     cleanup_platform();
     return 0;
+}
+
+void test_system(CTRL_Data* ctrl, COL_Data* col) {
+    CTRL_TestRegisters(ctrl);
+    COL_TestRegisters(col);
 }

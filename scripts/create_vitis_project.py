@@ -18,6 +18,7 @@ elif len(xsa_files) > 1:
     print(f"ERROR: More than one XSA found: {xsa_files}", file=sys.stderr)
     sys.exit(2)
 
+# ========== CUSTOM PARAMETER ==========
 xsa_file = xsa_files[0]
 proj_name = xsa_file.stem
 workspace = sw_dir
@@ -26,6 +27,7 @@ domain_name = f"{proj_name}_domain"
 domain_cpu = "ps7_cortexa9_0"
 domain_os = "standalone"
 app_name = f"{proj_name}_app"
+# ======== CUSTOM PARAMETER END ========
 
 workspace.mkdir(parents=True, exist_ok=True)
 

@@ -161,6 +161,7 @@
 | |  |  |  |
 | 25.05.2026 | 3 | Bug Fixes, Tests und Timing Verbesserungen |
 | 25.05.2026 | 3 | CI für Vitis |
+| 25.05.2026 | 2 | SW Treiber |
 | |  |  |  |
 | **KW 22** | **-** | **47** | **Zwischensumme** |
 | |  |  |  |
