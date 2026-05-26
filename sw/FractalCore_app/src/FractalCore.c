@@ -26,6 +26,9 @@
 #include "col_driver.h"
 #include "ctrl_selftest_pio.h"
 #include "col_selftest_pio.h"
+#include "menu.h"
+
+XStatus test_system(CTRL_Data *ctrl, COL_Data *col);
 
 int main()
 {
@@ -48,15 +51,34 @@ int main()
       xil_printf("Error during COL_Init(). Check/Debug manually.\n\r");
     }
 
-    test_system(CTRL_InstPtr, COL_InstPtr);
+    if (test_system(CTRL_InstPtr, COL_InstPtr) != XST_SUCCESS) {
+        xil_printf("WARNING: Self-test FAILED. Menu will start anyway.\n\r");
+    }
 
-    xil_printf("End of tests reached. Cleaning up...\n\r");
+    menu_run(CTRL_InstPtr, COL_InstPtr);
+
+    xil_printf("Menu closed. Cleanup...\n\r");
 
     cleanup_platform();
     return 0;
 }
 
-void test_system(CTRL_Data* ctrl, COL_Data* col) {
-    CTRL_TestRegisters(ctrl);
-    COL_TestRegisters(col);
+// Run CTRL and COL register self-tests. Returns XST_SUCCESS on success, XST_FAILURE if any fail.
+XStatus test_system(CTRL_Data *ctrl, COL_Data *col) {
+    int failed = 0;
+    xil_printf("\n\r");
+    xil_printf("=== Self-test ===\n\r");
+    if (CTRL_TestRegisters(ctrl) != XST_SUCCESS) {
+        xil_printf("  CTRL-Test FAILED!\n\r");
+        failed = 1;
+    }
+    if (COL_TestRegisters(col) != XST_SUCCESS) {
+        xil_printf("  COL-Test FAILED!\n\r");
+        failed = 1;
+    }
+    if (!failed) {
+        xil_printf("  Self-test PASSED.\n\r");
+    }
+    xil_printf("==================\n\r\n\r");
+    return failed ? XST_FAILURE : XST_SUCCESS;
 }
