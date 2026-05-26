@@ -28,9 +28,13 @@ extern char inbyte(void);
 // Input helpers
 char menu_getkey(void);
 XStatus menu_read_line(char *buf, int max_len);
+XStatus menu_read_uint32(uint32_t *out, uint32_t min, uint32_t max);
+XStatus menu_read_hex32(uint32_t *out, uint32_t min, uint32_t max);
+XStatus menu_read_rgb(uint8_t *r, uint8_t *g, uint8_t *b);
 XStatus menu_parse_uint32(const char *buf, uint32_t *out);
 XStatus menu_parse_hex32(const char *buf, uint32_t *out);
 // Display helpers
+XStatus menu_edit_color(COLOR_t *color);
 // Menu screens
 void menu_main(CTRL_Data *ctrl, COL_Data *col);
 void menu_fractal_mode(CTRL_Data *ctrl);
@@ -43,7 +47,6 @@ void menu_color(CTRL_Data *ctrl, COL_Data *col);
 void menu_minimap(CTRL_Data *ctrl);
 void menu_system_info(CTRL_Data *ctrl);
 void menu_status(CTRL_Data *ctrl, COL_Data *col);
-static XStatus menu_edit_color(COLOR_t *color);
 
 /************************** Function Definitions ***************************/
 
@@ -52,9 +55,6 @@ void menu_run(CTRL_Data *ctrl, COL_Data *col) {
     xil_printf("\n\r");
     xil_printf("===================================\n\r");
     xil_printf("  FractalCore — Configuration Menu\n\r");
-    xil_printf("===================================\n\r");
-    xil_printf("  Press q at any time to go back\n\r");
-    xil_printf("  or cancel.\n\r");
     xil_printf("===================================\n\r");
     menu_main(ctrl, col);
     xil_printf("Menu ended.\n\r");
@@ -150,7 +150,7 @@ XStatus menu_read_uint32(uint32_t *out, uint32_t min, uint32_t max) {
             continue;
         }
         if (val < min || val > max) {
-            xil_printf("  Error: Value must be between %lu and %lu.\n\r", min, max);
+            xil_printf("  Error: Value must be between %u and %u.\n\r", min, max);
             continue;
         }
         *out = val;
@@ -173,7 +173,7 @@ XStatus menu_read_hex32(uint32_t *out, uint32_t min, uint32_t max) {
             continue;
         }
         if (val < min || val > max) {
-            xil_printf("  Error: Value must be between 0x%lX and 0x%lX.\n\r", min, max);
+            xil_printf("  Error: Value must be between 0x%X and 0x%X.\n\r", min, max);
             continue;
         }
         *out = val;
@@ -280,7 +280,7 @@ void menu_fractal_mode(CTRL_Data *ctrl) {
             mode_str = "Julia Diamond";
         } else if (mode == SETCR_JULIA_LFSR_MODE_MASK) {
             mode_str = "Julia LFSR";
-        } else { // 1X --> 10 or 11
+        } else { // Mandelbrot mode is 1X --> 10 or 11
             mode_str = "Mandelbrot";
         }
 
@@ -326,11 +326,11 @@ void menu_animation_speed(CTRL_Data *ctrl) {
     uint32_t val;
     xil_printf("\n\r");
     xil_printf("===== Animation Speed =====\n\r");
-    xil_printf("Current: %lu frames per animation step\n\r", current);
+    xil_printf("Current: %u frames per animation step\n\r", current);
     xil_printf("New value (0-65535, q=cancel):\n\r");
     if (menu_read_uint32(&val, 0, 65535) != XST_SUCCESS) return;
     CTRL_SetAnimationSpeed(ctrl, val);
-    xil_printf("Animation Speed = %lu\n\r", val);
+    xil_printf("Animation Speed = %u\n\r", val);
 }
 
 // ----------------------------------------------------------------
@@ -342,11 +342,11 @@ void menu_stepwidth(CTRL_Data *ctrl) {
     uint32_t val;
     xil_printf("\n\r");
     xil_printf("===== Step Width =====\n\r");
-    xil_printf("Current: %lu (0x%05lX)\n\r", sw, sw);
+    xil_printf("Current: %u (0x%05X)\n\r", sw, sw);
     xil_printf("New step width factor (Hex 0x00000-0x1FFFF, q=cancel):\n\r");
     if (menu_read_hex32(&val, 0, 0x1FFFF) != XST_SUCCESS) return;
-    CTRL_SetStepWidth(ctrl, val & 0x1FFFF);
-    xil_printf("Step width factor = %lu (0x%05lX)\n\r", val, val);
+    CTRL_SetStepWidth(ctrl, val);
+    xil_printf("Step width factor = %u (0x%05X)\n\r", val, val);
 }
 
 // ----------------------------------------------------------------
@@ -358,11 +358,11 @@ void menu_zoom(CTRL_Data *ctrl) {
     uint32_t val;
     xil_printf("\n\r");
     xil_printf("===== Zoom =====\n\r");
-    xil_printf("Current pixel distance factor: %lu\n\r", dist);
+    xil_printf("Current pixel distance factor: %u\n\r", dist);
     xil_printf("New pixel distance factor (1-255, q=cancel):\n\r");
     if (menu_read_uint32(&val, 1, 255) != XST_SUCCESS) return;
     CTRL_SetPixelDistance(ctrl, val);
-    xil_printf("Pixel distance = %lu\n\r", val);
+    xil_printf("Pixel distance = %u\n\r", val);
 }
 
 // ----------------------------------------------------------------
@@ -380,10 +380,10 @@ void menu_lfsr(CTRL_Data *ctrl) {
 
         xil_printf("\n\r");
         xil_printf("===== LFSR Settings =====\n\r");
-        xil_printf("  XOR mask Real:  0x%05lX\n\r", xor_re);
-        xil_printf("  XOR mask Imag:  0x%05lX\n\r", xor_im);
-        xil_printf("  Seed Real factor: %lu (0x%05lX)\n\r", seed_re, seed_re);
-        xil_printf("  Seed Imag factor: %lu (0x%05lX)\n\r", seed_im, seed_im);
+        xil_printf("  XOR mask Real:  0x%05X\n\r", xor_re);
+        xil_printf("  XOR mask Imag:  0x%05X\n\r", xor_im);
+        xil_printf("  Seed Real factor: %u (0x%05X)\n\r", seed_re, seed_re);
+        xil_printf("  Seed Imag factor: %u (0x%05X)\n\r", seed_im, seed_im);
         xil_printf(" 1 - XOR mask Real\n\r");
         xil_printf(" 2 - XOR mask Imag\n\r");
         xil_printf(" 3 - Seed Real\n\r");
@@ -398,37 +398,37 @@ void menu_lfsr(CTRL_Data *ctrl) {
         switch (c) {
             case '1': {
                 uint32_t val;
-                xil_printf("Current: 0x%05lX\n\rNew XOR mask Real (Hex 0x00000-0x1FFFF, q=cancel):\n\r", xor_re);
+                xil_printf("Current: 0x%05X\n\rNew XOR mask Real (Hex 0x00000-0x1FFFF, q=cancel):\n\r", xor_re);
                 if (menu_read_hex32(&val, 0, 0x1FFFF) == XST_SUCCESS) {
                     CTRL_SetXorMaskLfsrRe(ctrl, val);
-                    xil_printf("XOR mask Real = 0x%05lX\n\r", val);
+                    xil_printf("XOR mask Real = 0x%05X\n\r", val);
                 }
                 break;
             }
             case '2': {
                 uint32_t val;
-                xil_printf("Current: 0x%05lX\n\rNew XOR mask Imag (Hex 0x00000-0x1FFFF, q=cancel):\n\r", xor_im);
+                xil_printf("Current: 0x%05X\n\rNew XOR mask Imag (Hex 0x00000-0x1FFFF, q=cancel):\n\r", xor_im);
                 if (menu_read_hex32(&val, 0, 0x1FFFF) == XST_SUCCESS) {
                     CTRL_SetXorMaskLfsrIm(ctrl, val);
-                    xil_printf("XOR mask Imag = 0x%05lX\n\r", val);
+                    xil_printf("XOR mask Imag = 0x%05X\n\r", val);
                 }
                 break;
             }
             case '3': {
                 uint32_t val;
-                xil_printf("Current: %lu (0x%05lX)\n\rNew Seed Real (Hex 0x00000-0x3FFFF, q=cancel):\n\r", seed_re, seed_re);
+                xil_printf("Current: %u (0x%05X)\n\rNew Seed Real (Hex 0x00000-0x3FFFF, q=cancel):\n\r", seed_re, seed_re);
                 if (menu_read_hex32(&val, 0, 0x3FFFF) == XST_SUCCESS) {
-                    CTRL_SetSeedLfsrRe(ctrl, val & 0x3FFFF);
-                    xil_printf("Seed Real = %lu (0x%05lX)\n\r", val, val);
+                    CTRL_SetSeedLfsrRe(ctrl, val);
+                    xil_printf("Seed Real = %u (0x%05X)\n\r", val, val);
                 }
                 break;
             }
             case '4': {
                 uint32_t val;
-                xil_printf("Current: %lu (0x%05lX)\n\rNew Seed Imag (Hex 0x00000-0x3FFFF, q=cancel):\n\r", seed_im, seed_im);
+                xil_printf("Current: %u (0x%05X)\n\rNew Seed Imag (Hex 0x00000-0x3FFFF, q=cancel):\n\r", seed_im, seed_im);
                 if (menu_read_hex32(&val, 0, 0x3FFFF) == XST_SUCCESS) {
-                    CTRL_SetSeedLfsrIm(ctrl, val & 0x3FFFF);
-                    xil_printf("Seed Imag = %lu (0x%05lX)\n\r", val, val);
+                    CTRL_SetSeedLfsrIm(ctrl, val);
+                    xil_printf("Seed Imag = %u (0x%05X)\n\r", val, val);
                 }
                 break;
             }
@@ -456,8 +456,8 @@ void menu_diamond(CTRL_Data *ctrl) {
 
         xil_printf("\n\r");
         xil_printf("===== Diamond Settings =====\n\r");
-        xil_printf("  Width factor:  %lu (0x%05lX)\n\r", dw, dw);
-        xil_printf("  Height factor: %lu (0x%05lX)\n\r", dh, dh);
+        xil_printf("  Width factor:  %u (0x%05X)\n\r", dw, dw);
+        xil_printf("  Height factor: %u (0x%05X)\n\r", dh, dh);
         xil_printf(" 1 - Diamond Width (factor)\n\r");
         xil_printf(" 2 - Diamond Height (factor)\n\r");
         xil_printf(" q - Back\n\r");
@@ -469,19 +469,19 @@ void menu_diamond(CTRL_Data *ctrl) {
         switch (c) {
             case '1': {
                 uint32_t val;
-                xil_printf("Current: %lu (0x%05lX)\n\rNew width factor (Hex 0x00000-0x1FFFF, q=cancel):\n\r", dw, dw);
+                xil_printf("Current: %u (0x%05X)\n\rNew width factor (Hex 0x00000-0x1FFFF, q=cancel):\n\r", dw, dw);
                 if (menu_read_hex32(&val, 0, 0x1FFFF) == XST_SUCCESS) {
-                    CTRL_SetDiamondWidth(ctrl, val & 0x1FFFF);
-                    xil_printf("Diamond width factor = %lu (0x%05lX)\n\r", val, val);
+                    CTRL_SetDiamondWidth(ctrl, val);
+                    xil_printf("Diamond width factor = %u (0x%05X)\n\r", val, val);
                 }
                 break;
             }
             case '2': {
                 uint32_t val;
-                xil_printf("Current: %lu (0x%05lX)\n\rNew height factor (Hex 0x00000-0x1FFFF, q=cancel):\n\r", dh, dh);
+                xil_printf("Current: %u (0x%05X)\n\rNew height factor (Hex 0x00000-0x1FFFF, q=cancel):\n\r", dh, dh);
                 if (menu_read_hex32(&val, 0, 0x1FFFF) == XST_SUCCESS) {
-                    CTRL_SetDiamondHeight(ctrl, val & 0x1FFFF);
-                    xil_printf("Diamond height factor = %lu (0x%05lX)\n\r", val, val);
+                    CTRL_SetDiamondHeight(ctrl, val);
+                    xil_printf("Diamond height factor = %u (0x%05X)\n\r", val, val);
                 }
                 break;
             }
@@ -504,7 +504,7 @@ void menu_color(CTRL_Data *ctrl, COL_Data *col) {
     while (1) {
         xil_printf("\n\r");
         xil_printf("===== Color Palette =====\n\r");
-        xil_printf(" 1 - Set iteration color (0-100)\n\r");
+        xil_printf(" 1 - Set iteration color (0-255)\n\r");
         xil_printf(" 2 - Convergent color\n\r");
         xil_printf(" 3 - Minimap target color\n\r");
         xil_printf(" 4 - Minimap pixel color\n\r");
@@ -562,31 +562,34 @@ void menu_color(CTRL_Data *ctrl, COL_Data *col) {
 //  Toggle minimap enable/disable via CTRL SETCR_MME bit.
 // ----------------------------------------------------------------
 void menu_minimap(CTRL_Data *ctrl) {
-    uint32_t state = CTRL_GetMinimapState(ctrl);
-    xil_printf("\n\r");
-    xil_printf("===== Minimap =====\n\r");
-    xil_printf("Current: %s\n\r", state ? "On" : "Off");
-    xil_printf(" 1 - On\n\r");
-    xil_printf(" 2 - Off\n\r");
-    xil_printf(" q - Back\n\r");
-    xil_printf("====================\n\r");
-    xil_printf("Choice: ");
+    char c;
+    while (1) {
+        uint32_t state = CTRL_GetMinimapState(ctrl);
+        xil_printf("\n\r");
+        xil_printf("===== Minimap =====\n\r");
+        xil_printf("Current: %s\n\r", state ? "On" : "Off");
+        xil_printf(" 1 - On\n\r");
+        xil_printf(" 2 - Off\n\r");
+        xil_printf(" q - Back\n\r");
+        xil_printf("====================\n\r");
+        xil_printf("Choice: ");
 
-    char c = menu_getkey();
-    xil_printf("\n\r");
-    switch (c) {
-        case '1':
-            CTRL_SetMinimapEnable(ctrl, 1);
-            xil_printf("Minimap enabled.\n\r");
-            break;
-        case '2':
-            CTRL_SetMinimapEnable(ctrl, 0);
-            xil_printf("Minimap disabled.\n\r");
-            break;
-        case 'q': case 'Q': break;
-        default:
-            xil_printf("Invalid input.\n\r");
-            break;
+        c = menu_getkey();
+        xil_printf("\n\r");
+        switch (c) {
+            case '1':
+                CTRL_SetMinimapEnable(ctrl, 1);
+                xil_printf("Minimap enabled.\n\r");
+                break;
+            case '2':
+                CTRL_SetMinimapEnable(ctrl, 0);
+                xil_printf("Minimap disabled.\n\r");
+                break;
+            case 'q': case 'Q': return;
+            default:
+                xil_printf("Invalid input.\n\r");
+                break;
+        }
     }
 }
 
@@ -597,8 +600,8 @@ void menu_minimap(CTRL_Data *ctrl) {
 void menu_system_info(CTRL_Data *ctrl) {
     xil_printf("\n\r");
     xil_printf("===== System Info =====\n\r");
-    xil_printf(" ID: 0x%08lX\n\r", CTRL_GetId(ctrl));
-    xil_printf(" Version: 0x%08lX\n\r", CTRL_GetVersion(ctrl));
+    xil_printf(" ID: 0x%08X\n\r", CTRL_GetId(ctrl));
+    xil_printf(" Version: 0x%08X\n\r", CTRL_GetVersion(ctrl));
     xil_printf("========================\n\r");
 }
 
@@ -631,15 +634,15 @@ void menu_status(CTRL_Data *ctrl, COL_Data *col) {
     xil_printf("\n\r");
     xil_printf("===== All Settings =====\n\r");
     xil_printf("  Mode:                      %s\n\r", mode_str);
-    xil_printf("  Frames per animation step: %lu\n\r", speed);
-    xil_printf("  Step width factor:         %lu\n\r", sw);
-    xil_printf("  Pixel distance:            %lu\n\r", dist);
-    xil_printf("  XOR mask Real:             0x%05lX\n\r", xor_re);
-    xil_printf("  XOR mask Imag:             0x%05lX\n\r", xor_im);
-    xil_printf("  Seed Real factor:          %lu (0x%05lX)\n\r", seed_re, seed_re);
-    xil_printf("  Seed Imag factor:          %lu (0x%05lX)\n\r", seed_im, seed_im);
-    xil_printf("  Diamond width factor:      %lu\n\r", dw);
-    xil_printf("  Diamond height factor:     %lu\n\r", dh);
+    xil_printf("  Frames per animation step: %u\n\r", speed);
+    xil_printf("  Step width factor:         %u\n\r", sw);
+    xil_printf("  Pixel distance:            %u\n\r", dist);
+    xil_printf("  XOR mask Real:             0x%05X\n\r", xor_re);
+    xil_printf("  XOR mask Imag:             0x%05X\n\r", xor_im);
+    xil_printf("  Seed Real factor:          %u (0x%05X)\n\r", seed_re, seed_re);
+    xil_printf("  Seed Imag factor:          %u (0x%05X)\n\r", seed_im, seed_im);
+    xil_printf("  Diamond width factor:      %u\n\r", dw);
+    xil_printf("  Diamond height factor:     %u\n\r", dh);
     xil_printf("  Minimap:                   %s\n\r", mm_state ? "On" : "Off");
     xil_printf("================================\n\r");
 }

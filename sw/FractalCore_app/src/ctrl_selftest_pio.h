@@ -4,7 +4,9 @@
 #define CTRL_SELFTEST_PIO_H
 
 /****************** Include Files ********************/
-
+#include "xil_types.h"
+#include "xstatus.h"
+#include "ctrl_driver.h"
 
 /**************************** Type Definitions *****************************/
 

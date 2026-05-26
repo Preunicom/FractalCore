@@ -13,9 +13,6 @@
 #include "driver_l.h" 
 
 /************************** Constant Definitions ***************************/
-///Debug Printout Mode
-#define COL_DEBUG_P 1
-
 
 ///Register definitions and mask values
 //Define base address
@@ -56,6 +53,12 @@ typedef struct {
 } COL_Data; //config data; insert additional required (config) data in this struct
 
 
+typedef struct {
+	uint8_t red;
+	uint8_t green;
+	uint8_t blue;
+} COLOR_t;
+
 /************************** Function Prototypes ****************************/
 
 XStatus COL_Init(COL_Data *InstancePtr, uint32_t BaseAddress); //UNINTPTR BaseAddr
@@ -63,12 +66,6 @@ XStatus COL_Init(COL_Data *InstancePtr, uint32_t BaseAddress); //UNINTPTR BaseAd
 void COL_InitCfg(COL_Data *InstancePtr, uint32_t BaseAddress, COL_Config *ConfigPtr); //UNINTPTR BaseAddr
 
 XStatus COL_InitHw(COL_Data *InstancePtr);
-
-typedef struct {
-	uint8_t red;
-	uint8_t green;
-	uint8_t blue;
-} COLOR_t;
 
 void COL_SetIterationColor(COL_Data *InstancePtr, uint8_t iteration, COLOR_t* color);
 

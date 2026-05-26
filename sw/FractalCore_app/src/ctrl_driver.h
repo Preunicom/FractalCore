@@ -14,9 +14,6 @@
 #include "driver_l.h" 
 
 /************************** Constant Definitions ***************************/
-///Debug Printout Mode
-#define CTRL_DEBUG_P 1
-
 
 ///Register definitions and mask values
 //Define base address

@@ -4,7 +4,9 @@
 #define COL_SELFTEST_PIO_H
 
 /****************** Include Files ********************/
-
+#include "xil_types.h"
+#include "xstatus.h"
+#include "col_driver.h"
 
 /**************************** Type Definitions *****************************/
 
