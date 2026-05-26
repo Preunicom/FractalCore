@@ -1,5 +1,18 @@
 # FractalCore
 
+## Zuständigkeiten
+
+Das Projekt FractalCore wurde von Thomas Schiergl und Markus Remy im Rahmen der Veranstaltung Ausgewählte Projekte der Informatik an der OTH Regensburg selbstständig umgsetzt.
+Die Arbeitsaufteilung wurde wie folgt gewählt:
+- Systementwurf : Markus Remy und Thomas Schiergl
+- Projektstruktur + CI: Markus Remy
+- Konfigurationsmodul: Thomas Schiergl
+- Initialwerterzeugung: Markus Remy
+- Mengenberechnung: Markus Remy
+- Farbcodierung: Thomas Schiergl
+- Anzeige: Thomas Schiergl
+- Systemintegration: Thomas Schiergl und Markus Remy
+
 ## Systementwurf und Schnittstellendefinition
 
 Das System besteht aus folgenden Komponenten:  
@@ -21,6 +34,8 @@ Damit sind Werte im Bereich [-8,8[ möglich, was die relevanten Stellen abdeckt 
 - Die Abbruchbedingung liegt bei maximal 100 Iterationen.
 Es wurden dennoch 8 Bit Datenbreite für die Anzahl an Takte bis zur konvergenz gewählt um die maximale Anzahl an Iterationen gegebenenfalls einfach erhöhen zu können, falls die Farbgebung bei 100 Iterationen nicht zufriedenstellend sein sollte.
 
+_@author: Markus Remy_
+
 ## 0. Gesamtsystem
 
 Um den verschiedenen Taktdomainen entsprechende Takt- und Resetsignale zur Verfügung zu stellen werden zwei Clocking Wizard IPs verwendet.
@@ -31,11 +46,86 @@ Als Resetsignale wird das locked signal der Clocking Wizards verwendet.
 Da dieses nicht synchron in den Taktdomains sein muss, wird es mit zwei FlipFlops auf die jeweilige Taktdomaine synchronisiert um Metastabilität zu vermeiden.
 Außerdem werden die beiden Taktdomainen für den Microblaze und die AXI Lite Verbindungen als ein SoC Signal vom Clocking Wizard erzeugt um die Komplexität des Systems möglichst gering zu halten.
 
+_@author: Markus Remy_
+
 ## 1. MicroBlaze
 
 ## 2. UART Schnittstelle
 
 ## 3. Initialwertkoponente
+
+Um ein animiertes Bild zu erzeugen werden nach einer ausgewählten Strategie Startwerte auf die Pixel verteilt.
+Dafür werden z_0 und c Werte festgelegt.
+Je nach Modus erfüllen diese unterschiedliche Eigenschaften.
+Die Modi sowie die zughörigen Einstellungen können via AXI Lite konfiguriert werden.
+Die genaueren Beschreibungen der dafür notwendigen Register sind in der entsprechenden [Registerbeschreibung](./Registerbeschreibungen/Initialwerterzeugung/) genauer beschrieben.
+
+_@author: Markus Remy_
+
+### 3.1 Julia Modus (0X)
+
+Der Julia Modus wird mit den Steuerbits ``0X`` ausgewählt.
+Für die Visualisierung wird die Julia Menge verwendet.
+Dabei entspricht der Startwert für z_0 der Pixelkoordiante.
+C wird pro Frame dem gleichen Wert zugewiesen und entpsricht einem Punkt, der für die Animation mit einer gewählten Strategie verschoben wird.
+Zusätzlich wird, falls aktiviert, in der linken unteren Ecke eine Minimap angezeigt werden, in der markiert ist, wo sich das c derzeit befindet.
+
+_@author: Markus Remy_
+
+#### 3.1.1 Diamond Modus (00)
+
+Im Diamond Modus wird das c im Koordinatensystem mit dem reelen Anteil als X-Achse und dem imaginären Anteil als Y-Achse in einer Rautenform verschoben.
+Dabei kann die Breite und Höhe eingestellt werden.
+Wenn die Breite ungleich der Höhe ist, ist die Raute nicht mehr gleichförmig, sondern die Seite wird im 45° Winkel abgefahren bis die Zielachse des kleineren Wertes erreicht ist.
+Dann nähert sich der Wert auf der Achse dem Ziel an.
+
+_@author: Markus Remy_
+
+#### 3.1.2 LFSR Modus (01)
+
+Im LFSR Modus wird das Ziel der aktuellen Bewegung anhand eines 18 Bit LFSR bestimmt.
+Dieses kann umfänglich konfiguriert werden.
+Die Schiebebewegung erfolgt dabei in Richtung MSB.
+Bei entsprechender Konfiguration lassen sich so 262143 Pseudo Zufallswerte pro LFSR erreichen.
+Jede Koordinatenachse hat dabei ein eigenes LFSR.
+Wenn der Zielwert eines der LFSR erreicht ist, wechselt dieses zum nächsten Ziel. 
+Das andere bleibt unverändert bis der zugehörige Koordinatenanteil des c den Wert erreicht hat.
+Die daraus resultierende Vielfalt an Bewegungsmuster ist somit sehr groß und führt zu keinen Wiederholungen von Mustern in absehbarer Zeit.
+
+_@author: Markus Remy_
+
+### 3.2 Mandelbrot Modus (1X)
+
+Im Mandelbrot Modus wird statisch das Mandelbrot angezeigt.
+Dabei erfolgt keine Animation und die Minimap ist nicht verfügbar.
+Als Startwerte wird für z_0 der Wert 0 verwendet und für c die Pixelkoordinate.
+
+_@author: Markus Remy_
+
+### 3.3 Minimap
+
+Um die Minimap umzusetzen müssen zwei Pixelbereiche hervorgehboben werden.
+Zusätzlich muss das untere linke Eck als Startwerte Mandelbrot Startwerte bekommen.
+Da die Koordinaten in diesem Fall nicht direkt als c Startwert verwendet werden können, muss der Bereich auf die Fläche des gesamten Bildschirms gemappt werden.
+Andernfalls würde nur der linke untere Teil des Mandelbrotausschnitts angezeigt werden.
+
+Um diesen Effekt zu erreichen wird der Minimap Bereich mit einem viermal höheren Koordiantenabstand berechnet.
+Da der Bereich genau ein Viertel der Höhe und ein Viertel der Breite des Bereichs ausgibt entspricht das genau dem Bildbereich.
+
+Um die beiden Pixelbereiche für das aktuelle c und das Ziel c hervorzuheben, muss der zugehörige Pixel bestimmt werden.
+Dies wird mit einer Abstandsrechnung erreicht.
+Da bekannt ist, wie groß der Koordinatenabstand zwischen zwei Pixel ist, wird für jeden Pixel während der Erzeugung geprüft ob er näher als der Halbe Abstand im reelen und imaginären von c oder dem c Zielwert entfernt ist.
+Sollte das der Fall sein wird der Pixel abgespeichert und mit dem aktuellen Frameindex nach außen hin weitergegeben.
+
+Diese Information wird dann direkt von der Anzeige verarbeitet und ein Overlay über die Daten erzeugt.
+
+Da die Werte schneller bei der Anzeigeeinheit sind als die Berechnung der Iterationen für die Pixel, liegen die beiden Werte vor der Iterationsanzahl vor.
+Das könnte zu Race Conditions führen.
+
+Da der Wert jedoch pro Frameindex gespeichert wird, müsste der Wert Pixel von drei Bildern überholen um einen Einfluss auf das falsche ausgegebene Bid zu haben.
+Das liegt daran, dass der Frameindex sich alle 4 Bilder wiederholt.
+Es ist aber nicht möglich so viele Pixel gleichzeitig im System zu speichern.
+Dementsprechend kann der Wert diese Pixelanzahl auch nicht überholen und damit können auch keine Race Conditions entstehen.
 
 ## 4. Berechnung
 
@@ -46,6 +136,8 @@ Da aufgrund Einschränkungen in der Konfiguration die asynchronen FIFOs nicht di
 Damit ist der Dispatcher in der Clock Domaine der Cores und muss entprechend hoch getaktet werden können.
 Es wurden verschiedene Ansätze getestet um eine möglichst hohe Taktfrequenz zu erreichen.
 
+_@author: Markus Remy_
+
 #### Baumstruktur
 
 Allen Ansätzen gemeinsam hatte die Binärbaum Struktur.
@@ -54,12 +146,16 @@ Die Entscheidung welcher Ausgang verwendet wird hängt dabei von der Herangehens
 So ist das Problem einfach zu lösen aber dennoch skalierbar mit der Anzahl an Cores.
 Dafür werden die einzelnen Dispatcher als Knoten in einem Binärbaum interpretiert mit den Cores als Blätter des Baums.
 
+_@author: Markus Remy_
+
 #### Trivialer Ansatz
 
 Der triviale Ansatz ist das ganze ohne Pipelining umzusetzen.
 Dabei werden die Steuersignale sowie die Daten in beide Richtungen kombinatorisch durchgereicht.
 Dieser Ansatz erziehlt die gleichmäßigste Verteilung auf die Cores, da Cores die Daten benötigen noch im selben Takt die Daten erhalten.
 Diese Geschwindigkeit und Flexibilität ermöglicht jedoch nur sehr niedrige Taktfrequenzen und ist damit nicht geeignet.
+
+_@author: Markus Remy_
 
 #### Gepipelinter Datenpfad
 
@@ -73,6 +169,8 @@ Zusätzlich muss Logik implementiert werden um das ready Signal des Cores zu erh
 Falls ein Core mehrere freie Slots hat, muss die Anzahl an freien Slots mit der Höhe des Baums multipliziert werden um die Wartetakte z uermitteln, da erst nach dem Empfangen der Daten am Core die nächste Anfrage erkannt wird.
 
 Zusammengefasst eignet sich diese Möglichkeit nicht aufgrund ihrer Komplexität sowie auf der weiterhin niedrigen Taktfrequenz.
+
+_@author: Markus Remy_
 
 #### Skid Buffer
 
@@ -88,6 +186,8 @@ Um diese Eigenschaft optimal auszunutzen verteilt der Dispatcher die Werte falls
 So verteilt sich die Last möglichst gleichmäßig im Baum und damit auf die Cores.
 
 Damit ist diese Lösung die beste der getesteten Varianten und erlaubt eine Taktfrequenz von über 100 MHz.
+
+_@author: Markus Remy_
 
 ### 4.2 Core
 
@@ -106,6 +206,8 @@ Eine mögliche Alternative wären Gleitkommazahlen, die aber auf dem FPGA sehr a
 Diese Rechenungenauigkeit sollte dich jedoch nicht so stark auf die Visualisierung auswirken, da nur Pixel am Rand der Menge betroffen sind.
 Dort sind die Farben zwar etwas im Farbschema verschoben, was aber bei einem Farbschema mit Farbverlauf nicht so stark ins Gewicht fallen sollte.
 
+_@author: Markus Remy_
+
 #### Async FIFO IP
 
 Der AXI Stream Async FIFO führt das Reset Signal intern in die zweite Clock Domaine über wobei er es synchronisieren muss.
@@ -113,6 +215,8 @@ Dafür benötigt er einen ausreichend langen Reset Puls um nach dem Reset direkt
 
 Das ist auf der Hardware irrelevant, da das Reset Signal in diesem Aufbau durch den Clocking Wizard erzeugt wird und damit lange genug anliegt.
 In Testbenches muss es jedoch beachtet werden.
+
+_@author: Markus Remy_
 
 ## 5. Arbiter
 
@@ -125,6 +229,8 @@ Das Ergebnis ist sehr ähnlich, da die Auswirkungen von langen Pfaden aufgrund d
 Es wurde ein Skid Buffer gewählt und eine Priorisierung anhand der Pixelposition.
 Da es nur eine Priorisierung ist und die Ergebnisse unterschiedlich lange berechnet werden, gibt es keine Garantie auf eine korrekte Reihenfolge der Pixel.
 Das nachfolgende System muss diese Einschränkung entsprechend beachten.
+
+_@author: Markus Remy_
 
 ## 6. Farbcodierung
 

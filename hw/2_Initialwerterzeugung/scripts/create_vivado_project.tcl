@@ -1,3 +1,5 @@
+# @author Markus Remy
+
 proc find_files {dir pattern} {
     set result {}
     foreach f [glob -nocomplain -directory $dir -types f $pattern] {
@@ -9,18 +11,20 @@ proc find_files {dir pattern} {
     return $result
 }
 
-
 # ================ VALUES ================
 set script_dir [file dirname [info script]]
 set project_data_dir [file normalize "$script_dir/.."]
 
 set proj_name "2_Initialwerterzeugung"
-#set proj_top_module "TODO_SET"
+set proj_top_module "Initialwerterzeugung"
 set proj_part "xc7a100tcsg324-1"
 set proj_dir "[file normalize "$project_data_dir/../../xilinx/vivado/$proj_name"]"
 set proj_IP_dir "[file normalize "$project_data_dir/ip"]"
 set general_files_dir "[file normalize "$project_data_dir/../0_General"]"
 set ip_repo_path "[file normalize "$project_data_dir/../ip_repo"]"
+
+# ================ MISC ================
+file delete -force $proj_dir
 
 # ================ PROJECT ================
 create_project $proj_name "$proj_dir" -part $proj_part
@@ -53,6 +57,8 @@ set sim_files [concat \
     [find_files $general_files_dir/sim "*.v"] \
     [find_files $general_files_dir/sim "*.sv"] \
 ]
+set sim_bd_files [find_files $project_data_dir/sim/bd "*.bd"]
+set constr_file [lindex [find_files $project_data_dir/constraints "*.xdc"] 0]
 
 # ================ SOURCES ================
 if {[string equal [get_filesets -quiet sources_1] ""]} {
@@ -68,7 +74,11 @@ foreach file $rtl_files {
     set file_obj [get_files $file]
     if {[string match "*.vhd" $file]} {
         set_property -name "file_type" -value "VHDL" -objects $file_obj
-    } 
+    }  elseif {[string match "*.v" $file]} {
+        set_property -name "file_type" -value "Verilog" -objects $file_obj
+    } elseif {[string match "*.sv" $file]} {
+        set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
+    }
 }
 
 foreach file $ip_files {
@@ -86,6 +96,21 @@ if {[info exists proj_top_module]} {
 }
 set_property -name "top_auto_set" -value "0" -objects $obj
 
+# ================ CONSTRAINTS ================
+if {[llength $constr_file] > 0} {
+    if {[string equal [get_filesets -quiet constrs_1] ""]} {
+    create_fileset -constrset constrs_1
+    }
+    set obj [get_filesets constrs_1]
+
+    set file "$constr_file"
+    set file_added [add_files -norecurse -fileset $obj [list $file]]
+    set file_obj [get_files $file]
+    set_property -name "file_type" -value "XDC" -objects $file_obj
+
+    set obj [get_filesets constrs_1]
+    set_property -name "target_part" -value $proj_part -objects $obj
+}
 # ================ SIMULATION ================
 if {[string equal [get_filesets -quiet sim_1] ""]} {
   create_fileset -simset sim_1
@@ -96,11 +121,18 @@ set obj [get_filesets sim_1]
 if {[llength $sim_files] > 0} {
     add_files -norecurse -fileset $obj $sim_files
 }
+if {[llength $sim_bd_files] > 0} {
+    add_files -norecurse -fileset $obj $sim_bd_files
+}
 
 foreach file $sim_files {
     set file_obj [get_files $file]
     if {[string match "*.vhd" $file]} {
         set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
+    } elseif {[string match "*.v" $file]} {
+        set_property -name "file_type" -value "Verilog" -objects $file_obj
+    } elseif {[string match "*.sv" $file]} {
+        set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
     }
 }
 

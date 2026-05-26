@@ -1,3 +1,5 @@
+# @author Markus Remy
+
 proc find_files {dir pattern} {
     set result {}
     foreach f [glob -nocomplain -directory $dir -types f $pattern] {
@@ -22,6 +24,8 @@ set proj_IP_dir "[file normalize "$project_data_dir/ip"]"
 set general_files_dir "[file normalize "$project_data_dir/../0_General"]"
 set ip_repo_path "[file normalize "$project_data_dir/../ip_repo"]"
 
+# ================ MISC ================
+file delete -force $proj_dir
 
 # ================ PROJECT ================
 create_project $proj_name "$proj_dir" -part $proj_part
@@ -71,7 +75,11 @@ foreach file $rtl_files {
     set file_obj [get_files $file]
     if {[string match "*.vhd" $file]} {
         set_property -name "file_type" -value "VHDL" -objects $file_obj
-    } 
+    } elseif {[string match "*.v" $file]} {
+        set_property -name "file_type" -value "Verilog" -objects $file_obj
+    } elseif {[string match "*.sv" $file]} {
+        set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
+    }
 }
 
 foreach file $ip_files {
@@ -120,6 +128,10 @@ foreach file $sim_files {
     set file_obj [get_files $file]
     if {[string match "*.vhd" $file]} {
         set_property -name "file_type" -value "VHDL 2008" -objects $file_obj
+    } elseif {[string match "*.v" $file]} {
+        set_property -name "file_type" -value "Verilog" -objects $file_obj
+    } elseif {[string match "*.sv" $file]} {
+        set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
     }
 }
 

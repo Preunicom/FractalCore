@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# @author Markus Remy
+
 VIVADO="vivado"
 
 SCRIPT_PATH="$(realpath "$0")"
