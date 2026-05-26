@@ -55,8 +55,8 @@ set project_data_dir [file normalize "$script_dir/../hw"]
 
 set proj_name "FractalCore"
 set proj_top_module "FractalCore_wrapper"
-set proj_part "xc7z020clg400-1"
-set board_part "digilentinc.com:arty-z7-20:part0:1.1"
+set proj_part "xc7a100tcsg324-1"
+set board_part "digilentinc.com:arty-a7-100:part0:1.1"
 set proj_dir "[file normalize "$project_data_dir/../xilinx/vivado/$proj_name"]"
 set ip_repo_paths [list \
     [file normalize "$project_data_dir/ip_repo"] \

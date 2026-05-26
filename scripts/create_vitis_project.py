@@ -24,7 +24,7 @@ proj_name = xsa_file.stem
 workspace = sw_dir
 platform_name = f"{proj_name}_platform"
 domain_name = f"{proj_name}_domain"
-domain_cpu = "ps7_cortexa9_0"
+domain_cpu = "microblaze_0"
 domain_os = "standalone"
 app_name = f"{proj_name}_app"
 # ======== CUSTOM PARAMETER END ========
@@ -80,14 +80,11 @@ try:
     if not platform_xpfm.is_file():
         raise FileNotFoundError(f"Platform export not found: {platform_xpfm}")
     application = client.create_app_component(
-        name="FractalCore_app",
+        name=app_name,
         platform = str(platform_xpfm),
         domain = f"{domain_os}_{domain_cpu}",
         template = "hello_world"
     )
-    print("Building application...")
-    application.build()
-    print("Application build completed.")
 
     # Restoring source files to the app
     helloworld_file = app_src_dir / "helloworld.c"
@@ -101,6 +98,10 @@ try:
 
     if temp_dir.exists():
         shutil.rmtree(temp_dir)
+
+    print("Building application...")
+    application.build()
+    print("Application build completed.")
 
 except Exception as exc:
     print(f"ERROR: Vitis platform creation failed: {exc}", file=sys.stderr)

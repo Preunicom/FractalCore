@@ -2,7 +2,7 @@
   "design": {
     "design_info": {
       "boundary_crc": "0x43475AE682517180",
-      "device": "xc7z020clg400-1",
+      "device": "xc7a100tcsg324-1",
       "name": "AXI_Color_RAM_CTRL",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
@@ -367,8 +367,23 @@
           "Assume_Synchronous_Clk": {
             "value": "false"
           },
+          "Enable_B": {
+            "value": "Use_ENB_Pin"
+          },
           "Memory_Type": {
             "value": "True_Dual_Port_RAM"
+          },
+          "Port_B_Clock": {
+            "value": "100"
+          },
+          "Port_B_Enable_Rate": {
+            "value": "100"
+          },
+          "Port_B_Write_Rate": {
+            "value": "50"
+          },
+          "Use_RSTB_Pin": {
+            "value": "true"
           },
           "use_bram_block": {
             "value": "BRAM_Controller"

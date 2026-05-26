@@ -202,7 +202,7 @@ XStatus menu_read_rgb(uint8_t *r, uint8_t *g, uint8_t *b) {
 //  No hardware access — caller owns the get/set via driver.
 // ================================================================
 
-static XStatus menu_edit_color(COLOR_t *color) {
+XStatus menu_edit_color(COLOR_t *color) {
     xil_printf("Current color: R=%u G=%u B=%u\n\r",
         color->red, color->green, color->blue);
     xil_printf("  New color (q=cancel):\n\r");
