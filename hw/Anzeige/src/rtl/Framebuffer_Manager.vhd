@@ -126,7 +126,7 @@ architecture Behavioral of Framebuffer_Manager is
     signal r_cdc_is_lower_half_of_frame : std_logic;
     signal r_stable_is_lower_half_of_frame : std_logic;
 
-    signal r_frame_idx_grey_code : std_logic_vector(1 downto 0);
+    signal w_frame_idx_grey_code : std_logic_vector(1 downto 0);
     signal r_cdc_frame_idx_grey_code : std_logic_vector(1 downto 0);
     signal r_stable_frame_idx_grey_code : std_logic_vector(1 downto 0);
     signal w_stable_frame_idx : std_logic_vector(1 downto 0);
@@ -312,7 +312,7 @@ begin
         if rising_edge(i_clk) then
             r_cdc_is_lower_half_of_frame <= r_is_lower_half_of_frame;
             r_stable_is_lower_half_of_frame <= r_cdc_is_lower_half_of_frame;
-            r_cdc_frame_idx_grey_code <= r_frame_idx_grey_code;
+            r_cdc_frame_idx_grey_code <= w_frame_idx_grey_code;
             r_stable_frame_idx_grey_code <= r_cdc_frame_idx_grey_code;
         end if;
     end process;
@@ -320,7 +320,7 @@ begin
     -- Encode frame idx in gray code for cdc (always old or new state when metastable)
     -- Encode
     with i_buf_frame_idx select
-        r_frame_idx_grey_code <=
+        w_frame_idx_grey_code <=
             "00" when "00",
             "01" when "01",
             "11" when "10",

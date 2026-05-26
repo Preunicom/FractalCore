@@ -121,7 +121,8 @@ foreach tb $tb_files {
         # Restart simulation to also get asserts at the beginning which were already executed by launch_simulation.
         restart
 
-        run -all
+        # Run simulation with 1 minutes timeout to catch infinite loops
+        run 60s
 
         set test_passed [get_value /$top_name/tb_test_passed]
         puts "------------------------------"

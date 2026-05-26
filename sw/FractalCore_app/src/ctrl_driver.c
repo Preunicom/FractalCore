@@ -1,3 +1,4 @@
+// @author: Markus Remy
 
 /***************************** Include Files *******************************/
 #include "ctrl_driver.h"
@@ -79,37 +80,37 @@ void CTRL_SetValue(CTRL_Data *InstancePtr, uint32_t register_offset, uint32_t va
 }
 
 void CTRL_LoadLfsrSeeds(CTRL_Data *InstancePtr) {
-  uint32_t data = mReadReg(InstancePtr, SETCR_ADDR_OFFSET);
+  uint32_t data = mReadReg(InstancePtr->BaseAddress, SETCR_ADDR_OFFSET);
   data |= SETCR_LD_MASK;
-  mWriteReg(InstancePtr, SETCR_ADDR_OFFSET, data);
+  mWriteReg(InstancePtr->BaseAddress, SETCR_ADDR_OFFSET, data);
 }
 
 void CTRL_SetJuliaDiamondMode(CTRL_Data *InstancePtr) {
-  uint32_t data = mReadReg(InstancePtr, SETCR_ADDR_OFFSET);
+  uint32_t data = mReadReg(InstancePtr->BaseAddress, SETCR_ADDR_OFFSET);
   data &= ~(SETCR_MODE_MASK);
   data |= SETCR_JULIA_DIAMOND_MODE_MASK;
-  mWriteReg(InstancePtr, SETCR_ADDR_OFFSET, data);
+  mWriteReg(InstancePtr->BaseAddress, SETCR_ADDR_OFFSET, data);
 }
 
 void CTRL_SetJuliaLfsrMode(CTRL_Data *InstancePtr) {
-  uint32_t data = mReadReg(InstancePtr, SETCR_ADDR_OFFSET);
+  uint32_t data = mReadReg(InstancePtr->BaseAddress, SETCR_ADDR_OFFSET);
   data &= ~(SETCR_MODE_MASK);
   data |= SETCR_JULIA_LFSR_MODE_MASK;
-  mWriteReg(InstancePtr, SETCR_ADDR_OFFSET, data);
+  mWriteReg(InstancePtr->BaseAddress, SETCR_ADDR_OFFSET, data);
 }
 
 void CTRL_SetMandelbrotMode(CTRL_Data *InstancePtr) {
-  uint32_t data = mReadReg(InstancePtr, SETCR_ADDR_OFFSET);
+  uint32_t data = mReadReg(InstancePtr->BaseAddress, SETCR_ADDR_OFFSET);
   data &= ~(SETCR_MODE_MASK);
   data |= SETCR_MANDELBROT_MODE_MASK;
-  mWriteReg(InstancePtr, SETCR_ADDR_OFFSET, data);
+  mWriteReg(InstancePtr->BaseAddress, SETCR_ADDR_OFFSET, data);
 }
 
 void CTRL_SetMinimapEnable(CTRL_Data *InstancePtr, uint8_t state) {
-  uint32_t data = mReadReg(InstancePtr, SETCR_ADDR_OFFSET);
-  data &= SETCR_MME_MASK;
+  uint32_t data = mReadReg(InstancePtr->BaseAddress, SETCR_ADDR_OFFSET);
+  data &= ~(SETCR_MME_MASK);
   data |= (state << 16) & SETCR_MME_MASK;
-  mWriteReg(InstancePtr, SETCR_ADDR_OFFSET, data);
+  mWriteReg(InstancePtr->BaseAddress, SETCR_ADDR_OFFSET, data);
 }
 
 uint32_t CTRL_GetValue(CTRL_Data *InstancePtr, uint32_t register_offset) {

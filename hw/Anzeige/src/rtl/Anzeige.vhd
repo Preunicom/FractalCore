@@ -242,11 +242,11 @@ begin
 	ADDR: process(w_vga_is_highlighted, w_vga_is_highlighted_target, w_vga_is_convergent, w_vga_cycles_until_divergent)
 	begin
 		if w_vga_is_highlighted = '1' then
-			w_bram_addr <= "00" & x"00002FF" & "00"; -- Register 257 if highlight
+			w_bram_addr <= "00" & x"0000101" & "00"; -- Register 257 if highlight
 		elsif w_vga_is_highlighted_target = '1' then
-			w_bram_addr <= "00" & x"00003FF" & "00"; -- Register 258 if highlight target
+			w_bram_addr <= "00" & x"0000102" & "00"; -- Register 258 if highlight target
 		elsif w_vga_is_convergent = '1' then
-			w_bram_addr <= "00" & x"00001FF" & "00";  -- Register 256 if convergent
+			w_bram_addr <= "00" & x"0000100" & "00";  -- Register 256 if convergent
 		else
 			w_bram_addr <= x"00000" & "00" & w_vga_cycles_until_divergent & "00"; -- Register 0-255 else
 		end if;

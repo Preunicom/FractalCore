@@ -17,6 +17,8 @@
  *   ps7_uart    115200 (configured by bootrom/bsp)
  */
 
+ // @author: Markus Remy
+
 #include <stdio.h>
 #include "platform.h"
 #include "xil_printf.h"
@@ -46,7 +48,7 @@ int main()
       xil_printf("Error during COL_Init(). Check/Debug manually.\n\r");
     }
 
-    test_system();
+    test_system(CTRL_InstPtr, COL_InstPtr);
 
     xil_printf("End of tests reached. Cleaning up...\n\r");
 

@@ -23,7 +23,7 @@
 
 library IEEE;
     use IEEE.std_logic_1164.all;
-    use IEEE.std_logic_unsigned.all;
+    use IEEE.numeric_std.all;
 
 entity Framebuffer is
     port(
@@ -50,7 +50,7 @@ begin
         if rising_edge(i_clk_w) then
             if i_en_w = '1' then
                 if i_write_en = '1' then
-                    RAM(conv_integer(i_addr_w)) := i_data_w;
+                    RAM(to_integer(unsigned(i_addr_w))) := i_data_w;
                 end if;
             end if;
         end if;
@@ -60,7 +60,7 @@ begin
     begin
         if rising_edge(i_clk_r) then
             if i_en_r = '1' then
-                o_data_r <= RAM(conv_integer(i_addr_r));
+                o_data_r <= RAM(to_integer(unsigned(i_addr_r)));
             end if;
         end if;
     end process;

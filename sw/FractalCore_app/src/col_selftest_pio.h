@@ -1,3 +1,5 @@
+// @author: Markus Remy
+
 #ifndef COL_SELFTEST_PIO_H
 #define COL_SELFTEST_PIO_H
 
@@ -16,6 +18,6 @@ XStatus COL_TestRegisters(COL_Data *InstancePtr);
 
 /************************** Function Definitions ***************************/
 
-#endif // CTRL_SELFTEST_PIO_H
+#endif // COL_SELFTEST_PIO_H
 
 

@@ -1,3 +1,4 @@
+// @author: Markus Remy
 
 /***************************** Include Files *******************************/
 #include "col_driver.h"
@@ -38,21 +39,21 @@ XStatus COL_TestRegisters(COL_Data *InstancePtr)
 	xil_printf("*COL_TESTREGISTERS\n\r");
 	xil_printf("******************************\n\r");
 
-  for(uint8_t i = 0; i <= 255; i++) {
+  for(uint16_t i = 0; i <= 255; i++) {
     Statustmp=COL_TestRegister(InstancePtr, COL_ITER_BASE_ADDR_OFFSET_START + (4*i), 0xFFFFFFFF, 0x00000000);
     Status |= Statustmp;
   }
-  Statustmp=COL_TestRegister(InstancePtr, COL_CONV_ADDR_OFFSET, 0x00000000, 0x00000000);
+  Statustmp=COL_TestRegister(InstancePtr, COL_CONV_ADDR_OFFSET, 0xFFFFFFFF, 0x00000000);
   Status |= Statustmp;
-  Statustmp=COL_TestRegister(InstancePtr, COL_MINIMAP_TARGET_ADDR_OFFSET, 0x00000000, 0x00000000);
+  Statustmp=COL_TestRegister(InstancePtr, COL_MINIMAP_TARGET_ADDR_OFFSET, 0xFFFFFFFF, 0x00000000);
   Status |= Statustmp;
-  Statustmp=COL_TestRegister(InstancePtr, COL_MINIMAP_PIXEL_ADDR_OFFSET, 0x00000000, 0x00000000);
+  Statustmp=COL_TestRegister(InstancePtr, COL_MINIMAP_PIXEL_ADDR_OFFSET, 0xFFFFFFFF, 0x00000000);
   Status |= Statustmp;
   
   if (Status==XST_SUCCESS){
     xil_printf("COL_TESTREGISTERS was successful\n\r");
   }else {
-    xil_printf("COL_TESREGISTERS failed\n\r");
+    xil_printf("COL_TESTREGISTERS failed\n\r");
   }
   return Status;
 }

@@ -1,4 +1,6 @@
 
+// @author: Markus Remy
+
 #ifndef CTRL_DRIVER_H
 #define CTRL_DRIVER_H
 
@@ -107,28 +109,28 @@ uint32_t CTRL_GetValue(CTRL_Data *InstancePtr, uint32_t register_offset);
 #define CTRL_SetAnimationSpeed(InstancePtr, value) \
 	CTRL_SetValue((InstancePtr), SPECR_ADDR_OFFSET, ((value) & SPECR_DP_MASK))
 
-#define CTRL_SetStepWidth(InstancePtr) \
+#define CTRL_SetStepWidth(InstancePtr, value) \
 	CTRL_SetValue((InstancePtr), CSWCR_ADDR_OFFSET, ((value) & CSWCR_SW_MASK))
 
-#define CTRL_SetXorMaskLfsrRe(InstancePtr) \
+#define CTRL_SetXorMaskLfsrRe(InstancePtr, value) \
 	CTRL_SetValue((InstancePtr), XMRCR_ADDR_OFFSET, ((value) & XMRCR_XR_MASK))
 
-#define CTRL_SetXorMaskLfsrIm(InstancePtr) \
+#define CTRL_SetXorMaskLfsrIm(InstancePtr, value) \
 	CTRL_SetValue((InstancePtr), XMICR_ADDR_OFFSET, ((value) & XMICR_XI_MASK))
 
-#define CTRL_SetSeedLfsrRe(InstancePtr) \
+#define CTRL_SetSeedLfsrRe(InstancePtr, value) \
 	CTRL_SetValue((InstancePtr), LSRCR_ADDR_OFFSET, ((value) & LSRCR_SR_MASK))
 
-#define CTRL_SetSeedLfsrIm(InstancePtr) \
+#define CTRL_SetSeedLfsrIm(InstancePtr, value) \
 	CTRL_SetValue((InstancePtr), LSICR_ADDR_OFFSET, ((value) & LSICR_SI_MASK))
 
-#define CTRL_SetDiamondWidth(InstancePtr) \
+#define CTRL_SetDiamondWidth(InstancePtr, value) \
 	CTRL_SetValue((InstancePtr), DWCR_ADDR_OFFSET, ((value) & DWCR_DW_MASK))
 
-#define CTRL_SetDiamondHeight(InstancePtr) \
+#define CTRL_SetDiamondHeight(InstancePtr, value) \
 	CTRL_SetValue((InstancePtr), DHCR_ADDR_OFFSET, ((value) & DHCR_DH_MASK))
 
-#define CTRL_SetPixelDistance(InstancePtr) \
+#define CTRL_SetPixelDistance(InstancePtr, value) \
 	CTRL_SetValue((InstancePtr), ZOMCR_ADDR_OFFSET, ((value) & ZOMCR_DS_MASK))
 
 // ========== GETER ==========

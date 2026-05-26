@@ -16,10 +16,10 @@ module Anzeige_TB();
   parameter integer C_S_AXI_CONTROL_DATA_WIDTH = 32;
     
   //REGISTER DEFINITIONS
-  parameter COL_ITER_BASE_ADDR      = 9'h000;
-  parameter COL_CONV_ADDR           = 9'h194;
-  parameter COL_TARGET_MASK         = 9'h198;
-  parameter COL_PIXEL_MASK          = 9'h19C;
+  parameter COL_ITER_BASE_ADDR      = 9'h000; // - 0x3FC
+  parameter COL_CONV_ADDR           = 9'h400;
+  parameter COL_TARGET_MASK         = 9'h404;
+  parameter COL_PIXEL_MASK          = 9'h408;
   parameter COL_MASK                = 32'h00FFFFFF;
   
   //BUFFER DEFINTIONS (not used so far)

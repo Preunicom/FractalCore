@@ -1,4 +1,6 @@
 
+// @author: Markus Remy
+
 /***************************** Include Files *******************************/
 #include "ctrl_driver.h"
 #include "ctrl_selftest_pio.h"
@@ -88,7 +90,7 @@ XStatus CTRL_TestRegisters(CTRL_Data *InstancePtr)
   if (Status==XST_SUCCESS){
     xil_printf("CTRL_TESTREGISTERS was successful\n\r");
   }else {
-    xil_printf("CTRL_TESREGISTERS failed\n\r");
+    xil_printf("CTRL_TESTREGISTERS failed\n\r");
   }
   return Status;
 }
