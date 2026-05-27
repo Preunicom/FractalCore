@@ -128,12 +128,14 @@ begin
                     if r_is_in_mini_map = '1' then
                         -- Mul with *4 distance (as minimap is one fourth of the screen width)
                         -- Result has maximum 8 bit in mini map case --> 8 + (8+2) = 18 bit
-                        o_pixel_coord_re <= std_logic_vector(resize(r_re_coord * (signed(r_current_pixel_distance & "00")), 18));
-                        o_pixel_coord_im <= std_logic_vector(resize(r_im_coord * (signed(r_current_pixel_distance & "00")), 18));
+                        -- Use maximum pixel distance to allow the minimap to show all possible C values
+                        o_pixel_coord_re <= std_logic_vector(resize(r_re_coord, 18) * resize(signed("0" & to_signed(255, 8) & "00"), 18));
+                        o_pixel_coord_im <= std_logic_vector(resize(r_im_coord, 18) * resize(signed("0" & to_signed(255, 8) & "00"), 18));
                     else
                         -- Result has maximum 10 bit --> 10 + 8 = 18 bit
-                        o_pixel_coord_re <= std_logic_vector(resize(r_re_coord * signed(r_current_pixel_distance), 18));
-                        o_pixel_coord_im <= std_logic_vector(resize(r_im_coord * signed(r_current_pixel_distance), 18));
+                        -- Handle pixel distance as positive signed
+                        o_pixel_coord_re <= std_logic_vector(resize(r_re_coord, 18) * resize("0" & signed(r_current_pixel_distance), 18));
+                        o_pixel_coord_im <= std_logic_vector(resize(r_im_coord, 18) * resize("0" & signed(r_current_pixel_distance), 18));
                     end if;
                     o_pixel_col <= r_pixel_col_idx;
                     o_pixel_row <= r_pixel_row_idx;
