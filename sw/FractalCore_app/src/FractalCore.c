@@ -11,10 +11,9 @@
 
 XStatus testSystem(CTRL_Data *ctrl, COL_Data *col);
 void loadDefaultColors(COL_Data *col);
-void loadDefaultSettings(CTRL_Data *ctrl) {
+void loadDefaultSettings(CTRL_Data *ctrl);
 
-int main()
-{
+int main() {
     CTRL_Data CTRL_Inst;
     CTRL_Data *CTRL_InstPtr = &CTRL_Inst;
     COL_Data COL_Inst;
@@ -80,7 +79,7 @@ void loadDefaultSettings(CTRL_Data *ctrl) {
 }
 
 void loadDefaultColors(COL_Data *col) {
-    Colot_t color;
+    COLOR_t color;
     color.red = 0;
     color.green = 0;
     color.blue = 0;
