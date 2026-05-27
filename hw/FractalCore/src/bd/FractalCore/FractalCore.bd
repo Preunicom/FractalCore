@@ -6,8 +6,7 @@
       "name": "FractalCore",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "Hierarchical",
-      "tool_version": "2023.2",
-      "validated": "true"
+      "tool_version": "2023.2"
     },
     "design_tree": {
       "mig_7series_0": "",
@@ -193,38 +192,12 @@
     "ports": {
       "ext_clk": {
         "type": "clk",
-        "direction": "I",
-        "parameters": {
-          "CLK_DOMAIN": {
-            "value": "FractalCore_sys_clk_i",
-            "value_src": "default"
-          },
-          "FREQ_HZ": {
-            "value": "100000000",
-            "value_src": "default"
-          },
-          "FREQ_TOLERANCE_HZ": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
-          "PHASE": {
-            "value": "0.0",
-            "value_src": "default"
-          }
-        }
+        "direction": "I"
       },
       "ext_rst": {
         "type": "rst",
         "direction": "I",
         "parameters": {
-          "INSERT_VIP": {
-            "value": "0",
-            "value_src": "default"
-          },
           "POLARITY": {
             "value": "ACTIVE_HIGH"
           }
@@ -550,10 +523,6 @@
                 "value": "AXI4LITE",
                 "value_src": "constant"
               },
-              "FREQ_HZ": {
-                "value": "100019089",
-                "value_src": "ip_prop"
-              },
               "ID_WIDTH": {
                 "value": "0",
                 "value_src": "constant"
@@ -637,14 +606,6 @@
               "MAX_BURST_LENGTH": {
                 "value": "1",
                 "value_src": "auto"
-              },
-              "PHASE": {
-                "value": "0.0",
-                "value_src": "ip_prop"
-              },
-              "CLK_DOMAIN": {
-                "value": "/Video_Clk_Gen_clk_out1",
-                "value_src": "ip_prop"
               }
             },
             "memory_map_ref": "s00_axi",
@@ -819,18 +780,6 @@
               "ASSOCIATED_RESET": {
                 "value": "s00_axi_aresetn",
                 "value_src": "constant"
-              },
-              "FREQ_HZ": {
-                "value": "100019089",
-                "value_src": "ip_prop"
-              },
-              "PHASE": {
-                "value": "0.0",
-                "value_src": "ip_prop"
-              },
-              "CLK_DOMAIN": {
-                "value": "/Video_Clk_Gen_clk_out1",
-                "value_src": "ip_prop"
               }
             }
           },
@@ -852,6 +801,11 @@
         "xci_name": "FractalCore_Mengenberechnung_0_0",
         "xci_path": "ip/FractalCore_Mengenberechnung_0_0/FractalCore_Mengenberechnung_0_0.xci",
         "inst_hier_path": "Mengenberechnung_0",
+        "parameters": {
+          "g_AMOUNT_CORES": {
+            "value": "40"
+          }
+        },
         "reference_info": {
           "ref_type": "hdl",
           "ref_name": "Mengenberechnung",
@@ -968,6 +922,11 @@
         "xci_name": "FractalCore_Anzeige_0_0",
         "xci_path": "ip/FractalCore_Anzeige_0_0/FractalCore_Anzeige_0_0.xci",
         "inst_hier_path": "Anzeige_0",
+        "parameters": {
+          "C_S00_AXI_DATA_WIDTH": {
+            "value": "32"
+          }
+        },
         "reference_info": {
           "ref_type": "hdl",
           "ref_name": "Anzeige",
@@ -2116,10 +2075,10 @@
           "microblaze_0_axi_periph/ACLK",
           "microblaze_0_axi_periph/S00_ACLK",
           "microblaze_0_axi_periph/M00_ACLK",
-          "Initialwerterzeugung_0/s00_axi_aclk",
           "microblaze_0_axi_periph/M01_ACLK",
           "axi_uartlite_0/s_axi_aclk",
-          "microblaze_0_axi_periph/M02_ACLK"
+          "microblaze_0_axi_periph/M02_ACLK",
+          "Initialwerterzeugung_0/s00_axi_aclk"
         ]
       },
       "mig_7series_0_mmcm_locked": {
@@ -2159,7 +2118,6 @@
       "rst_Video_Clk_Gen_100M_peripheral_aresetn": {
         "ports": [
           "rst_Video_Clk_Gen_100M/peripheral_aresetn",
-          "Initialwerterzeugung_0/s00_axi_aresetn",
           "Mengenberechnung_0/i_rstn",
           "Anzeige_0/s00_axi_aresetn",
           "microblaze_0_axi_periph/S00_ARESETN",
@@ -2167,7 +2125,8 @@
           "microblaze_0_axi_periph/ARESETN",
           "microblaze_0_axi_periph/M01_ARESETN",
           "axi_uartlite_0/s_axi_aresetn",
-          "microblaze_0_axi_periph/M02_ARESETN"
+          "microblaze_0_axi_periph/M02_ARESETN",
+          "Initialwerterzeugung_0/s00_axi_aresetn"
         ]
       },
       "rst_mig_7series_0_81M_peripheral_aresetn": {
@@ -2221,12 +2180,12 @@
             "segments": {
               "SEG_Anzeige_0_reg0": {
                 "address_block": "/Anzeige_0/s00_axi/reg0",
-                "offset": "0x00000000",
+                "offset": "0x10000000",
                 "range": "4K"
               },
               "SEG_Initialwerterzeugung_0_reg0": {
                 "address_block": "/Initialwerterzeugung_0/s00_axi/reg0",
-                "offset": "0x00001000",
+                "offset": "0x20000000",
                 "range": "4K"
               },
               "SEG_axi_uartlite_0_Reg": {
@@ -2236,7 +2195,7 @@
               },
               "SEG_mig_7series_0_memaddr": {
                 "address_block": "/mig_7series_0/memmap/memaddr",
-                "offset": "0x80000000",
+                "offset": "0x00000000",
                 "range": "256M"
               }
             }
@@ -2245,7 +2204,7 @@
             "segments": {
               "SEG_mig_7series_0_memaddr": {
                 "address_block": "/mig_7series_0/memmap/memaddr",
-                "offset": "0x80000000",
+                "offset": "0x00000000",
                 "range": "256M"
               }
             }

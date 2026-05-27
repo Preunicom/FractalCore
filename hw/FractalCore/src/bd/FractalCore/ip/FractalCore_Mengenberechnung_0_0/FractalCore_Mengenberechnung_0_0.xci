@@ -8,7 +8,7 @@
     "gen_directory": ".",
     "parameters": {
       "component_parameters": {
-        "g_AMOUNT_CORES": [ { "value": "40", "resolve_type": "user", "format": "long", "usage": "all" } ],
+        "g_AMOUNT_CORES": [ { "value": "40", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "Component_Name": [ { "value": "FractalCore_Mengenberechnung_0_0", "resolve_type": "user", "usage": "all" } ]
       },
       "model_parameters": {

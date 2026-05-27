@@ -165,7 +165,7 @@
 | 26.05.2026 | 1 | BugFixed |
 | 26.05.2026 | 3 | Vibe Coded the menu structure and manually improved the code |
 | 26.05.2026 | 3 | Vorbereiten von Tests auf der Hardware |
-| 27.05.2026 | 1 | Erste Tests auf echter Hardware (bisher Arty A7) |
+| 27.05.2026 | 10 | Tests auf echter Hardware |
 | |  |  |  |
-| **KW 22** | **-** | **59** | **Zwischensumme** |
+| **KW 22** | **-** | **69** | **Zwischensumme** |
 | |  |  |  |

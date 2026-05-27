@@ -2,7 +2,7 @@
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
     "xci_name": "bd_5680_s00mmu_0",
-    "cell_name": "s00_mmu",
+    "cell_name": "s00_entry_pipeline/s00_mmu",
     "component_reference": "xilinx.com:ip:sc_mmu:1.0",
     "ip_revision": "12",
     "gen_directory": ".",
@@ -34,7 +34,7 @@
         "NUM_READ_OUTSTANDING": [ { "value": "2", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "SINGLE_ISSUING": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "SUPPORTS_NARROW": [ { "value": "0", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
-        "SEG000_BASE_ADDR": [ { "value": "0x0000000080000000", "value_src": "user", "resolve_type": "user", "format": "bitString", "usage": "all" } ],
+        "SEG000_BASE_ADDR": [ { "value": "0x0000000000000000", "value_src": "user", "resolve_type": "user", "format": "bitString", "usage": "all" } ],
         "SEG000_SIZE": [ { "value": "28", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
         "SEG000_SEP_ROUTE": [ { "value": "0b0000000000000000000000000000000000000000000000000000000000000000", "value_src": "user", "resolve_type": "user", "format": "bitString", "usage": "all" } ],
         "SEG000_SUPPORTS_READ": [ { "value": "1", "value_src": "user", "resolve_type": "user", "format": "long", "usage": "all" } ],
@@ -2089,7 +2089,7 @@
         "C_IS_CASCADED": [ { "value": "0", "resolve_type": "generated", "format": "long", "usage": "all" } ],
         "C_ENABLE_PIPELINING": [ { "value": "0x1", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
         "C_NUM_SEG": [ { "value": "1", "resolve_type": "generated", "format": "long", "usage": "all" } ],
-        "C_SEG_BASE_ADDR_ARRAY": [ { "value": "0x0000000080000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
+        "C_SEG_BASE_ADDR_ARRAY": [ { "value": "0x0000000000000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
         "C_SEG_SIZE_ARRAY": [ { "value": "0x0000001c", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
         "C_SEG_SEP_ROUTE_ARRAY": [ { "value": "0x0000000000000000", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
         "C_SEG_SUPPORTS_READ_ARRAY": [ { "value": "0b1", "resolve_type": "generated", "format": "bitString", "usage": "all" } ],
@@ -2404,7 +2404,7 @@
           "parameters": {
             "POLARITY": [ { "value": "ACTIVE_LOW", "value_src": "constant", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ],
             "INSERT_VIP": [ { "value": "0", "resolve_type": "user", "format": "long", "usage": "simulation.rtl", "is_ips_inferred": true, "is_static_object": false } ],
-            "TYPE": [ { "value": "INTERCONNECT", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ]
+            "TYPE": [ { "value": "INTERCONNECT", "value_permission": "bd", "resolve_type": "generated", "is_ips_inferred": true, "is_static_object": false } ]
           },
           "port_maps": {
             "RST": [ { "physical_name": "aresetn" } ]
