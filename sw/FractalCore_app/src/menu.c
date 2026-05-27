@@ -202,7 +202,7 @@ XStatus menu_read_rgb(uint8_t *r, uint8_t *g, uint8_t *b) {
 //  No hardware access — caller owns the get/set via driver.
 // ================================================================
 
-XStatus menu_edit_color(COLOR_t *color) {
+static XStatus menu_edit_color(COLOR_t *color) {
     xil_printf("Current color: R=%u G=%u B=%u\n\r",
         color->red, color->green, color->blue);
     xil_printf("  New color (q=cancel):\n\r");
@@ -241,8 +241,6 @@ void menu_main(CTRL_Data *ctrl, COL_Data *col) {
         xil_printf("  8 - Minimap\n\r");
         xil_printf("  9 - System Info\n\r");
         xil_printf("  0 - Show All Settings\n\r");
-        xil_printf("-----------------------------------\n\r");
-        xil_printf("  q - Exit\n\r");
         xil_printf("===================================\n\r");
         xil_printf("Choice: ");
 
@@ -259,7 +257,6 @@ void menu_main(CTRL_Data *ctrl, COL_Data *col) {
             case '8': menu_minimap(ctrl); break;
             case '9': menu_system_info(ctrl); break;
             case '0': menu_status(ctrl, col); break;
-            case 'q': case 'Q': return;
             default:
                 xil_printf("Invalid input.\n\r");
                 break;
@@ -634,15 +631,15 @@ void menu_status(CTRL_Data *ctrl, COL_Data *col) {
     xil_printf("\n\r");
     xil_printf("===== All Settings =====\n\r");
     xil_printf("  Mode:                      %s\n\r", mode_str);
-    xil_printf("  Frames per animation step: %u\n\r", speed);
-    xil_printf("  Step width factor:         %u\n\r", sw);
-    xil_printf("  Pixel distance:            %u\n\r", dist);
+    xil_printf("  Frames per animation step: 0x%08X\n\r", speed);
+    xil_printf("  Step width factor:         0x%05X\n\r", sw);
+    xil_printf("  Pixel distance:            0x%08X\n\r", dist);
     xil_printf("  XOR mask Real:             0x%05X\n\r", xor_re);
     xil_printf("  XOR mask Imag:             0x%05X\n\r", xor_im);
-    xil_printf("  Seed Real factor:          %u (0x%05X)\n\r", seed_re, seed_re);
-    xil_printf("  Seed Imag factor:          %u (0x%05X)\n\r", seed_im, seed_im);
-    xil_printf("  Diamond width factor:      %u\n\r", dw);
-    xil_printf("  Diamond height factor:     %u\n\r", dh);
+    xil_printf("  Seed Real factor:          0x%05X\n\r", seed_re);
+    xil_printf("  Seed Imag factor:          0x%05X\n\r", seed_im);
+    xil_printf("  Diamond width factor:      0x%05X\n\r", dw);
+    xil_printf("  Diamond height factor:     0x%05X\n\r", dh);
     xil_printf("  Minimap:                   %s\n\r", mm_state ? "On" : "Off");
     xil_printf("================================\n\r");
 }
