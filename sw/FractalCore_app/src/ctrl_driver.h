@@ -86,7 +86,7 @@ void CTRL_InitCfg(CTRL_Data *InstancePtr, uint32_t BaseAddress, CTRL_Config *Con
 
 XStatus CTRL_InitHw(CTRL_Data *InstancePtr);
 
-void CTRL_SetValue(CTRL_Data *InstancePtr, uint32_t register_offset, uint32_t value);
+void _CTRL_SetValue(CTRL_Data *InstancePtr, uint32_t register_offset, uint32_t value);
 
 void CTRL_LoadLfsrSeeds(CTRL_Data *InstancePtr);
 
@@ -98,76 +98,76 @@ void CTRL_SetMandelbrotMode(CTRL_Data *InstancePtr);
 
 void CTRL_SetMinimapEnable(CTRL_Data *InstancePtr, uint8_t state);
 
-uint32_t CTRL_GetValue(CTRL_Data *InstancePtr, uint32_t register_offset);
+uint32_t _CTRL_GetValue(CTRL_Data *InstancePtr, uint32_t register_offset);
 
 /************************** Function Definitions ***************************/
 
 // ========== SETER ==========
 #define CTRL_SetAnimationSpeed(InstancePtr, value) \
-	CTRL_SetValue((InstancePtr), SPECR_ADDR_OFFSET, ((value) & SPECR_DP_MASK))
+	_CTRL_SetValue((InstancePtr), SPECR_ADDR_OFFSET, ((value) & SPECR_DP_MASK))
 
 #define CTRL_SetStepWidth(InstancePtr, value) \
-	CTRL_SetValue((InstancePtr), CSWCR_ADDR_OFFSET, ((value) & CSWCR_SW_MASK))
+	_CTRL_SetValue((InstancePtr), CSWCR_ADDR_OFFSET, ((value) & CSWCR_SW_MASK))
 
 #define CTRL_SetXorMaskLfsrRe(InstancePtr, value) \
-	CTRL_SetValue((InstancePtr), XMRCR_ADDR_OFFSET, ((value) & XMRCR_XR_MASK))
+	_CTRL_SetValue((InstancePtr), XMRCR_ADDR_OFFSET, ((value) & XMRCR_XR_MASK))
 
 #define CTRL_SetXorMaskLfsrIm(InstancePtr, value) \
-	CTRL_SetValue((InstancePtr), XMICR_ADDR_OFFSET, ((value) & XMICR_XI_MASK))
+	_CTRL_SetValue((InstancePtr), XMICR_ADDR_OFFSET, ((value) & XMICR_XI_MASK))
 
 #define CTRL_SetSeedLfsrRe(InstancePtr, value) \
-	CTRL_SetValue((InstancePtr), LSRCR_ADDR_OFFSET, ((value) & LSRCR_SR_MASK))
+	_CTRL_SetValue((InstancePtr), LSRCR_ADDR_OFFSET, ((value) & LSRCR_SR_MASK))
 
 #define CTRL_SetSeedLfsrIm(InstancePtr, value) \
-	CTRL_SetValue((InstancePtr), LSICR_ADDR_OFFSET, ((value) & LSICR_SI_MASK))
+	_CTRL_SetValue((InstancePtr), LSICR_ADDR_OFFSET, ((value) & LSICR_SI_MASK))
 
 #define CTRL_SetDiamondWidth(InstancePtr, value) \
-	CTRL_SetValue((InstancePtr), DWCR_ADDR_OFFSET, ((value) & DWCR_DW_MASK))
+	_CTRL_SetValue((InstancePtr), DWCR_ADDR_OFFSET, ((value) & DWCR_DW_MASK))
 
 #define CTRL_SetDiamondHeight(InstancePtr, value) \
-	CTRL_SetValue((InstancePtr), DHCR_ADDR_OFFSET, ((value) & DHCR_DH_MASK))
+	_CTRL_SetValue((InstancePtr), DHCR_ADDR_OFFSET, ((value) & DHCR_DH_MASK))
 
 #define CTRL_SetPixelDistance(InstancePtr, value) \
-	CTRL_SetValue((InstancePtr), ZOMCR_ADDR_OFFSET, ((value) & ZOMCR_DS_MASK))
+	_CTRL_SetValue((InstancePtr), ZOMCR_ADDR_OFFSET, ((value) & ZOMCR_DS_MASK))
 
 // ========== GETER ==========
 #define CTRL_GetId(InstancePtr) \
-	CTRL_GetValue((InstancePtr), IDR_ADDR_OFFSET)
+	_CTRL_GetValue((InstancePtr), IDR_ADDR_OFFSET)
 
 #define CTRL_GetVersion(InstancePtr) \
-	CTRL_GetValue((InstancePtr), VERR_ADDR_OFFSET)
+	_CTRL_GetValue((InstancePtr), VERR_ADDR_OFFSET)
 
 #define CTRL_GetMode(InstancePtr) \
-	(CTRL_GetValue((InstancePtr), SETCR_ADDR_OFFSET) & SETCR_MODE_MASK)
+	(_CTRL_GetValue((InstancePtr), SETCR_ADDR_OFFSET) & SETCR_MODE_MASK)
 
 #define CTRL_GetMinimapState(InstancePtr) \
-	(CTRL_GetValue((InstancePtr), SETCR_ADDR_OFFSET) & SETCR_MME_MASK)
+	(_CTRL_GetValue((InstancePtr), SETCR_ADDR_OFFSET) & SETCR_MME_MASK)
 
 #define CTRL_GetAnimationSpeed(InstancePtr) \
-	CTRL_GetValue((InstancePtr), SPECR_ADDR_OFFSET)
+	_CTRL_GetValue((InstancePtr), SPECR_ADDR_OFFSET)
 
 #define CTRL_GetStepWidth(InstancePtr) \
-	CTRL_GetValue((InstancePtr), CSWCR_ADDR_OFFSET)
+	_CTRL_GetValue((InstancePtr), CSWCR_ADDR_OFFSET)
 
 #define CTRL_GetXorMaskLfsrRe(InstancePtr) \
-	CTRL_GetValue((InstancePtr), XMRCR_ADDR_OFFSET)
+	_CTRL_GetValue((InstancePtr), XMRCR_ADDR_OFFSET)
 
 #define CTRL_GetXorMaskLfsrIm(InstancePtr) \
-	CTRL_GetValue((InstancePtr), XMICR_ADDR_OFFSET)
+	_CTRL_GetValue((InstancePtr), XMICR_ADDR_OFFSET)
 
 #define CTRL_GetSeedLfsrRe(InstancePtr) \
-	CTRL_GetValue((InstancePtr), LSRCR_ADDR_OFFSET)
+	_CTRL_GetValue((InstancePtr), LSRCR_ADDR_OFFSET)
 
 #define CTRL_GetSeedLfsrIm(InstancePtr) \
-	CTRL_GetValue((InstancePtr), LSICR_ADDR_OFFSET)
+	_CTRL_GetValue((InstancePtr), LSICR_ADDR_OFFSET)
 
 #define CTRL_GetDiamondWidth(InstancePtr) \
-	CTRL_GetValue((InstancePtr), DWCR_ADDR_OFFSET)
+	_CTRL_GetValue((InstancePtr), DWCR_ADDR_OFFSET)
 
 #define CTRL_GetDiamondHeight(InstancePtr) \
-	CTRL_GetValue((InstancePtr), DHCR_ADDR_OFFSET)
+	_CTRL_GetValue((InstancePtr), DHCR_ADDR_OFFSET)
 
 #define CTRL_GetPixelDistance(InstancePtr) \
-	CTRL_GetValue((InstancePtr), ZOMCR_ADDR_OFFSET)
+	_CTRL_GetValue((InstancePtr), ZOMCR_ADDR_OFFSET)
 
 #endif // CTRL_DRIVER_H
