@@ -24,7 +24,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity Farbcodierung is
     generic (
-        DATA_WIDTH : integer := 8
+        DATA_WIDTH : integer := 9
     );
     port (
         i_data : in std_logic_vector(DATA_WIDTH-1 downto 0);
