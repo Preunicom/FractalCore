@@ -1,0 +1,89 @@
+\section{Registerüberblick}
+
+\begin{figure}[H]
+    \centering
+    \begin{bytefield}[bitwidth=\bflenword, endianness=big, leftcurly=., rightcurly=., curlyspace=0pt]{32}
+        \bitheader{31,24,16,8,0} \\
+        \begin{leftwordgroup}{0x00}
+            \begin{rightwordgroup}{GSCR}
+                \bitbox{32}{General/Global Status and Control Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x04}
+            \begin{rightwordgroup}{GIER}
+                \bitbox{32}{Global Interrupt Enable Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x08}
+            \begin{rightwordgroup}{IPIER}
+                \bitbox{32}{IP Interrupt Enable Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x0C}
+            \begin{rightwordgroup}{IPISR}
+                \bitbox{32}{IP Interrupt Status Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x10}
+            \begin{rightwordgroup}{IDR}
+                \bitbox{32}{ID Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x14}
+            \begin{rightwordgroup}{VERR}
+                \bitbox{32}{Version Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x18}
+            \begin{rightwordgroup}{SETCR}
+                \bitbox{32}{Setup Control Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x1C}
+            \begin{rightwordgroup}{SPECR}
+                \bitbox{32}{Speed Control Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x20}
+            \begin{rightwordgroup}{CSWCR}
+                \bitbox{32}{C Step Width Control Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x24}
+            \begin{rightwordgroup}{XMRCR}
+                \bitbox{32}{XOR Mask RE Control Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x28}
+            \begin{rightwordgroup}{XMICR}
+                \bitbox{32}{XOR Mask IM Control Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x2C}
+            \begin{rightwordgroup}{LSRCR}
+                \bitbox{32}{LFSR Seed RE Control Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x30}
+            \begin{rightwordgroup}{LSICR}
+                \bitbox{32}{LFSR Seed IM Control Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x34}
+            \begin{rightwordgroup}{DWCR}
+                \bitbox{32}{Diamond Width Control Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x38}
+            \begin{rightwordgroup}{DHCR}
+                \bitbox{32}{Diamond Height Control Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+        \begin{leftwordgroup}{0x3C}
+            \begin{rightwordgroup}{ZOMCR}
+                \bitbox{32}{Zoom Control Register}
+            \end{rightwordgroup}
+        \end{leftwordgroup} \\
+
+    \end{bytefield}
+\end{figure}
