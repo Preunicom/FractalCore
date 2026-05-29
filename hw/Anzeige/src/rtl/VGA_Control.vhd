@@ -85,10 +85,10 @@ architecture Behavioral of VGA_Control is
     signal w_active_area : std_logic;
     signal r_frame_idx : unsigned(1 downto 0);
 
-    signal w_hightlighted_col : std_logic;
-    signal w_hightlighted_row : std_logic;
-    signal w_hightlighted_target_col : std_logic;
-    signal w_hightlighted_target_row : std_logic;
+    signal w_highlighted_col : std_logic;
+    signal w_highlighted_row : std_logic;
+    signal w_highlighted_target_col : std_logic;
+    signal w_highlighted_target_row : std_logic;
 begin
     FRAME_BUF_MANAGER: Framebuffer_Manager
     port map (
@@ -208,20 +208,22 @@ begin
         end if;
     end process;
 
-    w_hightlighted_col <= '1' when (r_col_count <= unsigned(i_highlight_info(to_integer(r_frame_idx)).current_pixel_col) + 1 and
+    -- Highlighting the area of the current pixel
+    w_highlighted_col <= '1' when (r_col_count <= unsigned(i_highlight_info(to_integer(r_frame_idx)).current_pixel_col) + 1 and
                                     r_col_count + 1 >= unsigned(i_highlight_info(to_integer(r_frame_idx)).current_pixel_col))
                             else '0';
 
-    w_hightlighted_row <= '1' when (r_row_count <= unsigned(i_highlight_info(to_integer(r_frame_idx)).current_pixel_row) + 1 and
+    w_highlighted_row <= '1' when (r_row_count <= unsigned(i_highlight_info(to_integer(r_frame_idx)).current_pixel_row) + 1 and
                                     r_row_count + 1 >= unsigned(i_highlight_info(to_integer(r_frame_idx)).current_pixel_row))
                             else '0';
 
-    w_hightlighted_target_col <= '1' when (r_col_count <= unsigned(i_highlight_info(to_integer(r_frame_idx)).target_pixel_col) + 1 and
-                                    r_col_count + 1 >= unsigned(i_highlight_info(to_integer(r_frame_idx)).target_pixel_col))
+    -- Highlighting the col and row of the current target in the minimap area
+    w_highlighted_target_col <= '1' when (r_col_count = unsigned(i_highlight_info(to_integer(r_frame_idx)).target_pixel_col) and
+                                    r_row_count >= to_unsigned((3*(480/4)), c_COLS_BUS_WIDTH) and w_active_area = '1')
                             else '0';
 
-    w_hightlighted_target_row <= '1' when (r_row_count <= unsigned(i_highlight_info(to_integer(r_frame_idx)).target_pixel_row) + 1 and
-                                    r_row_count + 1 >= unsigned(i_highlight_info(to_integer(r_frame_idx)).target_pixel_row))
+    w_highlighted_target_row <= '1' when (r_row_count = unsigned(i_highlight_info(to_integer(r_frame_idx)).target_pixel_row) and
+                                    r_col_count < to_unsigned((640/4), c_ROWS_BUS_WIDTH) and w_active_area = '1')
                             else '0';
 
     HIGHLIGHT: process(i_vga_clk)
@@ -234,12 +236,12 @@ begin
                 o_vga_is_highlighted <= '0';
                 o_vga_is_highlighted_target <= '0';
                 if i_highlight_info(to_integer(r_frame_idx)).valid = '1' then
-                    if w_hightlighted_col = '1' and w_hightlighted_row = '1' then
+                    if w_highlighted_col = '1' and w_highlighted_row = '1' then
                         -- This pixel is in area of the pixel to highlight
                         o_vga_is_highlighted <= '1';
                     end if;
-                    if w_hightlighted_target_col = '1' and w_hightlighted_target_row = '1' then
-                        -- This pixel is in area of the target to highlight
+                    if w_highlighted_target_col = '1' or w_highlighted_target_row = '1' then
+                        -- This pixel is in the row or column of the target to highlight
                         o_vga_is_highlighted_target <= '1';
                     end if;
                 end if;

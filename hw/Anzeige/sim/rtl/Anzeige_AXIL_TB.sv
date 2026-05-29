@@ -295,17 +295,16 @@ module Anzeige_TB();
     #10
 
     for(int i = 0; i < 5; i++) begin
-      @(posedge o_vga_v_sync_0); // Wait until 10 frames were sent
+      @(posedge o_vga_v_sync_0); // Wait until 5 frames were sent
     end
   
-
     $finish();      
   end 
 
   task automatic wait_for_handshake();
     begin
       do begin
-        @(posedge i_clk);
+        @(posedge i_axi_clk);
       end while (!(i_valid_0 && o_ready_0));
     end
   endtask
@@ -315,7 +314,7 @@ module Anzeige_TB();
   initial begin : STIMULI
     stimuli_counter = 0;
     // wait for reset release
-    wait (i_rst_n == 1);
+    wait (i_axi_rst_n == 1);
     // Send data to early --> Should never show as it will be bypassed and then overriden
     for (int x = 0; x < 640; x++) begin
       i_valid_0                 = 1;
