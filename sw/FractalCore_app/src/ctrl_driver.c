@@ -75,7 +75,7 @@ XStatus CTRL_InitHw(CTRL_Data *InstancePtr)
     return Status;
 }
 
-void CTRL_SetValue(CTRL_Data *InstancePtr, uint32_t register_offset, uint32_t value) {
+void _CTRL_SetValue(CTRL_Data *InstancePtr, uint32_t register_offset, uint32_t value) {
   mWriteReg(InstancePtr->BaseAddress, register_offset, value);
 }
 
@@ -113,6 +113,6 @@ void CTRL_SetMinimapEnable(CTRL_Data *InstancePtr, uint8_t state) {
   mWriteReg(InstancePtr->BaseAddress, SETCR_ADDR_OFFSET, data);
 }
 
-uint32_t CTRL_GetValue(CTRL_Data *InstancePtr, uint32_t register_offset) {
+uint32_t _CTRL_GetValue(CTRL_Data *InstancePtr, uint32_t register_offset) {
   return mReadReg(InstancePtr->BaseAddress, register_offset);
 }
