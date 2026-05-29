@@ -38,17 +38,17 @@
 #define CSWCR_ADDR_OFFSET   			0x020
 #define CSWCR_SW_MASK  					0x0001FFFF
 #define XMRCR_ADDR_OFFSET   			0x024
-#define XMRCR_XR_MASK  					0x0001FFFF
+#define XMRCR_XR_MASK  					0x0000FFFF
 #define XMICR_ADDR_OFFSET   			0x028
-#define XMICR_XI_MASK  					0x0001FFFF
+#define XMICR_XI_MASK  					0x0000FFFF
 #define LSRCR_ADDR_OFFSET   			0x02C
-#define LSRCR_SR_MASK  					0x0003FFFF
+#define LSRCR_SR_MASK  					0x0001FFFF
 #define LSICR_ADDR_OFFSET   			0x030
-#define LSICR_SI_MASK  					0x0003FFFF
+#define LSICR_SI_MASK  					0x0001FFFF
 #define DWCR_ADDR_OFFSET    			0x034
-#define DWCR_DW_MASK   					0x0001FFFF
+#define DWCR_DW_MASK   					0x0000FFFF
 #define DHCR_ADDR_OFFSET    			0x038
-#define DHCR_DH_MASK   					0x0001FFFF
+#define DHCR_DH_MASK   					0x0000FFFF
 #define ZOMCR_ADDR_OFFSET   			0x03C
 #define ZOMCR_DS_MASK  					0x000000FF
 

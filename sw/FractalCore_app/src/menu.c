@@ -9,6 +9,7 @@
 
 /***************************** Include Files *******************************/
 #include "menu.h"
+#include "color_scheme.h"
 #include "xil_printf.h"
 #include "xil_types.h"
 #include "xstatus.h"
@@ -23,6 +24,21 @@ extern char inbyte(void);
 /**************************** Type Definitions *****************************/
 
 /************************** Variable Definitions ***************************/
+
+static uint8_t g_active_color_scheme = 0; // 0 = custom, 1..9 = named scheme
+
+static const char *g_color_scheme_names[] = {
+    "Custom",
+    "Grayscale",
+    "Red",
+    "Green",
+    "Blue",
+    "Plasma",
+    "Rainbow",
+    "Fire",
+    "Jet",
+    "Hot"
+};
 
 /************************** Function Prototypes ****************************/
 // Input helpers
@@ -47,7 +63,7 @@ void menu_color(CTRL_Data *ctrl, COL_Data *col);
 void menu_minimap(CTRL_Data *ctrl);
 void menu_system_info(CTRL_Data *ctrl);
 void menu_status(CTRL_Data *ctrl, COL_Data *col);
-
+void menu_color_schemes(COL_Data *col);
 /************************** Function Definitions ***************************/
 
 // Entry point: prints a banner then enters the main menu loop.
@@ -202,7 +218,7 @@ XStatus menu_read_rgb(uint8_t *r, uint8_t *g, uint8_t *b) {
 //  No hardware access — caller owns the get/set via driver.
 // ================================================================
 
-static XStatus menu_edit_color(COLOR_t *color) {
+XStatus menu_edit_color(COLOR_t *color) {
     xil_printf("Current color: R=%u G=%u B=%u\n\r",
         color->red, color->green, color->blue);
     xil_printf("  New color (q=cancel):\n\r");
@@ -324,8 +340,8 @@ void menu_animation_speed(CTRL_Data *ctrl) {
     xil_printf("\n\r");
     xil_printf("===== Animation Speed =====\n\r");
     xil_printf("Current: %u frames per animation step\n\r", current);
-    xil_printf("New value (0-65535, q=cancel):\n\r");
-    if (menu_read_uint32(&val, 0, 65535) != XST_SUCCESS) return;
+    xil_printf("New value (1-65535, q=cancel):\n\r");
+    if (menu_read_uint32(&val, 1, 65535) != XST_SUCCESS) return;
     CTRL_SetAnimationSpeed(ctrl, val);
     xil_printf("Animation Speed = %u\n\r", val);
 }
@@ -355,7 +371,7 @@ void menu_zoom(CTRL_Data *ctrl) {
     uint32_t val;
     xil_printf("\n\r");
     xil_printf("===== Zoom =====\n\r");
-    xil_printf("Current pixel distance factor: %u\n\r", dist);
+    xil_printf("Current pixel distance (zoom) factor: %u\n\r", dist);
     xil_printf("New pixel distance factor (1-255, q=cancel):\n\r");
     if (menu_read_uint32(&val, 1, 255) != XST_SUCCESS) return;
     CTRL_SetPixelDistance(ctrl, val);
@@ -505,6 +521,7 @@ void menu_color(CTRL_Data *ctrl, COL_Data *col) {
         xil_printf(" 2 - Convergent color\n\r");
         xil_printf(" 3 - Minimap target color\n\r");
         xil_printf(" 4 - Minimap pixel color\n\r");
+        xil_printf(" 5 - Color Schemes\n\r");
         xil_printf(" q - Back\n\r");
         xil_printf("========================\n\r");
         xil_printf("Choice: ");
@@ -518,39 +535,94 @@ void menu_color(CTRL_Data *ctrl, COL_Data *col) {
                 xil_printf("Iteration index (0-255, q=cancel):\n\r");
                 if (menu_read_uint32(&iteration, 0, 255) != XST_SUCCESS) break;
                 COL_GetIterationColor(col, (uint8_t)iteration, &color);
-                if (menu_edit_color(&color) == XST_SUCCESS)
+                if (menu_edit_color(&color) == XST_SUCCESS) {
                     COL_SetIterationColor(col, (uint8_t)iteration, &color);
+                    g_active_color_scheme = 0;
+                }
                 break;
             }
             case '2': {
                 COLOR_t color;
                 xil_printf("Set convergent pixel color:\n\r");
                 COL_GetConvergentColor(col, &color);
-                if (menu_edit_color(&color) == XST_SUCCESS)
+                if (menu_edit_color(&color) == XST_SUCCESS) {
                     COL_SetConvergentColor(col, &color);
+                    g_active_color_scheme = 0;
+                }
                 break;
             }
             case '3': {
                 COLOR_t color;
                 xil_printf("Set minimap target color:\n\r");
                 COL_GetTargetMinimapColor(col, &color);
-                if (menu_edit_color(&color) == XST_SUCCESS)
+                if (menu_edit_color(&color) == XST_SUCCESS) {
                     COL_SetTargetMinimapColor(col, &color);
+                    g_active_color_scheme = 0;
+                }
                 break;
             }
             case '4': {
                 COLOR_t color;
                 xil_printf("Set current minimap pixel color:\n\r");
                 COL_GetCurrentMinimapColor(col, &color);
-                if (menu_edit_color(&color) == XST_SUCCESS)
+                if (menu_edit_color(&color) == XST_SUCCESS) {
                     COL_SetCurrentMinimapColor(col, &color);
+                    g_active_color_scheme = 0;
+                }
                 break;
             }
+            case '5':
+                menu_color_schemes(col);
+                break;
             case 'q': case 'Q': return;
             default:
                 xil_printf("Invalid input.\n\r");
                 break;
         }
+    }
+}
+
+// ================================================================
+//  COLOR SCHEMES SUBMENU
+// ================================================================
+
+void menu_color_schemes(COL_Data *col) {
+    char c;
+    while (1) {
+        xil_printf("\n\r");
+        xil_printf("===== Color Schemes =====\n\r");
+        xil_printf("  1 - Grayscale\n\r");
+        xil_printf("  2 - Red\n\r");
+        xil_printf("  3 - Green\n\r");
+        xil_printf("  4 - Blue\n\r");
+        xil_printf("  5 - Plasma\n\r");
+        xil_printf("  6 - Rainbow\n\r");
+        xil_printf("  7 - Fire\n\r");
+        xil_printf("  8 - Jet\n\r");
+        xil_printf("  9 - Hot\n\r");
+        xil_printf("  q - Back\n\r");
+        xil_printf("==========================\n\r");
+        xil_printf("Choice: ");
+
+        c = menu_getkey();
+        xil_printf("\n\r");
+
+        switch (c) {
+            case '1': color_scheme_grayscale(col); g_active_color_scheme = 1; break;
+            case '2': color_scheme_red(col);       g_active_color_scheme = 2; break;
+            case '3': color_scheme_green(col);     g_active_color_scheme = 3; break;
+            case '4': color_scheme_blue(col);      g_active_color_scheme = 4; break;
+            case '5': color_scheme_plasma(col);    g_active_color_scheme = 5; break;
+            case '6': color_scheme_rainbow(col);   g_active_color_scheme = 6; break;
+            case '7': color_scheme_fire(col);      g_active_color_scheme = 7; break;
+            case '8': color_scheme_jet(col);       g_active_color_scheme = 8; break;
+            case '9': color_scheme_hot(col);       g_active_color_scheme = 9; break;
+            case 'q': case 'Q': return;
+            default:
+                xil_printf("Invalid input.\n\r");
+                continue;
+        }
+        xil_printf("  Scheme '%s' loaded.\n\r", g_color_scheme_names[g_active_color_scheme]);
     }
 }
 
@@ -595,11 +667,14 @@ void menu_minimap(CTRL_Data *ctrl) {
 //  Read-only: displays CTRL hardware ID (IDR) and version (VERR).
 // ----------------------------------------------------------------
 void menu_system_info(CTRL_Data *ctrl) {
+    char c;
     xil_printf("\n\r");
     xil_printf("===== System Info =====\n\r");
     xil_printf(" ID: 0x%08X\n\r", CTRL_GetId(ctrl));
     xil_printf(" Version: 0x%08X\n\r", CTRL_GetVersion(ctrl));
     xil_printf("========================\n\r");
+    xil_printf("Press 'q' to continue.\n\r");
+    do { c = menu_getkey(); } while (c != 'q' && c != 'Q');
 }
 
 // ----------------------------------------------------------------
@@ -607,6 +682,7 @@ void menu_system_info(CTRL_Data *ctrl) {
 //  Read-only: dumps every CTRL register value at once.
 // ----------------------------------------------------------------
 void menu_status(CTRL_Data *ctrl, COL_Data *col) {
+    char c;
     uint32_t mode = CTRL_GetMode(ctrl);
     const char *mode_str;
     if (mode == SETCR_JULIA_DIAMOND_MODE_MASK) {
@@ -632,14 +708,17 @@ void menu_status(CTRL_Data *ctrl, COL_Data *col) {
     xil_printf("===== All Settings =====\n\r");
     xil_printf("  Mode:                      %s\n\r", mode_str);
     xil_printf("  Frames per animation step: 0x%08X\n\r", speed);
-    xil_printf("  Step width factor:         0x%05X\n\r", sw);
-    xil_printf("  Pixel distance:            0x%08X\n\r", dist);
-    xil_printf("  XOR mask Real:             0x%05X\n\r", xor_re);
-    xil_printf("  XOR mask Imag:             0x%05X\n\r", xor_im);
-    xil_printf("  Seed Real factor:          0x%05X\n\r", seed_re);
-    xil_printf("  Seed Imag factor:          0x%05X\n\r", seed_im);
-    xil_printf("  Diamond width factor:      0x%05X\n\r", dw);
-    xil_printf("  Diamond height factor:     0x%05X\n\r", dh);
+    xil_printf("  Step width factor:         0x%08X\n\r", sw);
+    xil_printf("  Zoom factor:               0x%08X\n\r", dist);
+    xil_printf("  XOR mask Real:             0x%08X\n\r", xor_re);
+    xil_printf("  XOR mask Imag:             0x%08X\n\r", xor_im);
+    xil_printf("  Seed Real factor:          0x%08X\n\r", seed_re);
+    xil_printf("  Seed Imag factor:          0x%08X\n\r", seed_im);
+    xil_printf("  Diamond width factor:      0x%08X\n\r", dw);
+    xil_printf("  Diamond height factor:     0x%08X\n\r", dh);
     xil_printf("  Minimap:                   %s\n\r", mm_state ? "On" : "Off");
+    xil_printf("  Color scheme:              %s\n\r", g_color_scheme_names[g_active_color_scheme]);
     xil_printf("================================\n\r");
+    xil_printf("Press 'q' to continue.\n\r");
+    do { c = menu_getkey(); } while (c != 'q' && c != 'Q');
 }
