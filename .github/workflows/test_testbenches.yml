@@ -8,7 +8,7 @@ on:
       - fea/**
       - ArtyZ7/master
       - ArtyZ7/dev/**
-      - ArtyZ7/fea/**
+      - ArtyZ7/test/**
     paths:
       - 'hw/**'
       - 'scripts/**'
