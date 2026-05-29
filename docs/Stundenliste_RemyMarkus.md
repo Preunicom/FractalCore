@@ -172,7 +172,8 @@
 | 26.05.2026 | 3 | Vorbereiten von Tests auf der Hardware |
 | 27.05.2026 | 10 | Tests auf echter Hardware + Bug fixes |
 | 28.05.2026 | 3 | Bug Fix (Overflow mit pixel distance, Minimapbereich zu klein, LFSR Werte zu groß) |
-| 28.05.2026 | 1 | Vibe Coded Farbschemata |
+| 28.05.2026 | 1 | Vibe Coded Farbschemata |#
+| 29.05.2026 | 2 | Kleinere BugFixes (TBs) und übertragen der für beide Arten benötigten Fehlerbehebungen auf master |
 | |  |  |  |
-| **KW 22** | **-** | **73** | **Zwischensumme** |
+| **KW 22** | **-** | **75** | **Zwischensumme** |
 | |  |  |  |
