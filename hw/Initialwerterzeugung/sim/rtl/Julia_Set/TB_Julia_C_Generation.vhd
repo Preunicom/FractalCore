@@ -40,12 +40,12 @@ architecture Testbench of TB_Julia_C_Generation is
     signal s_step_width : std_logic_vector(16 downto 0);
     signal s_mode : std_logic; -- 0: Diamond, 1: LFSR
     signal s_load_seed : std_logic;
-    signal s_lfsr_seed_re : std_logic_vector(17 downto 0);
-    signal s_lfsr_seed_im : std_logic_vector(17 downto 0);
-    signal s_lfsr_xor_mask_re : std_logic_vector(16 downto 0);
-    signal s_lfsr_xor_mask_im : std_logic_vector(16 downto 0);
-    signal s_diamond_heigh : std_logic_vector(16 downto 0);
-    signal s_diamond_width : std_logic_vector(16 downto 0);
+    signal s_lfsr_seed_re : std_logic_vector(16 downto 0);
+    signal s_lfsr_seed_im : std_logic_vector(16 downto 0);
+    signal s_lfsr_xor_mask_re : std_logic_vector(15 downto 0);
+    signal s_lfsr_xor_mask_im : std_logic_vector(15 downto 0);
+    signal s_diamond_heigh : std_logic_vector(15 downto 0);
+    signal s_diamond_width : std_logic_vector(15 downto 0);
     
     -- CHECK
     signal c_target_re : std_logic_vector(17 downto 0);
@@ -92,37 +92,37 @@ begin
         wait until s_resetn = '1';
         -- Test diamond mode - step width 0, height 0, width 0
         s_en <= '1';
-        s_diamond_heigh <= std_logic_vector(to_unsigned(0, 17));
-        s_diamond_width <= std_logic_vector(to_unsigned(0, 17));
+        s_diamond_heigh <= std_logic_vector(to_unsigned(0, 16));
+        s_diamond_width <= std_logic_vector(to_unsigned(0, 16));
         s_frames_per_step <= std_logic_vector(to_unsigned(0, 16));
         s_step_width <= std_logic_vector(to_unsigned(0, 17)); 
         s_mode <= '0';
         s_load_seed <= '0';
-        s_lfsr_seed_re <= std_logic_vector(to_unsigned(0, 18));
-        s_lfsr_seed_im <= std_logic_vector(to_unsigned(0, 18));
-        s_lfsr_xor_mask_re <= std_logic_vector(to_unsigned(0, 17));
-        s_lfsr_xor_mask_im <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_seed_re <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_seed_im <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_xor_mask_re <= std_logic_vector(to_unsigned(0, 16));
+        s_lfsr_xor_mask_im <= std_logic_vector(to_unsigned(0, 16));
         wait_for_clock_cycles(s_clk, 5);
         -- Test diamond mode
         s_en <= '1';
-        s_diamond_heigh <= std_logic_vector(to_unsigned(300, 17));
-        s_diamond_width <= std_logic_vector(to_unsigned(200, 17));
+        s_diamond_heigh <= std_logic_vector(to_unsigned(300, 16));
+        s_diamond_width <= std_logic_vector(to_unsigned(200, 16));
         s_frames_per_step <= std_logic_vector(to_unsigned(1, 16));
         s_step_width <= std_logic_vector(to_unsigned(100, 17)); 
         s_mode <= '0';
         wait_for_clock_cycles(s_clk, 5);
         -- Test diamond mode
         s_en <= '1';
-        s_diamond_heigh <= std_logic_vector(to_unsigned(1000, 17));
-        s_diamond_width <= std_logic_vector(to_unsigned(1000, 17));
+        s_diamond_heigh <= std_logic_vector(to_unsigned(1000, 16));
+        s_diamond_width <= std_logic_vector(to_unsigned(1000, 16));
         s_frames_per_step <= std_logic_vector(to_unsigned(2, 16));
         s_step_width <= std_logic_vector(to_unsigned(100, 17)); 
         s_mode <= '0';
         wait_for_clock_cycles(s_clk, 10);
         -- Test diamond mode
         s_en <= '1';
-        s_diamond_heigh <= std_logic_vector(to_unsigned(10, 17));
-        s_diamond_width <= std_logic_vector(to_unsigned(10, 17));
+        s_diamond_heigh <= std_logic_vector(to_unsigned(10, 16));
+        s_diamond_width <= std_logic_vector(to_unsigned(10, 16));
         s_frames_per_step <= std_logic_vector(to_unsigned(4, 16));
         s_step_width <= std_logic_vector(to_unsigned(100, 17)); 
         s_mode <= '0';
@@ -137,10 +137,10 @@ begin
         s_step_width <= (others => '1'); 
         s_mode <= '1';
         s_load_seed <= '0';
-        s_lfsr_seed_re <= std_logic_vector(to_unsigned(0, 18));
-        s_lfsr_seed_im <= std_logic_vector(to_unsigned(0, 18));
-        s_lfsr_xor_mask_re <= std_logic_vector(to_unsigned(0, 17));
-        s_lfsr_xor_mask_im <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_seed_re <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_seed_im <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_xor_mask_re <= std_logic_vector(to_unsigned(0, 16));
+        s_lfsr_xor_mask_im <= std_logic_vector(to_unsigned(0, 16));
         wait_for_clock_cycles(s_clk, 10);
         -- Test diamond mode
         s_en <= '1';
@@ -156,10 +156,10 @@ begin
         s_step_width <= std_logic_vector(to_unsigned(1000, 17));
         s_mode <= '1';
         s_load_seed <= '1';
-        s_lfsr_seed_re <= std_logic_vector(to_unsigned(10, 18));
-        s_lfsr_seed_im <= std_logic_vector(to_unsigned(200, 18));
-        s_lfsr_xor_mask_re <= std_logic_vector(to_unsigned(1027, 17));
-        s_lfsr_xor_mask_im <= std_logic_vector(to_unsigned(1025, 17));
+        s_lfsr_seed_re <= std_logic_vector(to_unsigned(10, 17));
+        s_lfsr_seed_im <= std_logic_vector(to_unsigned(200, 17));
+        s_lfsr_xor_mask_re <= std_logic_vector(to_unsigned(1027, 16));
+        s_lfsr_xor_mask_im <= std_logic_vector(to_unsigned(1025, 16));
         wait until rising_edge(s_clk);
         s_load_seed <= '0';
         wait_for_clock_cycles(s_clk, 9);
@@ -169,10 +169,10 @@ begin
         s_step_width <= std_logic_vector(to_unsigned(0, 17));
         s_mode <= '1';
         s_load_seed <= '0';
-        s_lfsr_seed_re <= std_logic_vector(to_unsigned(0, 18));
-        s_lfsr_seed_im <= std_logic_vector(to_unsigned(0, 18));
-        s_lfsr_xor_mask_re <= std_logic_vector(to_unsigned(0, 17));
-        s_lfsr_xor_mask_im <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_seed_re <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_seed_im <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_xor_mask_re <= std_logic_vector(to_unsigned(0, 16));
+        s_lfsr_xor_mask_im <= std_logic_vector(to_unsigned(0, 16));
         wait_for_clock_cycles(s_clk, 15);
         s_en <= '0';
         wait_for_clock_cycles(s_clk, 10);
@@ -184,10 +184,10 @@ begin
         s_step_width <= std_logic_vector(to_unsigned(10000, 17));
         s_mode <= '1';
         s_load_seed <= '0';
-        s_lfsr_seed_re <= std_logic_vector(to_unsigned(0, 18));
-        s_lfsr_seed_im <= std_logic_vector(to_unsigned(0, 18));
-        s_lfsr_xor_mask_re <= std_logic_vector(to_unsigned(0, 17));
-        s_lfsr_xor_mask_im <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_seed_re <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_seed_im <= std_logic_vector(to_unsigned(0, 17));
+        s_lfsr_xor_mask_re <= std_logic_vector(to_unsigned(0, 16));
+        s_lfsr_xor_mask_im <= std_logic_vector(to_unsigned(0, 16));
         for i in 0 to 50 loop
             wait_for_clock_cycles(s_clk, 1);
             s_en <= '0';
@@ -311,25 +311,25 @@ begin
             wait_for_enabled_clock(s_clk, s_en);
             if last_load_seed = '1' then
                 -- Check LFSR target
-                assert c_target_re = s_lfsr_seed_re
+                assert c_target_re = '0' & s_lfsr_seed_re
                     report "Seed not set in RE!" & LF
-                        & "Exp.: " & to_string(s_lfsr_seed_re) & LF
+                        & "Exp.: " & to_string('0' & s_lfsr_seed_re) & LF
                         & "Got:  " & to_string(c_target_re)
                     severity failure;
-                assert c_target_im = s_lfsr_seed_im
+                assert c_target_im = '0' & s_lfsr_seed_im
                     report "Seed not set in IM!" & LF
-                        & "Exp.: " & to_string(s_lfsr_seed_im) & LF
+                        & "Exp.: " & to_string('0' & s_lfsr_seed_im) & LF
                         & "Got:  " & to_string(c_target_im)
                     severity failure;
             end if;
             if s_mode = '0' then
                 -- Check Diamond target
-                assert (c_target_re = '0' & s_diamond_width and c_target_im = std_logic_vector(to_signed(0, 18)))
-                or (c_target_re = std_logic_vector(to_signed(0, 18)) and c_target_im = '0' & s_diamond_heigh)
-                or (c_target_re = std_logic_vector(-signed('0' & s_diamond_width)) and c_target_im = std_logic_vector(to_signed(0, 18)))
-                or (c_target_re = std_logic_vector(to_signed(0, 18)) and c_target_im = std_logic_vector(-signed('0' & s_diamond_heigh)))
+                assert (c_target_re = "00" & s_diamond_width and c_target_im = std_logic_vector(to_signed(0, 18)))
+                or (c_target_re = std_logic_vector(to_signed(0, 18)) and c_target_im = "00" & s_diamond_heigh)
+                or (c_target_re = std_logic_vector(-signed("00" & s_diamond_width)) and c_target_im = std_logic_vector(to_signed(0, 18)))
+                or (c_target_re = std_logic_vector(to_signed(0, 18)) and c_target_im = std_logic_vector(-signed("00" & s_diamond_heigh)))
                     report "Diamond targets not set!" & LF
-                        & "Exp.: Width (RE): " & to_string('0' & s_diamond_width) & " | Height (IM): " & to_string('0' & s_diamond_heigh) & LF
+                        & "Exp.: Width (RE): " & to_string("00" & s_diamond_width) & " | Height (IM): " & to_string("00" & s_diamond_heigh) & LF
                         & "Got:  RE: " & to_string(c_target_re) & " | IM: " & to_string(c_target_im)
                     severity failure;
             end if;

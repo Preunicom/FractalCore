@@ -41,22 +41,22 @@ module Initialwerterzeugung_TB();
   parameter CSWCR_SW_MASK           = 32'h0001FFFF;
   //XMRCR XOR Mask RE Control Register slv_reg09 0x24
   parameter XMRCR_ADDR              = 6'h024;
-  parameter XMRCR_XR_MASK           = 32'h0001FFFF;
+  parameter XMRCR_XR_MASK           = 32'h0000FFFF;
   //XMICR XOR Mask IM Control Register slv_reg10 0x28
   parameter XMICR_ADDR              = 6'h028;
-  parameter XMICR_XI_MASK           = 32'h0001FFFF;
+  parameter XMICR_XI_MASK           = 32'h0000FFFF;
   //LSRCR LFSR Seed RE Control Register slv_reg11 0x2C
   parameter LSRCR_ADDR              = 6'h02C;
-  parameter LSRCR_SR_MASK           = 32'h0003FFFF;
+  parameter LSRCR_SR_MASK           = 32'h0001FFFF;
   //LSICR LFSR Seed IM Control Register slv_reg12 0x30
   parameter LSICR_ADDR              = 6'h030;
-  parameter LSICR_SI_MASK           = 32'h0003FFFF;
+  parameter LSICR_SI_MASK           = 32'h0001FFFF;
   //DWCR Diamond Width Control Register slv_reg13 0x34
   parameter DWCR_ADDR              = 6'h034;
-  parameter DWCR_DW_MASK           = 32'h0001FFFF;
+  parameter DWCR_DW_MASK           = 32'h0000FFFF;
   //DHCR Diamond Height Control Register slv_reg14 0x38
   parameter DHCR_ADDR              = 6'h038;
-  parameter DHCR_DH_MASK           = 32'h0001FFFF;
+  parameter DHCR_DH_MASK           = 32'h0000FFFF;
   //ZOMCR Zoom Control Register slv_reg15 0x3C
   parameter ZOMCR_ADDR              = 6'h03C;
   parameter ZOMCR_DH_MASK           = 32'h000000FF;

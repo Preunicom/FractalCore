@@ -95,15 +95,15 @@ begin
 
     s_highlight_info(0).valid <= '1';
     s_highlight_info(0).current_pixel_col <= std_logic_vector(to_unsigned(0, 10));
-    s_highlight_info(0).current_pixel_row <= std_logic_vector(to_unsigned(0, 9));
+    s_highlight_info(0).current_pixel_row <= std_logic_vector(to_unsigned(479, 9));
     s_highlight_info(0).target_pixel_col <= std_logic_vector(to_unsigned(10, 10));
-    s_highlight_info(0).target_pixel_row <= std_logic_vector(to_unsigned(10, 9));
+    s_highlight_info(0).target_pixel_row <= std_logic_vector(to_unsigned(370, 9));
     s_highlight_info(1).valid <= '0';
     s_highlight_info(2).valid <= '1';
-    s_highlight_info(2).current_pixel_col <= std_logic_vector(to_unsigned(331, 10));
-    s_highlight_info(2).current_pixel_row <= std_logic_vector(to_unsigned(190, 9));
-    s_highlight_info(2).target_pixel_col <= std_logic_vector(to_unsigned(639, 10));
-    s_highlight_info(2).target_pixel_row <= std_logic_vector(to_unsigned(400, 9));
+    s_highlight_info(2).current_pixel_col <= std_logic_vector(to_unsigned(100, 10));
+    s_highlight_info(2).current_pixel_row <= std_logic_vector(to_unsigned(130, 9));
+    s_highlight_info(2).target_pixel_col <= std_logic_vector(to_unsigned(120, 10));
+    s_highlight_info(2).target_pixel_row <= std_logic_vector(to_unsigned(479, 9));
     s_highlight_info(3).valid <= '0';
 
     STIMULI: process
@@ -237,9 +237,9 @@ begin
                         & " Got.: " & to_string(v_amount_highlighted_pixels)
                         & " (Frame: " & to_string(idx) & ")"
                     severity failure;
-                assert v_amount_highlighted_target_pixels = 9
+                assert v_amount_highlighted_target_pixels = (480 + 640)/4 - 1 -- - 1(col and row overlap)
                     report "Amount of highlighted target pixels does not match the expected value!" & LF
-                        & "Exp.: " & to_string(9) 
+                        & "Exp.: " & to_string((480 + 640)/4 - 1)
                         & " Got.: " & to_string(v_amount_highlighted_target_pixels)
                         & " (Frame: " & to_string(idx) & ")"
                     severity failure;
@@ -250,9 +250,9 @@ begin
                         & " Got.: " & to_string(v_amount_highlighted_pixels)
                         & " (Frame: " & to_string(idx) & ")"
                     severity failure;
-                assert v_amount_highlighted_target_pixels = 6
+                assert v_amount_highlighted_target_pixels = (480 + 640)/4 - 1 -- - 1(col and row overlap)
                     report "Amount of highlighted target pixels does not match the expected value!" & LF
-                        & "Exp.: " & to_string(6) 
+                        & "Exp.: " & to_string((480 + 640)/4 - 1) 
                         & " Got.: " & to_string(v_amount_highlighted_target_pixels)
                         & " (Frame: " & to_string(idx) & ")"
                     severity failure;

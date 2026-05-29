@@ -304,3 +304,40 @@ Dieses Problem wurde gelöst, indem die Resets des Datenpfades der Cores entfern
 So werden bei 40 Cores mit je drei Stages und vielen Flip Flops je der Reset entfernt, was die Platzierung entzerrt und das Timing, wenn auch nur knapp, erfüllt.
 
 _@author: Markus Remy_
+
+### 8.3 Probleme
+
+#### 8.3.1 Spiegelung der Anzeige
+
+Der erste nach der Inbetriebnahme auffalende Fehler ist die Spiegelung der Anzeige.
+Dieser Umstand tritt jedoch nur auf, wenn der 8 Bit Pixelabstand 128 oder größer gewählt wurde.
+Damit liegt nahe, dass es einen Überlauf gibt.
+Dieser wurde schnell in der Hardware identifiziert.
+Die Vorzeichenerweiterung wurde zu früh vollzogen, schon bevor der acht Bit unsigned Abstandswert der Pixel in einen positiven neun Bit signed Wert umgewandelt wurde.
+So wurde der Wert also negativ interpretiert.
+
+Diese Änderung hat jedoch den Fehler zuerst nicht behoben, da der IP in Vivado gecached wurde und Vivado nicht erkannt hat, dass es eine Änderung gab.
+Erst nach der Neuerstellung des Projekts wurde die Änderung im erstellten Bitstream korrekt abgebildet.
+
+_@author: Markus Remy_
+
+#### 8.3.2 Minimap - Bugs
+
+Die weiteren Fehler beziehen sich auf die Minimap.
+Das erste auffällige war, dass teilweise die Zielpixel der LFSR und damit nach einiger Zeit auch der aktuelle Pixel außerhalb der Minimap sind.
+Dies liegt daran, dass die Minimap nicht quadratisch ist, der Wertebereich jedoch schon.
+Zudem hat sich die Minimap zu Beginn mit dem Zoomfaktor der Anzeige geändert.
+Dies konnte jedoch durch einen konstanten Zoom-Faktor für die Minimap behoben werden, der den gesamten Wertebereich der LFSR und Diamond Werte abdeckt.
+Dabei wurde der Wertebereich für die beiden Modi so gewählt, dass er statt den maximal möglichen 18 Bit nur 17 Bit verwendet.
+So ist der Bereich auch auf der kürzeren Seite der Minimap vollständig abgebildet und die Zielwerte und damit auch die aktuellen Werte werden vollständig auf den sichtbaren Bereich gemappt.
+
+_@author: Markus Remy_
+
+#### 8.3.3 Minimap - Visualisierung
+
+Die Minimap wurde anfangs mit einem Punkt für den Zielwert sowie für den aktuellen Wert entwickelt.
+Jedoch irritiert diese Darstellung besondern im LFSR Modus, da der Zielpunkt nicht erreicht wird, sondern nur die beiden Achsen.
+Deshalb wurde die Darstellung so geändert, dass nur der aktuelle Punkt ein Punkt ist und der Zielwert als Fadenkruz dargestellt wird.
+Dies bildet das reale Verhalten besser ab da auch die Achsen für den LFSR Modus abgebildet werden.
+
+_@author: Markus Remy_

@@ -172,7 +172,7 @@ begin
         wait until s_resetn = '1';
         while True loop
             wait until rising_edge(s_clk);
-            if tb_pixel_col <= 160 and tb_pixel_row >= 360 then 
+            if tb_pixel_col < 160 and tb_pixel_row >= 360 then 
                 assert c_is_in_minimap_area = '1' 
                     report "Pixel not flaged as mini map area pixel but pixel should be!"
                     severity failure;
