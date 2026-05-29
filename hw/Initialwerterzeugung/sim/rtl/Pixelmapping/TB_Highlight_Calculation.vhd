@@ -45,7 +45,6 @@ architecture Testbench of TB_Highlight_Calculation is
     signal s_target_coord_re      : std_logic_vector(17 downto 0);
     signal s_target_coord_im      : std_logic_vector(17 downto 0);
     signal s_is_in_minimap        : std_logic;
-    signal s_pixel_distance       : std_logic_vector(7 downto 0);
 
     signal tb_frame_idx           : integer;
     signal tb_pixel_col           : integer;
@@ -56,7 +55,6 @@ architecture Testbench of TB_Highlight_Calculation is
     signal tb_c_coord_im          : integer;
     signal tb_target_coord_re     : integer;
     signal tb_target_coord_im     : integer;
-    signal tb_pixel_distance      : integer;
 
     -- CHECK
     signal c_highlight_info : t_highlight_info;
@@ -118,7 +116,6 @@ begin
         i_c_target_coord_re => s_target_coord_re,
         i_c_target_coord_im => s_target_coord_im,
         i_is_in_minimap   => s_is_in_minimap,
-        i_pixel_distance  => s_pixel_distance,
         o_highlight_info  => c_highlight_info
     );
 
@@ -134,9 +131,9 @@ begin
     s_c_coord_im       <= std_logic_vector(to_signed(tb_c_coord_im, 18));
     s_target_coord_re  <= std_logic_vector(to_signed(tb_target_coord_re, 18));
     s_target_coord_im  <= std_logic_vector(to_signed(tb_target_coord_im, 18));
-    s_pixel_distance   <= std_logic_vector(to_unsigned(tb_pixel_distance, 8));
 
     STIMULI: process
+        constant c_MINIMAP_DISTANCE : integer := 1112;
 	begin
         wait until s_resetn = '1';
         -- Frame 0
@@ -146,11 +143,10 @@ begin
         tb_pixel_row <= 10;
         tb_pixel_coord_re <= 100;
         tb_pixel_coord_im <= 1000;
-        tb_c_coord_re <= 149;
-        tb_c_coord_im <= 951;
-        tb_target_coord_re <= 151;
+        tb_c_coord_re <= 100 + (c_MINIMAP_DISTANCE / 2) - 1;
+        tb_c_coord_im <= 1000 - (c_MINIMAP_DISTANCE / 2) + 1;
+        tb_target_coord_re <= 100 + (c_MINIMAP_DISTANCE / 2) + 1;
         tb_target_coord_im <= 1000;
-        tb_pixel_distance  <= 25;
         s_is_in_minimap <= '1';
         wait until rising_edge(s_clk);
         s_valid <= '1';
@@ -159,11 +155,10 @@ begin
         tb_pixel_row <= 10;
         tb_pixel_coord_re <= 100;
         tb_pixel_coord_im <= 1000;
-        tb_c_coord_re <= 149;
-        tb_c_coord_im <= 951;
-        tb_target_coord_re <= 151;
+        tb_c_coord_re <= 100 + (c_MINIMAP_DISTANCE / 2) - 1;
+        tb_c_coord_im <= 1000 - (c_MINIMAP_DISTANCE / 2) + 1;
+        tb_target_coord_re <= 100 + (c_MINIMAP_DISTANCE / 2) + 1;
         tb_target_coord_im <= 1000;
-        tb_pixel_distance  <= 25;
         s_is_in_minimap <= '1';
         wait until rising_edge(s_clk);
         s_valid <= '1';
@@ -172,11 +167,10 @@ begin
         tb_pixel_row <= 20;
         tb_pixel_coord_re <= 100;
         tb_pixel_coord_im <= 1000;
-        tb_c_coord_re <= 149;
-        tb_c_coord_im <= 951;
-        tb_target_coord_re <= 151;
+        tb_c_coord_re <= 100 + (c_MINIMAP_DISTANCE / 2) - 1;
+        tb_c_coord_im <= 1000 - (c_MINIMAP_DISTANCE / 2) + 1;
+        tb_target_coord_re <= 100 + (c_MINIMAP_DISTANCE / 2) + 1;
         tb_target_coord_im <= 1000;
-        tb_pixel_distance  <= 25;
         s_is_in_minimap <= '0';
         wait until rising_edge(s_clk);
         s_valid <= '1';
@@ -185,11 +179,10 @@ begin
         tb_pixel_row <= 30;
         tb_pixel_coord_re <= 100;
         tb_pixel_coord_im <= 1000;
-        tb_c_coord_re <= 350;
-        tb_c_coord_im <= 200;
-        tb_target_coord_re <= 150;
+        tb_c_coord_re <= 100 + ((c_MINIMAP_DISTANCE / 2) * 3);
+        tb_c_coord_im <= 100 + (c_MINIMAP_DISTANCE);
+        tb_target_coord_re <= 100 + (c_MINIMAP_DISTANCE / 2);
         tb_target_coord_im <= 1000;
-        tb_pixel_distance  <= 25;
         s_is_in_minimap <= '1';
         wait until rising_edge(s_clk);
         s_valid <= '1';
@@ -198,11 +191,10 @@ begin
         tb_pixel_row <= 40;
         tb_pixel_coord_re <= 100;
         tb_pixel_coord_im <= 1000;
-        tb_c_coord_re <= 200;
-        tb_c_coord_im <= 150;
-        tb_target_coord_re <= 200;
-        tb_target_coord_im <= 1300;
-        tb_pixel_distance  <= 25;
+        tb_c_coord_re <= 100 + (c_MINIMAP_DISTANCE);
+        tb_c_coord_im <= 100 + (c_MINIMAP_DISTANCE / 2);
+        tb_target_coord_re <= 100 + (c_MINIMAP_DISTANCE);
+        tb_target_coord_im <= 1000 + (c_MINIMAP_DISTANCE * 3);
         s_is_in_minimap <= '1';
         wait until rising_edge(s_clk);
         -- Frame 1
@@ -212,11 +204,10 @@ begin
         tb_pixel_row <= 50;
         tb_pixel_coord_re <= 100;
         tb_pixel_coord_im <= 1000;
-        tb_c_coord_re <= 400;
-        tb_c_coord_im <= 150;
-        tb_target_coord_re <= 500;
-        tb_target_coord_im <= 1700;
-        tb_pixel_distance  <= 100;
+        tb_c_coord_re <= 100 + (c_MINIMAP_DISTANCE * 3);
+        tb_c_coord_im <= 1000 - (c_MINIMAP_DISTANCE * 9);
+        tb_target_coord_re <= 100 + (c_MINIMAP_DISTANCE * 4);
+        tb_target_coord_im <= 1000 + (c_MINIMAP_DISTANCE * 7);
         s_is_in_minimap <= '1';
         wait until rising_edge(s_clk);
         -- Frame 2
@@ -226,11 +217,10 @@ begin
         tb_pixel_row <= 60;
         tb_pixel_coord_re <= 100;
         tb_pixel_coord_im <= 1000;
-        tb_c_coord_re <= 200;
-        tb_c_coord_im <= 150;
-        tb_target_coord_re <= 200;
-        tb_target_coord_im <= 1300;
-        tb_pixel_distance  <= 25;
+        tb_c_coord_re <= 100 + (c_MINIMAP_DISTANCE);
+        tb_c_coord_im <= 100 - (c_MINIMAP_DISTANCE * 9);
+        tb_target_coord_re <= 100 + (c_MINIMAP_DISTANCE);
+        tb_target_coord_im <= 1000 + (c_MINIMAP_DISTANCE * 3);
         s_is_in_minimap <= '0';
         wait until rising_edge(s_clk);
         s_valid <= '1';
@@ -243,7 +233,6 @@ begin
         tb_c_coord_im <= 1000;
         tb_target_coord_re <= 100;
         tb_target_coord_im <= 1000;
-        tb_pixel_distance  <= 25;
         s_is_in_minimap <= '0';
         wait until rising_edge(s_clk);
         -- Frame 3
@@ -257,7 +246,6 @@ begin
         tb_c_coord_im <= 1000;
         tb_target_coord_re <= 100;
         tb_target_coord_im <= 1000;
-        tb_pixel_distance  <= 25;
         s_is_in_minimap <= '0';
         wait until rising_edge(s_clk);
         s_valid <= '1';
@@ -270,7 +258,6 @@ begin
         tb_c_coord_im <= 1000;
         tb_target_coord_re <= 100;
         tb_target_coord_im <= 1000;
-        tb_pixel_distance  <= 25;
         s_is_in_minimap <= '1';
         wait until rising_edge(s_clk);
         s_valid <= '1';
@@ -283,7 +270,6 @@ begin
         tb_c_coord_im <= 1000;
         tb_target_coord_re <= 100;
         tb_target_coord_im <= 1000;
-        tb_pixel_distance  <= 25;
         s_is_in_minimap <= '0';
         wait until rising_edge(s_clk);
         -- Frame 0
@@ -297,7 +283,6 @@ begin
         tb_c_coord_im <= 1000;
         tb_target_coord_re <= 100;
         tb_target_coord_im <= 1000;
-        tb_pixel_distance  <= 25;
         s_is_in_minimap <= '0';
         wait until rising_edge(s_clk);
         wait;
