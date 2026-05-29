@@ -77,12 +77,12 @@ architecture arch_imp of Initialwerterzeugung is
 			o_mode : out std_logic_vector(1 downto 0);
 			o_enable_minimap : out std_logic;
 			o_step_width : out std_logic_vector(16 downto 0);
-			o_lfsr_seed_re : out std_logic_vector(17 downto 0);
-			o_lfsr_seed_im : out std_logic_vector(17 downto 0);
-			o_lfsr_xor_mask_re : out std_logic_vector(16 downto 0);
-			o_lfsr_xor_mask_im : out std_logic_vector(16 downto 0);
-			o_diamond_heigh : out std_logic_vector(16 downto 0);
-			o_diamond_width : out std_logic_vector(16 downto 0);
+			o_lfsr_seed_re : out std_logic_vector(16 downto 0);
+			o_lfsr_seed_im : out std_logic_vector(16 downto 0);
+			o_lfsr_xor_mask_re : out std_logic_vector(15 downto 0);
+			o_lfsr_xor_mask_im : out std_logic_vector(15 downto 0);
+			o_diamond_heigh : out std_logic_vector(15 downto 0);
+			o_diamond_width : out std_logic_vector(15 downto 0);
 			o_load_seed : out std_logic;
 			S_AXI_ACLK	: in std_logic;
 			S_AXI_ARESETN	: in std_logic;
@@ -118,12 +118,12 @@ architecture arch_imp of Initialwerterzeugung is
 			i_mode : in std_logic_vector(1 downto 0);
 			i_enable_minimap : in std_logic;
 			i_step_width : in std_logic_vector(16 downto 0);
-			i_lfsr_seed_re : in std_logic_vector(17 downto 0);
-			i_lfsr_seed_im : in std_logic_vector(17 downto 0);
-			i_lfsr_xor_mask_re : in std_logic_vector(16 downto 0);
-			i_lfsr_xor_mask_im : in std_logic_vector(16 downto 0);
-			i_diamond_heigh : in std_logic_vector(16 downto 0);
-			i_diamond_width : in std_logic_vector(16 downto 0);
+			i_lfsr_seed_re : in std_logic_vector(16 downto 0);
+			i_lfsr_seed_im : in std_logic_vector(16 downto 0);
+			i_lfsr_xor_mask_re : in std_logic_vector(15 downto 0);
+			i_lfsr_xor_mask_im : in std_logic_vector(15 downto 0);
+			i_diamond_heigh : in std_logic_vector(15 downto 0);
+			i_diamond_width : in std_logic_vector(15 downto 0);
 			-- Control
 			i_load_seed : in std_logic;
 			-- AXI Stream like interface
@@ -148,12 +148,12 @@ architecture arch_imp of Initialwerterzeugung is
 	signal w_mode             : std_logic_vector(1 downto 0);
 	signal w_enable_minimap   : std_logic;
 	signal w_step_width       : std_logic_vector(16 downto 0);
-	signal w_lfsr_seed_re     : std_logic_vector(17 downto 0);
-	signal w_lfsr_seed_im     : std_logic_vector(17 downto 0);
-	signal w_lfsr_xor_mask_re : std_logic_vector(16 downto 0);
-	signal w_lfsr_xor_mask_im : std_logic_vector(16 downto 0);
-	signal w_diamond_heigh    : std_logic_vector(16 downto 0);
-	signal w_diamond_width    : std_logic_vector(16 downto 0);
+	signal w_lfsr_seed_re     : std_logic_vector(16 downto 0);
+	signal w_lfsr_seed_im     : std_logic_vector(16 downto 0);
+	signal w_lfsr_xor_mask_re : std_logic_vector(15 downto 0);
+	signal w_lfsr_xor_mask_im : std_logic_vector(15 downto 0);
+	signal w_diamond_heigh    : std_logic_vector(15 downto 0);
+	signal w_diamond_width    : std_logic_vector(15 downto 0);
 	signal w_load_seed : std_logic;
 begin
 

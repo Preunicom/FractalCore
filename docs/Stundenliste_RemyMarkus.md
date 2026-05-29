@@ -65,9 +65,9 @@
 | 27.04.2026 | 3.2.1.2 | 2 | Minimap Pixel Highlight Berechnung |
 | 27.04.2026 | 3.2.1.2 | 2 | Minimap Pixel Highlight Berechnung TB |
 | 29.04.2026 | 9 | 1 | Teambesprechung Initialwerte <-> VGA Overlay |
-| 01.05.2026 | 3.2.2 | 2 | Pipeline Design: C hinzufügen zu Pixeldaten |
-| 02.05.2026 | 3.2.2 | 6 | Start Value Mapping TB |
-| 03.05.2026 | 3.2.2 | 3 | Pixel Data Generation Pipeline + TB |
+| 01.05.2026 | 3.2.2.2 | 2 | Pipeline Design: C hinzufügen zu Pixeldaten |
+| 02.05.2026 | 3.2.2.2 | 6 | Start Value Mapping TB |
+| 03.05.2026 | 3.2.2.2 | 3 | Pixel Data Generation Pipeline + TB |
 | |  |  |  |
 | **KW 18** | **-** | **109** | **Zwischensumme** |
 | |  |  |  |
@@ -77,13 +77,17 @@
 | **KW 19** | **-** | **113** | **Zwischensumme** |
 | |  |  |  |
 | 13.05.2026 | 10 | 1 | AXIL Wrapper Initialwerterzeugung CDC |
-| 13.05.2026 | 3.2.1 | 3 | AXIL TB |
+| 13.05.2026 | 3.2.2.1 | 3 | AXIL TB |
 | |  |  |  |
 | **KW 20** | **-** | **117** | **Zwischensumme** |
 | |  |  |  |
 | 20.05.2026 | 9 | 1 | Teammeeting |
 | |  |  |  |
 | **KW 21** | **-** | **118** | **Zwischensumme** |
+| |  |  |  |
+| 27.05.2026 | 9 | 1 | Teammeeting |
+| |  |  |  |
+| **KW 22** | **-** | **119** | **Zwischensumme** |
 | |  |  |  |
 
 
@@ -132,6 +136,7 @@
 10) Clock Domains Crossing (20h)
 
 # Stundenliste Arty Z7-20 Portierung
+
 | Datum | Dauer [h] | Beschreibung | 
 |-------|---------|-----------|--------------|
 | 15.05.2026 | 3 | Portieren der Projektstruktur auf den Arty Z7-20 und das Haupt-Block-Design auf Zynq |
@@ -165,7 +170,9 @@
 | 26.05.2026 | 1 | BugFixed |
 | 26.05.2026 | 3 | Vibe Coded the menu structure and manually improved the code |
 | 26.05.2026 | 3 | Vorbereiten von Tests auf der Hardware |
-| 27.05.2026 | 10 | Tests auf echter Hardware |
+| 27.05.2026 | 10 | Tests auf echter Hardware + Bug fixes |
+| 28.05.2026 | 3 | Bug Fix (Overflow mit pixel distance, Minimapbereich zu klein, LFSR Werte zu groß) |
+| 28.05.2026 | 1 | Vibe Coded Farbschemata |
 | |  |  |  |
-| **KW 22** | **-** | **69** | **Zwischensumme** |
+| **KW 22** | **-** | **73** | **Zwischensumme** |
 | |  |  |  |

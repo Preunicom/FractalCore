@@ -38,7 +38,7 @@ end entity;
 architecture Behavioral of Pixel_Generation is
     constant c_FRAME_WIDTH : unsigned(9 downto 0) := to_unsigned(640, 10);
     constant c_FRAME_HEIGHT : unsigned(8 downto 0) := to_unsigned(480, 9);
-    constant c_MINI_MAP_AREA_END_RE : unsigned := c_FRAME_WIDTH / 4;
+    constant c_MINI_MAP_AREA_END_RE : unsigned := (c_FRAME_WIDTH / 4) - 1;
     constant c_MINI_MAP_AREA_START_IM : unsigned := 3 * (c_FRAME_HEIGHT / 4);
     signal r_col_idx : unsigned(9 downto 0) := (others => '0');
     signal r_row_idx : unsigned(8 downto 0) := (others => '0');

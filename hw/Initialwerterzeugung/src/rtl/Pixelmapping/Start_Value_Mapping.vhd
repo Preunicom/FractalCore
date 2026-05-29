@@ -34,18 +34,17 @@ entity Start_Value_Mapping is
         i_pixel_coord_re    : in std_logic_vector(17 downto 0);
         i_pixel_coord_im    : in std_logic_vector(17 downto 0);
         i_is_in_minimap     : in std_logic;
-        i_pixel_distance    : in std_logic_vector(7 downto 0);
         -- Config
         i_frames_per_step   : in std_logic_vector(15 downto 0);
         i_step_width        : in std_logic_vector(16 downto 0);
         i_mode              : in std_logic_vector(1 downto 0); -- 00: Diamond, 01: LFSR, 1X: Mandelbrot
         i_load_seed         : in std_logic;
-        i_lfsr_seed_re      : in std_logic_vector(17 downto 0);
-        i_lfsr_seed_im      : in std_logic_vector(17 downto 0);
-        i_lfsr_xor_mask_re  : in std_logic_vector(16 downto 0);
-        i_lfsr_xor_mask_im  : in std_logic_vector(16 downto 0);
-        i_diamond_heigh     : in std_logic_vector(16 downto 0);
-        i_diamond_width     : in std_logic_vector(16 downto 0);
+        i_lfsr_seed_re      : in std_logic_vector(16 downto 0);
+        i_lfsr_seed_im      : in std_logic_vector(16 downto 0);
+        i_lfsr_xor_mask_re  : in std_logic_vector(15 downto 0);
+        i_lfsr_xor_mask_im  : in std_logic_vector(15 downto 0);
+        i_diamond_heigh     : in std_logic_vector(15 downto 0);
+        i_diamond_width     : in std_logic_vector(15 downto 0);
         -- Outputs
         o_valid             : out std_logic;
         o_frame_idx         : out std_logic_vector(1 downto 0);
@@ -60,8 +59,7 @@ entity Start_Value_Mapping is
         o_c_coord_im        : out std_logic_vector(17 downto 0);
         o_c_target_re       : out std_logic_vector(17 downto 0);
         o_c_target_im       : out std_logic_vector(17 downto 0);
-        o_is_in_minimap     : out std_logic;
-        o_pixel_distance    : out std_logic_vector(7 downto 0)
+        o_is_in_minimap     : out std_logic
     );
 end entity;
 
@@ -75,12 +73,12 @@ architecture Behavioral of Start_Value_Mapping is
             i_step_width : in std_logic_vector(16 downto 0);
             i_mode : in std_logic; -- 0: Diamond, 1: LFSR
             i_load_seed : in std_logic;
-            i_lfsr_seed_re : in std_logic_vector(17 downto 0);
-            i_lfsr_seed_im : in std_logic_vector(17 downto 0);
-            i_lfsr_xor_mask_re : in std_logic_vector(16 downto 0);
-            i_lfsr_xor_mask_im : in std_logic_vector(16 downto 0);
-            i_diamond_heigh : in std_logic_vector(16 downto 0);
-            i_diamond_width : in std_logic_vector(16 downto 0);
+            i_lfsr_seed_re : in std_logic_vector(16 downto 0);
+            i_lfsr_seed_im : in std_logic_vector(16 downto 0);
+            i_lfsr_xor_mask_re : in std_logic_vector(15 downto 0);
+            i_lfsr_xor_mask_im : in std_logic_vector(15 downto 0);
+            i_diamond_heigh : in std_logic_vector(15 downto 0);
+            i_diamond_width : in std_logic_vector(15 downto 0);
             o_target_re : out std_logic_vector(17 downto 0);
             o_target_im : out std_logic_vector(17 downto 0);        
             o_current_coord_re : out std_logic_vector(17 downto 0);
@@ -97,7 +95,6 @@ architecture Behavioral of Start_Value_Mapping is
     signal r_pixel_coord_re     : std_logic_vector(17 downto 0);
     signal r_pixel_coord_im     : std_logic_vector(17 downto 0);
     signal r_is_in_minimap      : std_logic;
-    signal r_pixel_distance     : std_logic_vector(7 downto 0);
     
     signal r_c_mode             : std_logic;
     signal r_set_mode           : std_logic;
@@ -153,7 +150,6 @@ begin
                 r_pixel_coord_re <= (others => '0');
                 r_pixel_coord_im <= (others => '0');
                 r_is_in_minimap <= '0';
-                r_pixel_distance <= (others => '0');
                 r_c_mode <= '0';
                 r_set_mode <= '0';
                 r_is_new_frame <= '0';
@@ -175,7 +171,6 @@ begin
                         r_pixel_coord_re <= i_pixel_coord_re;
                         r_pixel_coord_im <= i_pixel_coord_im;
                         r_is_in_minimap <= i_is_in_minimap;
-                        r_pixel_distance <= i_pixel_distance;
                     end if; -- Do not process data which is not valid as it could lead to c generation
                 end if;
             end if;
@@ -196,14 +191,12 @@ begin
                 o_pixel_coord_c_re <= (others => '0');
                 o_pixel_coord_c_im <= (others => '0');
                 o_is_in_minimap <= '0';
-                o_pixel_distance <= (others => '0');
             else
                 if i_fetch_next = '1' then
                     o_valid <= r_valid;
                     o_frame_idx <= r_frame_idx;
                     o_pixel_col <= r_pixel_col;
                     o_pixel_row <= r_pixel_row;
-                    o_pixel_distance <= r_pixel_distance;
                     o_is_in_minimap <= r_is_in_minimap;
                     -- Set c and z_0 depending on mode
                     if r_set_mode = '1' or r_is_in_minimap = '1' then

@@ -36,12 +36,12 @@ architecture Testbench of TB_Diamond is
     signal s_resetn : std_logic;
     signal s_clk : std_logic := '0';
     signal s_en : std_logic;
-    signal s_diamond_heigh : std_logic_vector(16 downto 0);
-    signal s_diamond_width : std_logic_vector(16 downto 0);
+    signal s_diamond_heigh : std_logic_vector(15 downto 0);
+    signal s_diamond_width : std_logic_vector(15 downto 0);
     
     -- CHECK
-    signal c_target_re : std_logic_vector(17 downto 0);
-    signal c_target_im : std_logic_vector(17 downto 0);
+    signal c_target_re : std_logic_vector(16 downto 0);
+    signal c_target_im : std_logic_vector(16 downto 0);
 
     signal tb_test_ended : boolean := false;
     signal tb_test_passed : boolean := false;
@@ -65,8 +65,8 @@ begin
 	begin
         wait until s_resetn = '1';
         s_en <= '1';
-        s_diamond_width <= std_logic_vector(to_unsigned(131071, 17));
-        s_diamond_heigh <= std_logic_vector(to_unsigned(131071, 17));
+        s_diamond_width <= std_logic_vector(to_unsigned(65535, 16));
+        s_diamond_heigh <= std_logic_vector(to_unsigned(65535, 16));
         wait until rising_edge(s_clk);
         s_en <= '0';
         wait until rising_edge(s_clk);
@@ -78,8 +78,8 @@ begin
         s_en <= '1';
         wait until rising_edge(s_clk);
         wait until rising_edge(s_clk);
-        s_diamond_width <= std_logic_vector(to_unsigned(2, 17));
-        s_diamond_heigh <= std_logic_vector(to_unsigned(10, 17));
+        s_diamond_width <= std_logic_vector(to_unsigned(2, 16));
+        s_diamond_heigh <= std_logic_vector(to_unsigned(10, 16));
         s_en <= '0';
         wait until rising_edge(s_clk);
         s_en <= '1';
@@ -99,91 +99,91 @@ begin
 	begin
         wait until s_resetn = '1';
         wait_for_enabled_clock(s_clk, s_en);
-        assert c_target_re = std_logic_vector(to_signed(131071, 18))
+        assert c_target_re = std_logic_vector(to_signed(65535, 17))
             report "Wrong RE value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(131071, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(65535, 17))) & LF
                 & "Got:  " & to_string(c_target_re)
             severity failure;
-        assert c_target_im = std_logic_vector(to_signed(0, 18))
+        assert c_target_im = std_logic_vector(to_signed(0, 17))
             report "Wrong IM value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 17))) & LF
                 & "Got:  " & to_string(c_target_im)
             severity failure;
         wait_for_enabled_clock(s_clk, s_en);
-        assert c_target_re = std_logic_vector(to_signed(0, 18))
+        assert c_target_re = std_logic_vector(to_signed(0, 17))
             report "Wrong RE value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 17))) & LF
                 & "Got:  " & to_string(c_target_re)
             severity failure;
-        assert c_target_im = std_logic_vector(to_signed(131071, 18))
+        assert c_target_im = std_logic_vector(to_signed(65535, 17))
             report "Wrong IM value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(131071, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(65535, 17))) & LF
                 & "Got:  " & to_string(c_target_im)
             severity failure;
         wait_for_enabled_clock(s_clk, s_en);
-        assert c_target_re = std_logic_vector(to_signed(-131071, 18))
+        assert c_target_re = std_logic_vector(to_signed(-65535, 17))
             report "Wrong RE value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(-131071, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(-65535, 17))) & LF
                 & "Got:  " & to_string(c_target_re)
             severity failure;
-        assert c_target_im = std_logic_vector(to_signed(0, 18))
+        assert c_target_im = std_logic_vector(to_signed(0, 17))
             report "Wrong IM value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 17))) & LF
                 & "Got:  " & to_string(c_target_im)
             severity failure;
         wait_for_enabled_clock(s_clk, s_en);
-        assert c_target_re = std_logic_vector(to_signed(0, 18))
+        assert c_target_re = std_logic_vector(to_signed(0, 17))
             report "Wrong RE value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 17))) & LF
                 & "Got:  " & to_string(c_target_re)
             severity failure;
-        assert c_target_im = std_logic_vector(to_signed(-131071, 18))
+        assert c_target_im = std_logic_vector(to_signed(-65535, 17))
             report "Wrong IM value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(-131071, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(-65535, 17))) & LF
                 & "Got:  " & to_string(c_target_im)
             severity failure;
         wait_for_enabled_clock(s_clk, s_en);
-        assert c_target_re = std_logic_vector(to_signed(2, 18))
+        assert c_target_re = std_logic_vector(to_signed(2, 17))
             report "Wrong RE value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(2, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(2, 17))) & LF
                 & "Got:  " & to_string(c_target_re)
             severity failure;
-        assert c_target_im = std_logic_vector(to_signed(0, 18))
+        assert c_target_im = std_logic_vector(to_signed(0, 17))
             report "Wrong IM value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 17))) & LF
                 & "Got:  " & to_string(c_target_im)
             severity failure;
         wait_for_enabled_clock(s_clk, s_en);
-        assert c_target_re = std_logic_vector(to_signed(0, 18))
+        assert c_target_re = std_logic_vector(to_signed(0, 17))
             report "Wrong RE value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 17))) & LF
                 & "Got:  " & to_string(c_target_re)
             severity failure;
-        assert c_target_im = std_logic_vector(to_signed(10, 18))
+        assert c_target_im = std_logic_vector(to_signed(10, 17))
             report "Wrong IM value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(10, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(10, 17))) & LF
                 & "Got:  " & to_string(c_target_im)
             severity failure;
         wait_for_enabled_clock(s_clk, s_en);
-        assert c_target_re = std_logic_vector(to_signed(-2, 18))
+        assert c_target_re = std_logic_vector(to_signed(-2, 17))
             report "Wrong RE value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(-2, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(-2, 17))) & LF
                 & "Got:  " & to_string(c_target_re)
             severity failure;
-        assert c_target_im = std_logic_vector(to_signed(0, 18))
+        assert c_target_im = std_logic_vector(to_signed(0, 17))
             report "Wrong IM value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 17))) & LF
                 & "Got:  " & to_string(c_target_im)
             severity failure;
         wait_for_enabled_clock(s_clk, s_en);
-        assert c_target_re = std_logic_vector(to_signed(0, 18))
+        assert c_target_re = std_logic_vector(to_signed(0, 17))
             report "Wrong RE value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 17))) & LF
                 & "Got:  " & to_string(c_target_re)
             severity failure;
-        assert c_target_im = std_logic_vector(to_signed(-10, 18))
+        assert c_target_im = std_logic_vector(to_signed(-10, 17))
             report "Wrong IM value received!" & LF
-                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 18))) & LF
+                & "Exp.: " & to_string(std_logic_vector(to_signed(0, 17))) & LF
                 & "Got:  " & to_string(c_target_im)
             severity failure;
         wait until rising_edge(s_clk);

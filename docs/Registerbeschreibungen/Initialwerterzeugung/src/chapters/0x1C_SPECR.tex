@@ -1,0 +1,30 @@
+\subsection{Speed Control Register (SPECR)}
+
+Address offset: \textbf{0x1C}
+\newline
+Reset value: 0x0000 000F
+
+\begin{figure}[H]
+    \centering
+    \begin{bytefield}[bitwidth=\bflenhalfword, endianness=big]{16}
+        \bitheader[lsb=16]{16-31} \\
+        \bitbox{16}{Res}
+    \end{bytefield}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{bytefield}[bitwidth=\bflenhalfword, endianness=big]{16}
+        \bitheader{0-15} \\
+        \bitbox{16}{SP} \\
+        \bitbox[]{16}{R/W}
+    \end{bytefield}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Bit 31:16 - Reserved Bits}
+    \item \textbf{Bit 15:0 - SP: Animationsgeschwindigkeit}\\
+    Setzt die Geschwindigkeit der Animation in Bilder pro Animationsschritt.
+    Die gesetzte Dauer in Bildern bleibt das angezeigte Bild statisch.
+    Beispielsweise ändert sich das Bild bei einem gesetzten Wert von zwei nur jedes zweite Bild und verringert die Bildwiederholrate so effektiv von 60 auf 30 Hz.
+\end{itemize}

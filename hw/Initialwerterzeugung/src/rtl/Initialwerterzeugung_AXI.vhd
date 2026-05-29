@@ -21,12 +21,12 @@ entity Initialwerterzeugung_AXI is
 		o_mode : out std_logic_vector(1 downto 0);
 		o_enable_minimap : out std_logic;
 		o_step_width : out std_logic_vector(16 downto 0);
-		o_lfsr_seed_re : out std_logic_vector(17 downto 0);
-		o_lfsr_seed_im : out std_logic_vector(17 downto 0);
-		o_lfsr_xor_mask_re : out std_logic_vector(16 downto 0);
-		o_lfsr_xor_mask_im : out std_logic_vector(16 downto 0);
-		o_diamond_heigh : out std_logic_vector(16 downto 0);
-		o_diamond_width : out std_logic_vector(16 downto 0);
+		o_lfsr_seed_re : out std_logic_vector(16 downto 0);
+		o_lfsr_seed_im : out std_logic_vector(16 downto 0);
+		o_lfsr_xor_mask_re : out std_logic_vector(15 downto 0);
+		o_lfsr_xor_mask_im : out std_logic_vector(15 downto 0);
+		o_diamond_heigh : out std_logic_vector(15 downto 0);
+		o_diamond_width : out std_logic_vector(15 downto 0);
 		o_load_seed : out std_logic;
 		-- User ports ends
 		-- Do not modify the ports beyond this line
@@ -372,28 +372,28 @@ begin
 	CSWCR_reg(31 downto 17) <= (others => '0'); -- reserved
 
 	---- XMRCR XOR Mask RE Control Register 0x24
-	o_lfsr_xor_mask_re <= XMRCR_reg(16 downto 0); -- axi rw ip r
-	XMRCR_reg(31 downto 17) <= (others => '0'); -- reserved
+	o_lfsr_xor_mask_re <= XMRCR_reg(15 downto 0); -- axi rw ip r
+	XMRCR_reg(31 downto 16) <= (others => '0'); -- reserved
 
 	---- XMICR XOR Mask IM Control Register 0x28
-	o_lfsr_xor_mask_im <= XMICR_reg(16 downto 0); -- axi rw ip r
-	XMICR_reg(31 downto 17) <= (others => '0'); -- reserved
+	o_lfsr_xor_mask_im <= XMICR_reg(15 downto 0); -- axi rw ip r
+	XMICR_reg(31 downto 16) <= (others => '0'); -- reserved
 
 	---- LSRCR LFSR Seed RE Control Register 0x2C
-	o_lfsr_seed_re <= LSRCR_reg(17 downto 0); -- axi rw ip r
-	LSRCR_reg(31 downto 18) <= (others => '0'); -- reserved
+	o_lfsr_seed_re <= LSRCR_reg(16 downto 0); -- axi rw ip r
+	LSRCR_reg(31 downto 17) <= (others => '0'); -- reserved
 
 	---- LSICR LFSR Seed IM Control Register 0x30
-	o_lfsr_seed_im <= LSICR_reg(17 downto 0); -- axi rw ip r
-	LSICR_reg(31 downto 18) <= (others => '0'); -- reserved
+	o_lfsr_seed_im <= LSICR_reg(16 downto 0); -- axi rw ip r
+	LSICR_reg(31 downto 17) <= (others => '0'); -- reserved
 
 	---- DWCR Diamond Width Control Register 0x34
-	o_diamond_width <= DWCR_reg(16 downto 0); -- axi rw ip r
-	DWCR_reg(31 downto 17) <= (others => '0'); -- reserved
+	o_diamond_width <= DWCR_reg(15 downto 0); -- axi rw ip r
+	DWCR_reg(31 downto 16) <= (others => '0'); -- reserved
 
 	---- DHCR Diamond Height Control Register 0x38
-	o_diamond_heigh <= DHCR_reg(16 downto 0); -- axi rw ip r
-	DHCR_reg(31 downto 17) <= (others => '0'); -- reserved
+	o_diamond_heigh <= DHCR_reg(15 downto 0); -- axi rw ip r
+	DHCR_reg(31 downto 16) <= (others => '0'); -- reserved
 
 	---- ZOMCR Zoom Control Register 0x3C
 	o_pixel_distance <= ZOMCR_reg(7 downto 0); -- axi rw ip r
@@ -417,15 +417,15 @@ begin
 	    if S_AXI_ARESETN = '0' then
 			SETCR_reg(1 downto 0) <= "00";
 			SETCR_reg(16) <= '0';
-			SPECR_reg(15 downto 0) <= std_logic_vector(to_unsigned(16, 16)); 
-			CSWCR_reg(16 downto 0) <= std_logic_vector(to_unsigned(1, 17)); 
-			XMRCR_reg(16 downto 0) <= std_logic_vector(to_unsigned(1, 17)); 
-			XMICR_reg(16 downto 0) <= std_logic_vector(to_unsigned(1, 17)); 
-			LSRCR_reg(17 downto 0) <= std_logic_vector(to_unsigned(1, 18)); 
-			LSICR_reg(17 downto 0) <= std_logic_vector(to_unsigned(1, 18)); 
-			DWCR_reg(16 downto 0) <= std_logic_vector(to_unsigned(255, 17)); 
-			DHCR_reg(16 downto 0) <= std_logic_vector(to_unsigned(255, 17)); 
-			ZOMCR_reg(7 downto 0) <= std_logic_vector(to_unsigned(1, 8)); 
+			SPECR_reg(15 downto 0) <= std_logic_vector(to_unsigned(1, 16)); 
+			CSWCR_reg(16 downto 0) <= std_logic_vector(to_unsigned(50, 17)); 
+			XMRCR_reg(15 downto 0) <= std_logic_vector(to_unsigned(1, 16)); 
+			XMICR_reg(15 downto 0) <= std_logic_vector(to_unsigned(1, 16)); 
+			LSRCR_reg(16 downto 0) <= std_logic_vector(to_unsigned(1, 17)); 
+			LSICR_reg(16 downto 0) <= std_logic_vector(to_unsigned(1, 17)); 
+			DWCR_reg(15 downto 0) <= std_logic_vector(to_unsigned(10000, 16)); 
+			DHCR_reg(15 downto 0) <= std_logic_vector(to_unsigned(10000, 16)); 
+			ZOMCR_reg(7 downto 0) <= std_logic_vector(to_unsigned(255, 8));
 	    else
 	      loc_addr := axi_awaddr(ADDR_LSB + OPT_MEM_ADDR_BITS downto ADDR_LSB);
 	      if (slv_reg_wren = '1') then
@@ -477,7 +477,7 @@ begin
 						XMRCR_reg(15 downto 8) <= S_AXI_WDATA(15 downto 8);
 					end if;  
 					if ( S_AXI_WSTRB(2) = '1' ) then --(23 downto 16)
-						XMRCR_reg(16) <= S_AXI_WDATA(16);
+						null;
 					end if;  
 					if ( S_AXI_WSTRB(3) = '1' ) then --(31 downto 24)
 						null;
@@ -490,7 +490,7 @@ begin
 						XMICR_reg(15 downto 8) <= S_AXI_WDATA(15 downto 8);
 					end if;  
 					if ( S_AXI_WSTRB(2) = '1' ) then --(23 downto 16)
-						XMICR_reg(16) <= S_AXI_WDATA(16);
+						null;
 					end if;  
 					if ( S_AXI_WSTRB(3) = '1' ) then --(31 downto 24)
 						null;
@@ -503,7 +503,7 @@ begin
 						LSRCR_reg(15 downto 8) <= S_AXI_WDATA(15 downto 8);
 					end if;  
 					if ( S_AXI_WSTRB(2) = '1' ) then --(23 downto 16)
-						LSRCR_reg(17 downto 16) <= S_AXI_WDATA(17 downto 16);
+						LSRCR_reg(16) <= S_AXI_WDATA(16);
 					end if;  
 					if ( S_AXI_WSTRB(3) = '1' ) then --(31 downto 24)
 						null;
@@ -516,7 +516,7 @@ begin
 						LSICR_reg(15 downto 8) <= S_AXI_WDATA(15 downto 8);
 					end if;  
 					if ( S_AXI_WSTRB(2) = '1' ) then --(23 downto 16)
-						LSICR_reg(17 downto 16) <= S_AXI_WDATA(17 downto 16);
+						LSICR_reg(16) <= S_AXI_WDATA(16);
 					end if;  
 					if ( S_AXI_WSTRB(3) = '1' ) then --(31 downto 24)
 						null;
@@ -529,7 +529,7 @@ begin
 						DWCR_reg(15 downto 8) <= S_AXI_WDATA(15 downto 8);
 					end if;  
 					if ( S_AXI_WSTRB(2) = '1' ) then --(23 downto 16)
-						DWCR_reg(16) <= S_AXI_WDATA(16);
+						null;
 					end if;  
 					if ( S_AXI_WSTRB(3) = '1' ) then --(31 downto 24)
 						null;
@@ -542,7 +542,7 @@ begin
 						DHCR_reg(15 downto 8) <= S_AXI_WDATA(15 downto 8);
 					end if;  
 					if ( S_AXI_WSTRB(2) = '1' ) then --(23 downto 16)
-						DHCR_reg(16) <= S_AXI_WDATA(16);
+						null;
 					end if;  
 					if ( S_AXI_WSTRB(3) = '1' ) then --(31 downto 24)
 						null;
