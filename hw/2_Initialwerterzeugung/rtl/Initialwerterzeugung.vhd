@@ -19,8 +19,6 @@ entity Initialwerterzeugung is
 	);
 	port (
 		-- Users to add ports here
-		i_clk_init : in std_logic;
-		i_resetn_init : in std_logic;
 		-- AXI Stream like interface to Mengenberechnung
         i_ready : in std_logic;
         o_valid : out std_logic;
@@ -32,30 +30,10 @@ entity Initialwerterzeugung is
         o_c_real : out std_logic_vector(17 downto 0);
         o_c_img : out std_logic_vector(17 downto 0);
         -- Highlight data to Visualization
-		-- CH 0
-		o_highlight_ch0_valid : out std_logic;
-		o_highlight_ch0_current_pixel_col : out std_logic_vector(9 downto 0);
-        o_highlight_ch0_current_pixel_row : out std_logic_vector(8 downto 0);
-        o_highlight_ch0_target_pixel_col : out std_logic_vector(9 downto 0);
-        o_highlight_ch0_target_pixel_row : out std_logic_vector(8 downto 0);
-		-- CH 1
-		o_highlight_ch1_valid : out std_logic;
-		o_highlight_ch1_current_pixel_col : out std_logic_vector(9 downto 0);
-        o_highlight_ch1_current_pixel_row : out std_logic_vector(8 downto 0);
-        o_highlight_ch1_target_pixel_col : out std_logic_vector(9 downto 0);
-        o_highlight_ch1_target_pixel_row : out std_logic_vector(8 downto 0);
-		-- CH 2
-		o_highlight_ch2_valid : out std_logic;
-		o_highlight_ch2_current_pixel_col : out std_logic_vector(9 downto 0);
-        o_highlight_ch2_current_pixel_row : out std_logic_vector(8 downto 0);
-        o_highlight_ch2_target_pixel_col : out std_logic_vector(9 downto 0);
-        o_highlight_ch2_target_pixel_row : out std_logic_vector(8 downto 0);
-		-- CH 3
-		o_highlight_ch3_valid : out std_logic;
-		o_highlight_ch3_current_pixel_col : out std_logic_vector(9 downto 0);
-        o_highlight_ch3_current_pixel_row : out std_logic_vector(8 downto 0);
-        o_highlight_ch3_target_pixel_col : out std_logic_vector(9 downto 0);
-        o_highlight_ch3_target_pixel_row : out std_logic_vector(8 downto 0);
+		o_highlight_ch0 : out std_logic_vector(38 downto 0);
+		o_highlight_ch1 : out std_logic_vector(38 downto 0);
+		o_highlight_ch2 : out std_logic_vector(38 downto 0);
+		o_highlight_ch3 : out std_logic_vector(38 downto 0);
 		-- User ports ends
 		-- Do not modify the ports beyond this line
 
@@ -99,12 +77,12 @@ architecture arch_imp of Initialwerterzeugung is
 			o_mode : out std_logic_vector(1 downto 0);
 			o_enable_minimap : out std_logic;
 			o_step_width : out std_logic_vector(16 downto 0);
-			o_lfsr_seed_re : out std_logic_vector(17 downto 0);
-			o_lfsr_seed_im : out std_logic_vector(17 downto 0);
-			o_lfsr_xor_mask_re : out std_logic_vector(16 downto 0);
-			o_lfsr_xor_mask_im : out std_logic_vector(16 downto 0);
-			o_diamond_heigh : out std_logic_vector(16 downto 0);
-			o_diamond_width : out std_logic_vector(16 downto 0);
+			o_lfsr_seed_re : out std_logic_vector(16 downto 0);
+			o_lfsr_seed_im : out std_logic_vector(16 downto 0);
+			o_lfsr_xor_mask_re : out std_logic_vector(15 downto 0);
+			o_lfsr_xor_mask_im : out std_logic_vector(15 downto 0);
+			o_diamond_heigh : out std_logic_vector(15 downto 0);
+			o_diamond_width : out std_logic_vector(15 downto 0);
 			o_load_seed : out std_logic;
 			S_AXI_ACLK	: in std_logic;
 			S_AXI_ARESETN	: in std_logic;
@@ -140,12 +118,12 @@ architecture arch_imp of Initialwerterzeugung is
 			i_mode : in std_logic_vector(1 downto 0);
 			i_enable_minimap : in std_logic;
 			i_step_width : in std_logic_vector(16 downto 0);
-			i_lfsr_seed_re : in std_logic_vector(17 downto 0);
-			i_lfsr_seed_im : in std_logic_vector(17 downto 0);
-			i_lfsr_xor_mask_re : in std_logic_vector(16 downto 0);
-			i_lfsr_xor_mask_im : in std_logic_vector(16 downto 0);
-			i_diamond_heigh : in std_logic_vector(16 downto 0);
-			i_diamond_width : in std_logic_vector(16 downto 0);
+			i_lfsr_seed_re : in std_logic_vector(16 downto 0);
+			i_lfsr_seed_im : in std_logic_vector(16 downto 0);
+			i_lfsr_xor_mask_re : in std_logic_vector(15 downto 0);
+			i_lfsr_xor_mask_im : in std_logic_vector(15 downto 0);
+			i_diamond_heigh : in std_logic_vector(15 downto 0);
+			i_diamond_width : in std_logic_vector(15 downto 0);
 			-- Control
 			i_load_seed : in std_logic;
 			-- AXI Stream like interface
@@ -170,46 +148,13 @@ architecture arch_imp of Initialwerterzeugung is
 	signal w_mode             : std_logic_vector(1 downto 0);
 	signal w_enable_minimap   : std_logic;
 	signal w_step_width       : std_logic_vector(16 downto 0);
-	signal w_lfsr_seed_re     : std_logic_vector(17 downto 0);
-	signal w_lfsr_seed_im     : std_logic_vector(17 downto 0);
-	signal w_lfsr_xor_mask_re : std_logic_vector(16 downto 0);
-	signal w_lfsr_xor_mask_im : std_logic_vector(16 downto 0);
-	signal w_diamond_heigh    : std_logic_vector(16 downto 0);
-	signal w_diamond_width    : std_logic_vector(16 downto 0);
+	signal w_lfsr_seed_re     : std_logic_vector(16 downto 0);
+	signal w_lfsr_seed_im     : std_logic_vector(16 downto 0);
+	signal w_lfsr_xor_mask_re : std_logic_vector(15 downto 0);
+	signal w_lfsr_xor_mask_im : std_logic_vector(15 downto 0);
+	signal w_diamond_heigh    : std_logic_vector(15 downto 0);
+	signal w_diamond_width    : std_logic_vector(15 downto 0);
 	signal w_load_seed : std_logic;
-
-	signal r_cdc_synchronizer : std_logic;
-	signal r_cdc_sychnroizer_stage_1 : std_logic;
-	signal r_cdc_sychnronizer_stage_2 : std_logic;
-	signal r_cdc_last_sychnronizer_stage_2 : std_logic;
-	signal r_cdc_stabilized_load_seed : std_logic;
-	signal r_cdc_stabilized_load_seed_stage_1 : std_logic;
-	signal r_cdc_stabilized_load_seed_stage_2 : std_logic;
-
-	signal r_cdc_pixel_distance_stage_1 : std_logic_vector(7 downto 0);
-	signal r_cdc_frames_per_step_stage_1 : std_logic_vector(15 downto 0);
-	signal r_cdc_mode_stage_1 : std_logic_vector(1 downto 0);
-	signal r_cdc_enable_minimap_stage_1 : std_logic;
-	signal r_cdc_step_width_stage_1 : std_logic_vector(16 downto 0);
-	signal r_cdc_lfsr_seed_re_stage_1 : std_logic_vector(17 downto 0);
-	signal r_cdc_lfsr_seed_im_stage_1 : std_logic_vector(17 downto 0);
-	signal r_cdc_lfsr_xor_mask_re_stage_1 : std_logic_vector(16 downto 0);
-	signal r_cdc_lfsr_xor_mask_im_stage_1 : std_logic_vector(16 downto 0);
-	signal r_cdc_diamond_heigh_stage_1 : std_logic_vector(16 downto 0);
-	signal r_cdc_diamond_width_stage_1 : std_logic_vector(16 downto 0);
-
-	signal r_cdc_pixel_distance_stage_2 : std_logic_vector(7 downto 0);
-	signal r_cdc_frames_per_step_stage_2 : std_logic_vector(15 downto 0);
-	signal r_cdc_mode_stage_2 : std_logic_vector(1 downto 0);
-	signal r_cdc_enable_minimap_stage_2 : std_logic;
-	signal r_cdc_step_width_stage_2 : std_logic_vector(16 downto 0);
-	signal r_cdc_lfsr_seed_re_stage_2 : std_logic_vector(17 downto 0);
-	signal r_cdc_lfsr_seed_im_stage_2 : std_logic_vector(17 downto 0);
-	signal r_cdc_lfsr_xor_mask_re_stage_2 : std_logic_vector(16 downto 0);
-	signal r_cdc_lfsr_xor_mask_im_stage_2 : std_logic_vector(16 downto 0);
-	signal r_cdc_diamond_heigh_stage_2 : std_logic_vector(16 downto 0);
-	signal r_cdc_diamond_width_stage_2 : std_logic_vector(16 downto 0);
-
 begin
 
 	-- Instantiation of Axi Bus Interface S00_AXI
@@ -257,20 +202,20 @@ begin
 	-- Add user logic here
 	Pixel_Gen: Pixel_Data_Generation_Pipeline
 	port map (
-		i_resetn           => i_resetn_init,
-		i_clk              => i_clk_init,
-		i_pixel_distance   => r_cdc_pixel_distance_stage_2,
-		i_frames_per_step  => r_cdc_frames_per_step_stage_2,
-		i_mode             => r_cdc_mode_stage_2,
-		i_enable_minimap   => r_cdc_enable_minimap_stage_2,
-		i_step_width       => r_cdc_step_width_stage_2,
-		i_lfsr_seed_re     => r_cdc_lfsr_seed_re_stage_2,
-		i_lfsr_seed_im     => r_cdc_lfsr_seed_im_stage_2,
-		i_lfsr_xor_mask_re => r_cdc_lfsr_xor_mask_re_stage_2,
-		i_lfsr_xor_mask_im => r_cdc_lfsr_xor_mask_im_stage_2,
-		i_diamond_heigh    => r_cdc_diamond_heigh_stage_2,
-		i_diamond_width    => r_cdc_diamond_width_stage_2,
-		i_load_seed        => r_cdc_stabilized_load_seed_stage_2,
+		i_resetn           => s00_axi_aresetn,
+		i_clk              => s00_axi_aclk,
+		i_pixel_distance   => w_pixel_distance,
+		i_frames_per_step  => w_frames_per_step,
+		i_mode             => w_mode,
+		i_enable_minimap   => w_enable_minimap,
+		i_step_width       => w_step_width,
+		i_lfsr_seed_re     => w_lfsr_seed_re,
+		i_lfsr_seed_im     => w_lfsr_seed_im,
+		i_lfsr_xor_mask_re => w_lfsr_xor_mask_re,
+		i_lfsr_xor_mask_im => w_lfsr_xor_mask_im,
+		i_diamond_heigh    => w_diamond_heigh,
+		i_diamond_width    => w_diamond_width,
+		i_load_seed        => w_load_seed,
 		i_ready            => i_ready,
 		o_valid            => o_valid,
 		o_video_pix_col    => o_video_pix_col,
@@ -283,85 +228,10 @@ begin
 		o_highlight        => w_highlight
 	);
 
-	CDC_LOAD_SEED_STABILIZER: process(s00_axi_aclk)
-	begin
-		if rising_edge(s00_axi_aclk) then
-			if s00_axi_aresetn = '0' then
-				r_cdc_stabilized_load_seed <= '0';
-			else
-				r_cdc_sychnroizer_stage_1 <= r_cdc_synchronizer;
-				r_cdc_sychnronizer_stage_2 <= r_cdc_sychnroizer_stage_1;
-				r_cdc_last_sychnronizer_stage_2 <= r_cdc_sychnronizer_stage_2;
-				if r_cdc_last_sychnronizer_stage_2 /= r_cdc_sychnronizer_stage_2 then
-					r_cdc_stabilized_load_seed <= '0';
-				end if;
-				if w_load_seed = '1' then
-					r_cdc_stabilized_load_seed <= '1';
-				end if;
-			end if;
-		end if;
-	end process;
-	
-	CDC_AXI_2_INIT: process(i_clk_init)
-	begin
-		if rising_edge(i_clk_init) then
-			if i_resetn_init = '0' then
-				r_cdc_synchronizer <= '0';
-			else
-				r_cdc_synchronizer <= not r_cdc_synchronizer;
-				r_cdc_stabilized_load_seed_stage_1 <= r_cdc_stabilized_load_seed;
-				r_cdc_stabilized_load_seed_stage_2 <= r_cdc_stabilized_load_seed_stage_1;
-
-				r_cdc_pixel_distance_stage_1 	<= w_pixel_distance;
-				r_cdc_frames_per_step_stage_1 	<= w_frames_per_step;
-				r_cdc_mode_stage_1 				<= w_mode;
-				r_cdc_enable_minimap_stage_1 	<= w_enable_minimap;
-				r_cdc_step_width_stage_1 		<= w_step_width;
-				r_cdc_lfsr_seed_re_stage_1 		<= w_lfsr_seed_re;
-				r_cdc_lfsr_seed_im_stage_1 		<= w_lfsr_seed_im;
-				r_cdc_lfsr_xor_mask_re_stage_1 	<= w_lfsr_xor_mask_re;
-				r_cdc_lfsr_xor_mask_im_stage_1 	<= w_lfsr_xor_mask_im;
-				r_cdc_diamond_heigh_stage_1		<= w_diamond_heigh;
-				r_cdc_diamond_width_stage_1 	<= w_diamond_width;
-
-				r_cdc_pixel_distance_stage_2 	<= r_cdc_pixel_distance_stage_1;
-				r_cdc_frames_per_step_stage_2 	<= r_cdc_frames_per_step_stage_1;
-				r_cdc_mode_stage_2 				<= r_cdc_mode_stage_1;
-				r_cdc_enable_minimap_stage_2 	<= r_cdc_enable_minimap_stage_1;
-				r_cdc_step_width_stage_2 		<= r_cdc_step_width_stage_1;
-				r_cdc_lfsr_seed_re_stage_2 		<= r_cdc_lfsr_seed_re_stage_1;
-				r_cdc_lfsr_seed_im_stage_2 		<= r_cdc_lfsr_seed_im_stage_1;
-				r_cdc_lfsr_xor_mask_re_stage_2 	<= r_cdc_lfsr_xor_mask_re_stage_1;
-				r_cdc_lfsr_xor_mask_im_stage_2 	<= r_cdc_lfsr_xor_mask_im_stage_1;
-				r_cdc_diamond_heigh_stage_2		<= r_cdc_diamond_heigh_stage_1;
-				r_cdc_diamond_width_stage_2 	<= r_cdc_diamond_width_stage_1;
-			end if;
-		end if;
-	end process;
-
-	o_highlight_ch0_valid <= w_highlight(0).valid;
-	o_highlight_ch0_current_pixel_col <= w_highlight(0).current_pixel_col;
-	o_highlight_ch0_current_pixel_row <= w_highlight(0).current_pixel_row;
-	o_highlight_ch0_target_pixel_col  <= w_highlight(0).target_pixel_col;
-	o_highlight_ch0_target_pixel_row  <= w_highlight(0).target_pixel_row;
-
-	o_highlight_ch1_valid <= w_highlight(1).valid;
-	o_highlight_ch1_current_pixel_col <= w_highlight(1).current_pixel_col;
-	o_highlight_ch1_current_pixel_row <= w_highlight(1).current_pixel_row;
-	o_highlight_ch1_target_pixel_col  <= w_highlight(1).target_pixel_col;
-	o_highlight_ch1_target_pixel_row  <= w_highlight(1).target_pixel_row;
-
-	o_highlight_ch2_valid <= w_highlight(2).valid;
-	o_highlight_ch2_current_pixel_col <= w_highlight(2).current_pixel_col;
-	o_highlight_ch2_current_pixel_row <= w_highlight(2).current_pixel_row;
-	o_highlight_ch2_target_pixel_col  <= w_highlight(2).target_pixel_col;
-	o_highlight_ch2_target_pixel_row  <= w_highlight(2).target_pixel_row;
-
-	o_highlight_ch3_valid <= w_highlight(3).valid;
-	o_highlight_ch3_current_pixel_col <= w_highlight(3).current_pixel_col;
-	o_highlight_ch3_current_pixel_row <= w_highlight(3).current_pixel_row;
-	o_highlight_ch3_target_pixel_col  <= w_highlight(3).target_pixel_col;
-	o_highlight_ch3_target_pixel_row  <= w_highlight(3).target_pixel_row;
+	o_highlight_ch0 <= to_std_logic_vector(w_highlight(0));
+	o_highlight_ch1 <= to_std_logic_vector(w_highlight(1));
+	o_highlight_ch2 <= to_std_logic_vector(w_highlight(2));
+	o_highlight_ch3 <= to_std_logic_vector(w_highlight(3));
 
 	-- User logic ends
 

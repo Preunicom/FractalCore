@@ -27,10 +27,10 @@ entity Diamond is
 		i_resetn    : in  std_logic;
 		i_clk       : in  std_logic;
 		i_en        : in  std_logic;
-        i_diamond_heigh : in std_logic_vector(16 downto 0);
-        i_diamond_width : in std_logic_vector(16 downto 0);
-        o_target_re : out std_logic_vector(17 downto 0);
-        o_target_im : out std_logic_vector(17 downto 0)
+        i_diamond_heigh : in std_logic_vector(15 downto 0);
+        i_diamond_width : in std_logic_vector(15 downto 0);
+        o_target_re : out std_logic_vector(16 downto 0);
+        o_target_im : out std_logic_vector(16 downto 0)
 	);
 end entity;
 
