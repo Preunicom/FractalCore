@@ -2,7 +2,7 @@
   "design": {
     "design_info": {
       "boundary_crc": "0x59AB48B32E5BAFB6",
-      "device": "xc7a100tcsg324-1",
+      "device": "xc7z020clg400-1",
       "name": "VIP_AXIL_Initialwerterzeugung_TB",
       "rev_ctrl_bd_flag": "RevCtrlBdOff",
       "synth_flow_mode": "None",
