@@ -1,0 +1,29 @@
+\subsection{Diamond Width Control Register (DWCR)}
+
+Address offset: \textbf{0x34}
+\newline
+Reset value: 0x0000 00FF
+
+\begin{figure}[H]
+    \centering
+    \begin{bytefield}[bitwidth=\bflenhalfword, endianness=big]{16}
+        \bitheader[lsb=16]{16-31} \\
+        \bitbox{16}{Res}
+    \end{bytefield}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{bytefield}[bitwidth=\bflenhalfword, endianness=big]{16}
+        \bitheader{0-15} \\
+        \bitbox{16}{DW} \\
+        \bitbox[]{16}{R/W}
+    \end{bytefield}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Bit 31:16 - Reserved Bits}
+    \item \textbf{Bit 15:0 - DW: Diamond Width}\\
+    Faktor für die Breite der Raute im Diamond Mode.
+    \item (RE Anteil)
+\end{itemize}
