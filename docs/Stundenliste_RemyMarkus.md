@@ -86,6 +86,7 @@
 | **KW 21** | **-** | **118** | **Zwischensumme** |
 | |  |  |  |
 | 27.05.2026 | 9 | 1 | Teammeeting |
+| 30.05.2026 | 9 | 1 | DDR für Microblaze und aktuelle IPs (Initialwerterzeugung & Mengenberechnung) erzeugen |
 | |  |  |  |
 | **KW 22** | **-** | **119** | **Zwischensumme** |
 | |  |  |  |
