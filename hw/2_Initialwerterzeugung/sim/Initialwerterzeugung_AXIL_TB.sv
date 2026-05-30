@@ -7,9 +7,9 @@
 `timescale 1ns / 1ps
  
 import axi_vip_pkg::*;
-import sim_bd_axil_vip_axi_vip_0_0_pkg::*; // check instance name in block design <blockdesign-name>_<vip-inst-name>_0_pkg)
+import VIP_AXIL_Initialwerterzeugung_TB_axi_vip_0_0_pkg::*; // check instance name in block design <blockdesign-name>_<vip-inst-name>_0_pkg)
 
-module vis_tb();
+module Initialwerterzeugung_TB();
 
   //CONSTANT DEFINITIONS
   parameter integer C_S_AXI_CONTROL_ADDR_WIDTH = 12;
@@ -41,22 +41,22 @@ module vis_tb();
   parameter CSWCR_SW_MASK           = 32'h0001FFFF;
   //XMRCR XOR Mask RE Control Register slv_reg09 0x24
   parameter XMRCR_ADDR              = 6'h024;
-  parameter XMRCR_XR_MASK           = 32'h0001FFFF;
+  parameter XMRCR_XR_MASK           = 32'h0000FFFF;
   //XMICR XOR Mask IM Control Register slv_reg10 0x28
   parameter XMICR_ADDR              = 6'h028;
-  parameter XMICR_XI_MASK           = 32'h0001FFFF;
+  parameter XMICR_XI_MASK           = 32'h0000FFFF;
   //LSRCR LFSR Seed RE Control Register slv_reg11 0x2C
   parameter LSRCR_ADDR              = 6'h02C;
-  parameter LSRCR_SR_MASK           = 32'h0003FFFF;
+  parameter LSRCR_SR_MASK           = 32'h0001FFFF;
   //LSICR LFSR Seed IM Control Register slv_reg12 0x30
   parameter LSICR_ADDR              = 6'h030;
-  parameter LSICR_SI_MASK           = 32'h0003FFFF;
+  parameter LSICR_SI_MASK           = 32'h0001FFFF;
   //DWCR Diamond Width Control Register slv_reg13 0x34
   parameter DWCR_ADDR              = 6'h034;
-  parameter DWCR_DW_MASK           = 32'h0001FFFF;
+  parameter DWCR_DW_MASK           = 32'h0000FFFF;
   //DHCR Diamond Height Control Register slv_reg14 0x38
   parameter DHCR_ADDR              = 6'h038;
-  parameter DHCR_DH_MASK           = 32'h0001FFFF;
+  parameter DHCR_DH_MASK           = 32'h0000FFFF;
   //ZOMCR Zoom Control Register slv_reg15 0x3C
   parameter ZOMCR_ADDR              = 6'h03C;
   parameter ZOMCR_DH_MASK           = 32'h000000FF;
@@ -64,7 +64,7 @@ module vis_tb();
   //BUFFER DEFINTIONS (not used so far)
 
   //FURTHER DEFINITIONS
-  sim_bd_axil_vip_axi_vip_0_0_mst_t mst_ctrl_agent; // check instance name in block design (<blockdesign-name>_<vip-inst-name>_0_mst_t)
+  VIP_AXIL_Initialwerterzeugung_TB_axi_vip_0_0_mst_t mst_ctrl_agent; // check instance name in block design (<blockdesign-name>_<vip-inst-name>_0_mst_t)
   //clock frequency definition
   parameter real CLK_PERIOD = 1; // for ease of use in the waveform diagram the clock period is selected as 1ns
   bit error_found = 0;
@@ -73,15 +73,15 @@ module vis_tb();
   //--------------------------------------------------------------------------------------
   //SYSTEM DEFINTION (system instances and signals)
   //CLK
-  logic ap_clk = 0;
+  logic i_aclk_0 = 0;
   initial begin: AP_CLK
     forever begin
-      ap_clk = #(CLK_PERIOD/2) ~ap_clk;
+      i_aclk_0 = #(CLK_PERIOD/2) ~i_aclk_0;
     end
   end
 
   //RESET
-  logic ap_rst_n = 0;
+  logic i_aresetn_0 = 0;
   initial begin: AP_RST
     ap_rst_n_sequence(16);
   end
@@ -96,31 +96,15 @@ module vis_tb();
   logic [17:0] o_z0_img_0;
   logic [17:0] o_c_real_0;
   logic [17:0] o_c_img_0;
-  logic o_highlight_ch0_valid_0;
-  logic [9:0] o_highlight_ch0_current_pixel_col_0;
-  logic [8:0] o_highlight_ch0_current_pixel_row_0;
-  logic [9:0] o_highlight_ch0_target_pixel_col_0;
-  logic [8:0] o_highlight_ch0_target_pixel_row_0;
-  logic o_highlight_ch1_valid_0;
-  logic [9:0] o_highlight_ch1_current_pixel_col_0;
-  logic [8:0] o_highlight_ch1_current_pixel_row_0;
-  logic [9:0] o_highlight_ch1_target_pixel_col_0;
-  logic [8:0] o_highlight_ch1_target_pixel_row_0;
-  logic o_highlight_ch2_valid_0;
-  logic [9:0] o_highlight_ch2_current_pixel_col_0;
-  logic [8:0] o_highlight_ch2_current_pixel_row_0;
-  logic [9:0] o_highlight_ch2_target_pixel_col_0;
-  logic [8:0] o_highlight_ch2_target_pixel_row_0;
-  logic o_highlight_ch3_valid_0;
-  logic [9:0] o_highlight_ch3_current_pixel_col_0;
-  logic [8:0] o_highlight_ch3_current_pixel_row_0;
-  logic [9:0] o_highlight_ch3_target_pixel_col_0;
-  logic [8:0] o_highlight_ch3_target_pixel_row_0;
+  logic [38:0] o_highlight_ch0_0;
+  logic [38:0] o_highlight_ch1_0;
+  logic [38:0] o_highlight_ch2_0;
+  logic [38:0] o_highlight_ch3_0;
 
   //check instance name in block design -> <blockdeisgn_name>_wrapper 
-  sim_bd_axil_vip_wrapper DUT( // TODO: Check signals!
-    .aclk(ap_clk),
-    .aresetn(ap_rst_n),
+  VIP_AXIL_Initialwerterzeugung_TB_wrapper DUT( // TODO: Check signals!
+    .i_aclk_0(i_aclk_0),
+    .i_aresetn_0(i_aresetn_0),
     .i_ready_0(i_ready_0),
     .o_valid_0(o_valid_0),
     .o_video_pix_col_0(o_video_pix_col_0),
@@ -130,26 +114,10 @@ module vis_tb();
     .o_z0_img_0(o_z0_img_0),
     .o_c_real_0(o_c_real_0),
     .o_c_img_0(o_c_img_0),
-    .o_highlight_ch0_valid_0(o_highlight_ch0_valid_0),
-    .o_highlight_ch0_current_pixel_col_0(o_highlight_ch0_current_pixel_col_0),
-    .o_highlight_ch0_current_pixel_row_0(o_highlight_ch0_current_pixel_row_0),
-    .o_highlight_ch0_target_pixel_col_0(o_highlight_ch0_target_pixel_col_0),
-    .o_highlight_ch0_target_pixel_row_0(o_highlight_ch0_target_pixel_row_0),
-    .o_highlight_ch1_valid_0(o_highlight_ch1_valid_0),
-    .o_highlight_ch1_current_pixel_col_0(o_highlight_ch1_current_pixel_col_0),
-    .o_highlight_ch1_current_pixel_row_0(o_highlight_ch1_current_pixel_row_0),
-    .o_highlight_ch1_target_pixel_col_0(o_highlight_ch1_target_pixel_col_0),
-    .o_highlight_ch1_target_pixel_row_0(o_highlight_ch1_target_pixel_row_0),
-    .o_highlight_ch2_valid_0(o_highlight_ch2_valid_0),
-    .o_highlight_ch2_current_pixel_col_0(o_highlight_ch2_current_pixel_col_0),
-    .o_highlight_ch2_current_pixel_row_0(o_highlight_ch2_current_pixel_row_0),
-    .o_highlight_ch2_target_pixel_col_0(o_highlight_ch2_target_pixel_col_0),
-    .o_highlight_ch2_target_pixel_row_0(o_highlight_ch2_target_pixel_row_0),
-    .o_highlight_ch3_valid_0(o_highlight_ch3_valid_0),
-    .o_highlight_ch3_current_pixel_col_0(o_highlight_ch3_current_pixel_col_0),
-    .o_highlight_ch3_current_pixel_row_0(o_highlight_ch3_current_pixel_row_0),
-    .o_highlight_ch3_target_pixel_col_0(o_highlight_ch3_target_pixel_col_0),
-    .o_highlight_ch3_target_pixel_row_0(o_highlight_ch3_target_pixel_row_0)
+    .o_highlight_ch0_0(o_highlight_ch0_0),
+    .o_highlight_ch1_0(o_highlight_ch1_0),
+    .o_highlight_ch2_0(o_highlight_ch2_0),
+    .o_highlight_ch3_0(o_highlight_ch3_0)
   );
  
   //-------------------------------------------------------------------------------------
@@ -165,18 +133,18 @@ module vis_tb();
   
   //FUNCTIONS AND TASKS
   task automatic ap_rst_n_sequence(input integer unsigned width = 20);
-    @(posedge ap_clk);
+    @(posedge i_aclk_0);
     #1ns;
-    ap_rst_n = 0;
-    repeat (width) @(posedge ap_clk);
+    i_aresetn_0 = 0;
+    repeat (width) @(posedge i_aclk_0);
     #1ns;
-    ap_rst_n = 1;
+    i_aresetn_0 = 1;
   endtask
 
   task automatic start_vips();
     $display("//////////////////////////////////////////////////////////////");
     $display("Start Axi Control Master");    
-    mst_ctrl_agent = new("master_ctrl_agent", DUT.sim_bd_axil_vip_i.axi_vip_0.inst.IF); // check instance name in block design DUT.<blockdesign-name>_<vip-inst-name>.inst.IF
+    mst_ctrl_agent = new("master_ctrl_agent", DUT.VIP_AXIL_Initialwerterzeugung_TB_i.axi_vip_0.inst.IF); // check instance name in block design DUT.<blockdesign-name>_<vip-inst-name>.inst.IF
     mst_ctrl_agent.start_master();
   endtask
 

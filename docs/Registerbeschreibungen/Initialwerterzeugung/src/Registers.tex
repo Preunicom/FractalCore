@@ -1,0 +1,85 @@
+%! Author = markusremy
+%! Date = 04.05.26
+
+\documentclass[
+    a4paper,
+    ngerman,
+    fontsize=11pt,
+    bibliography=totoc,
+    listof=totoc,
+    numbers=noendperiod,
+    DIV=calc
+]{scrartcl}
+
+\input{document_settings} % Sets all format settings and includes packages for the document
+
+\title{\Huge FractalCore\\[0.5em]\huge Initialwerterzeugung\\[0.5em]\Large Registerbeschreibung}
+\author{Markus Remy}
+
+\begin{document}
+
+    \pagenumbering{gobble}
+    \maketitle
+    \newpage
+
+    \pagenumbering{Roman}
+    \tableofcontents
+    \clearpage
+    \pagenumbering{arabic}
+
+    \begin{registerblock}
+        \input{chapters/RegisterOverview}
+    \end{registerblock}
+
+    \section{Register}
+
+    \begin{registerblock}
+        \input{chapters/0x00_GSCR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x04_GIER}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x08_IPIER}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x0C_IPISR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x10_IDR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x14_VERR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x18_SETCR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x1C_SPECR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x20_CSWCR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x24_XMRCR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x28_XMICR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x2C_LSRCR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x30_LSICR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x34_DWCR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x38_DHCR}
+    \end{registerblock}
+    \begin{registerblock}
+        \input{chapters/0x3C_ZOMCR}
+    \end{registerblock}
+
+\end{document}

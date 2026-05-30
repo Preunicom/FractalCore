@@ -40,7 +40,6 @@ entity Highlight_Calculation is
         i_c_target_coord_re     : in std_logic_vector(17 downto 0);
         i_c_target_coord_im     : in std_logic_vector(17 downto 0);
         i_is_in_minimap         : in std_logic;
-        i_pixel_distance        : in  std_logic_vector(7 downto 0);
         o_highlight_info        : out t_highlight_info
 	);
 end entity;
@@ -51,7 +50,7 @@ architecture Behavioral of Highlight_Calculation is
     signal w_dist_c_im : signed(18 downto 0);
     signal w_dist_target_re : signed(18 downto 0);
     signal w_dist_target_im : signed(18 downto 0);
-    signal w_max_distance : signed(18 downto 0);
+    signal w_max_distance : signed(18 downto 0) := to_signed(1112 / 2, 19); -- See Coordinate_Mapping (biggest factor) / *1/2 because of half distance between two pixels
     signal r_last_frame_idx : std_logic_vector(1 downto 0);
 begin
 
@@ -61,8 +60,6 @@ begin
     w_dist_c_im <= abs(resize(signed(i_pixel_coord_im), 19) - resize(signed(i_c_coord_im), 19));
     w_dist_target_re <= abs(resize(signed(i_pixel_coord_re), 19) - resize(signed(i_c_target_coord_re), 19));
     w_dist_target_im <= abs(resize(signed(i_pixel_coord_im), 19) - resize(signed(i_c_target_coord_im), 19));
-    w_max_distance(8 downto 0) <= signed(i_pixel_distance(7 downto 0) & '0'); -- pixel distance * 2 (Because pixel_dist*4/2 as it is in minimap and should be maximum 1/2 pixel distance away)
-    w_max_distance(18 downto 9) <= (others => '0');
 
     CALC: process(i_clk)
 	begin

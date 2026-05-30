@@ -47,7 +47,6 @@ architecture Testbench of TB_Coordinate_Mapping is
     signal c_pixel_row           : std_logic_vector(8 downto 0);
     signal c_frame_idx           : std_logic_vector(1 downto 0);
     signal c_is_in_minimap       : std_logic;
-    signal c_pixel_distance      : std_logic_vector(7 downto 0); 
 
     signal tb_pixel_coord_re     : integer;
     signal tb_pixel_coord_im     : integer;
@@ -68,7 +67,6 @@ architecture Testbench of TB_Coordinate_Mapping is
     signal tb_test_ended_im : boolean := false;
     signal tb_test_ended_minimap : boolean := false;
     signal tb_test_ended : boolean := false;
-    signal tb_test_ended_distance : boolean := false;
     signal tb_test_passed : boolean := false;
 
     signal w_pixel_col : std_logic_vector(9 downto 0);
@@ -105,8 +103,7 @@ begin
         o_pixel_row             => c_pixel_row,
         o_pixel_coord_re        => c_pixel_coord_re,
         o_pixel_coord_im        => c_pixel_coord_im,
-        o_is_in_minimap         => c_is_in_minimap,
-        o_pixel_distance        => c_pixel_distance
+        o_is_in_minimap         => c_is_in_minimap
     );
 
     s_resetn <= '0', '1' after 1*tbase;
@@ -117,33 +114,33 @@ begin
     tb_pixel_col <= to_integer(unsigned(c_pixel_col));
     tb_pixel_row <= to_integer(unsigned(c_pixel_row));
     tb_frame_idx <= to_integer(unsigned(c_frame_idx));
-    tb_is_in_minimap <= '1' when tb_pixel_col <= 160 and tb_pixel_row >= 360 and tb_current_minimap_en = '1' else '0';
+    tb_is_in_minimap <= '1' when tb_pixel_col < 160 and tb_pixel_row >= 360 and tb_current_minimap_en = '1' else '0';
 
-    tb_current_active_pixel_distance <= std_logic_vector(to_signed(1, 8)) when c_frame_idx = "00" else 
-                                            std_logic_vector(to_signed(100, 8)) when c_frame_idx = "01" else 
-                                            std_logic_vector(to_signed(50, 8));
+    tb_current_active_pixel_distance <= std_logic_vector(to_unsigned(1, 8)) when c_frame_idx = "00" else 
+                                            std_logic_vector(to_unsigned(100, 8)) when c_frame_idx = "01" else 
+                                            std_logic_vector(to_unsigned(255, 8));
     tb_current_minimap_en <= '0' when c_frame_idx = "00" else '1';
 
     STIMULI: process
 	begin
         wait until s_resetn = '1';
-        s_pixel_distance <= std_logic_vector(to_signed(1, 8));
+        s_pixel_distance <= std_logic_vector(to_unsigned(1, 8));
         s_fetch_next <= '1';
         s_enable_minimap <= '0';
         wait_for_clock_cycles(s_clk, 640*240); -- 1/2 Frame
         s_enable_minimap <= '1';
-        s_pixel_distance <= std_logic_vector(to_signed(100, 8));
+        s_pixel_distance <= std_logic_vector(to_unsigned(100, 8));
         wait_for_clock_cycles(s_clk, 640*240); -- 1/2 Frame
         wait until rising_edge(s_clk); -- Delay one clock cycle to set the new values
-        s_pixel_distance <= std_logic_vector(to_signed(50, 8));
+        s_pixel_distance <= std_logic_vector(to_unsigned(255, 8));
         s_fetch_next <= '0';
         wait_for_clock_cycles(s_clk, 100);
         s_fetch_next <= '1';
         wait_for_clock_cycles(s_clk, 2*640*480); -- 2 Frame
-        s_pixel_distance <= std_logic_vector(to_signed(1, 8));
+        s_pixel_distance <= std_logic_vector(to_unsigned(1, 8));
         s_enable_minimap <= '0';
         wait_for_clock_cycles(s_clk, 640*480); -- 1 Frame
-        s_pixel_distance <= std_logic_vector(to_signed(100, 8));
+        s_pixel_distance <= std_logic_vector(to_unsigned(100, 8));
         s_enable_minimap <= '1';
         wait_for_clock_cycles(s_clk, 640*480); -- 1 Frame
         s_enable_minimap <= '0';
@@ -184,7 +181,7 @@ begin
                         & "Got.:" & to_string(tb_pixel_col)
                     severity failure; 
                 -- Check pixel coord.
-                if tb_last_pixel_col = 639 then
+                if tb_last_pixel_col = 639 and tb_is_in_minimap = '0' then
                     assert tb_pixel_coord_re = -320 * to_integer(unsigned(tb_current_active_pixel_distance))
                         report "Wrong RE pixel coord received after reset!" & LF
                             & "Exp.:" & to_string(-320 * to_integer(unsigned(tb_current_active_pixel_distance))) & LF
@@ -239,22 +236,6 @@ begin
         end loop;
     end process;
 
-    CHECK_PIXEL_DIST: process
-	begin
-        wait until s_resetn = '1';
-        while True loop
-            wait until rising_edge(s_clk);
-            if s_fetch_next = '1' and c_valid = '1' then
-                assert c_pixel_distance = tb_current_active_pixel_distance
-                    report "Pixel distance not correct!" & LF
-                        & "Exp.:" & to_string(tb_current_active_pixel_distance) & LF
-                        & "Got.:" & to_string(c_pixel_distance)
-                    severity failure;
-                tb_test_ended_distance <= true;
-            end if;
-        end loop;
-    end process;
-
     CHECK_MINI_MAP: process
 	begin
         wait until s_resetn = '1';
@@ -271,7 +252,7 @@ begin
                     -- Check mini map coords for re and im
                     if tb_last_minimap_status = '1' then
                         -- Check RE
-                        assert tb_pixel_coord_re = tb_last_pixel_coord_re + (to_integer(unsigned(tb_current_active_pixel_distance)) * 4)
+                        assert tb_pixel_coord_re = tb_last_pixel_coord_re + 1112
                             report "Wrong mini map RE pixel coord received!" & LF
                                 & "Exp.:" & to_string(tb_last_pixel_coord_re - (to_integer(unsigned(tb_current_active_pixel_distance)) * 4)) & LF
                                 & "Got.:" & to_string(tb_pixel_coord_re)
@@ -279,7 +260,7 @@ begin
                         -- Check IM
                         if tb_last_pixel_coord_im /= tb_pixel_coord_im then
                             -- Next row --> Next IM value
-                            assert tb_pixel_coord_im = tb_last_pixel_coord_im - (to_integer(unsigned(tb_current_active_pixel_distance)) * 4)
+                            assert tb_pixel_coord_im = tb_last_pixel_coord_im - 1112
                                 report "Wrong mini map IM pixel coord received!" & LF
                                     & "Exp.:" & to_string(tb_last_pixel_coord_im - (to_integer(unsigned(tb_current_active_pixel_distance)) * 4)) & LF
                                     & "Got.:" & to_string(tb_pixel_coord_im)
@@ -310,7 +291,7 @@ begin
         wait;
     end process;
 
-    tb_test_ended <= tb_test_ended_frame_idx and tb_test_ended_re and tb_test_ended_im and tb_test_ended_minimap and tb_test_ended_distance;
+    tb_test_ended <= tb_test_ended_frame_idx and tb_test_ended_re and tb_test_ended_im and tb_test_ended_minimap;
 
     END_TEST_CHECK: process
     begin
