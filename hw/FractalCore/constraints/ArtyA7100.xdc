@@ -4,8 +4,25 @@
 ## - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
 ## Clock signal
-#set_property -dict { PACKAGE_PIN E3    IOSTANDARD LVCMOS33 } [get_ports { CLK100MHZ }]; #IO_L12P_T1_MRCC_35 Sch=gclk[100]
-#create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports { CLK100MHZ }];
+set_property -dict { PACKAGE_PIN E3    IOSTANDARD LVCMOS33 } [get_ports { i_sys_clk }]; #IO_L12P_T1_MRCC_35 Sch=gclk[100]
+create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 5} [get_ports { i_sys_clk }];
+
+# CDC of reset (locked) signal
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_0/U0/buf_reg }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_0/U0/o_data_reg }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_1/U0/buf_reg }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_1/U0/o_data_reg }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_2/U0/buf_reg }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_2/U0/o_data_reg }];
+# CDC of highlight data
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Highlight_CDC_Synchr_CH_0/U0/r_highlight_info_reg* }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Highlight_CDC_Synchr_CH_0/U0/o_highlight_reg* }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Highlight_CDC_Synchr_CH_1/U0/r_highlight_info_reg* }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Highlight_CDC_Synchr_CH_1/U0/o_highlight_reg* }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Highlight_CDC_Synchr_CH_2/U0/r_highlight_info_reg* }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Highlight_CDC_Synchr_CH_2/U0/o_highlight_reg* }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Highlight_CDC_Synchr_CH_3/U0/r_highlight_info_reg* }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Highlight_CDC_Synchr_CH_3/U0/o_highlight_reg* }];
 
 ## Switches
 #set_property -dict { PACKAGE_PIN A8    IOSTANDARD LVCMOS33 } [get_ports { sw[0] }]; #IO_L12N_T1_MRCC_16 Sch=sw[0]

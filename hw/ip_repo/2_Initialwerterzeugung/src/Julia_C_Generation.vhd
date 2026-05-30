@@ -31,12 +31,12 @@ entity Julia_C_Generation is
         i_step_width : in std_logic_vector(16 downto 0);
         i_mode : in std_logic; -- 0: Diamond, 1: LFSR
         i_load_seed : in std_logic;
-        i_lfsr_seed_re : in std_logic_vector(17 downto 0);
-        i_lfsr_seed_im : in std_logic_vector(17 downto 0);
-        i_lfsr_xor_mask_re : in std_logic_vector(16 downto 0);
-        i_lfsr_xor_mask_im : in std_logic_vector(16 downto 0);
-        i_diamond_heigh : in std_logic_vector(16 downto 0);
-        i_diamond_width : in std_logic_vector(16 downto 0);
+        i_lfsr_seed_re : in std_logic_vector(16 downto 0);
+        i_lfsr_seed_im : in std_logic_vector(16 downto 0);
+        i_lfsr_xor_mask_re : in std_logic_vector(15 downto 0);
+        i_lfsr_xor_mask_im : in std_logic_vector(15 downto 0);
+        i_diamond_heigh : in std_logic_vector(15 downto 0);
+        i_diamond_width : in std_logic_vector(15 downto 0);
         o_target_re : out std_logic_vector(17 downto 0);
         o_target_im : out std_logic_vector(17 downto 0);        
         o_current_coord_re : out std_logic_vector(17 downto 0);
@@ -64,23 +64,23 @@ architecture Behavioral of Julia_C_Generation is
             i_resetn    : in  std_logic;
             i_clk       : in  std_logic;
             i_en        : in  std_logic;
-            i_diamond_heigh : in std_logic_vector(16 downto 0);
-            i_diamond_width : in std_logic_vector(16 downto 0);
-            o_target_re : out std_logic_vector(17 downto 0);
-            o_target_im : out std_logic_vector(17 downto 0)
+            i_diamond_heigh : in std_logic_vector(15 downto 0);
+            i_diamond_width : in std_logic_vector(15 downto 0);
+            o_target_re : out std_logic_vector(16 downto 0);
+            o_target_im : out std_logic_vector(16 downto 0)
         );
     end component;
-    signal w_lfsr_target_re : std_logic_vector(17 downto 0);
-    signal w_lfsr_target_im : std_logic_vector(17 downto 0);
-    signal w_diamond_target_re : std_logic_vector(17 downto 0);
-    signal w_diamond_target_im : std_logic_vector(17 downto 0);
+    signal w_lfsr_target_re : std_logic_vector(16 downto 0);
+    signal w_lfsr_target_im : std_logic_vector(16 downto 0);
+    signal w_diamond_target_re : std_logic_vector(16 downto 0);
+    signal w_diamond_target_im : std_logic_vector(16 downto 0);
     signal r_next_target_im : std_logic;
     signal r_next_target_re : std_logic;
     signal r_next_target_combined : std_logic;
     signal r_frames_per_step_counter : unsigned(15 downto 0);
     signal r_next_animation_step : std_logic;
-    signal r_current_re : signed(17 downto 0);
-    signal r_current_im : signed(17 downto 0);
+    signal r_current_re : signed(17 downto 0) := (others => '0');
+    signal r_current_im : signed(17 downto 0) := (others => '0');
     signal w_next_re_add : signed(17 downto 0);
     signal w_next_im_add : signed(17 downto 0);
     signal w_next_re_sub : signed(17 downto 0);
@@ -90,7 +90,7 @@ architecture Behavioral of Julia_C_Generation is
 begin
     LFSR_RE: Dynamic_LFSR
     generic map (
-        g_WIDTH => 18
+        g_WIDTH => 17
     )
     port map (
         i_resetn    => i_resetn,
@@ -103,7 +103,7 @@ begin
     );
     LFSR_IM: Dynamic_LFSR
     generic map (
-        g_WIDTH => 18
+        g_WIDTH => 17
     )
     port map (
         i_resetn    => i_resetn,
@@ -151,8 +151,8 @@ begin
     end process;
 
     -- Chose the target depending on the given mode
-    w_target_re <= signed(w_diamond_target_re) when i_mode = '0' else signed(w_lfsr_target_re);
-    w_target_im <= signed(w_diamond_target_im) when i_mode = '0' else signed(w_lfsr_target_im);
+    w_target_re <= resize(signed(w_diamond_target_re), 18) when i_mode = '0' else resize(signed(w_lfsr_target_re), 18);
+    w_target_im <= resize(signed(w_diamond_target_im), 18) when i_mode = '0' else resize(signed(w_lfsr_target_im), 18);
 
     -- Request next diamond target when target point is reached in both dimensions (faster dimension oscillates around the target)
     r_next_target_combined <= r_next_target_re and r_next_target_im;
@@ -167,57 +167,51 @@ begin
     STEP: process(i_clk)
 	begin
         if rising_edge(i_clk) then
-            if i_resetn = '0' then
-                r_current_re <= (others => '0');
-                r_current_im <= (others => '0');
-                r_next_target_re <= '0';
-            else
-                r_next_target_re <= '0';
-                r_next_target_im <= '0';
-                if r_next_animation_step = '1' then
-                    -- RE step
-                    if w_target_re > r_current_re then
-                        -- Step in positive direction if no overflow
-                        if w_next_re_add >= r_current_re then
-                            r_current_re <= w_next_re_add;
-                        end if;
-                        -- Target reached or overflow 
-                        if (w_target_re <= w_next_re_add) or (w_next_re_add < r_current_re) then
-                            -- Target reached or target unreachable because it is too near to an edge for the step width
-                            r_next_target_re <= '1';
-                        end if;
-                    else
-                        -- Step in negative direction if no overflow
-                        if w_next_re_sub <= r_current_re then
-                            r_current_re <= w_next_re_sub;
-                        end if;
-                        -- Target reached or overflow 
-                        if (w_target_re >= w_next_re_sub) or (w_next_re_sub > r_current_re) then
-                            -- Target reached or target unreachable because it is too near to an edge for the step width
-                            r_next_target_re <= '1';
-                        end if;
+            r_next_target_re <= '0';
+            r_next_target_im <= '0';
+            if r_next_animation_step = '1' then
+                -- RE step
+                if w_target_re > r_current_re then
+                    -- Step in positive direction if no overflow
+                    if w_next_re_add >= r_current_re then
+                        r_current_re <= w_next_re_add;
                     end if;
-                    -- IM step
-                    if w_target_im > r_current_im then
-                        -- Step in positive direction if no overflow
-                        if w_next_im_add >= r_current_im then
-                            r_current_im <= w_next_im_add;
-                        end if;
-                        -- Target reached or overflow 
-                        if (w_target_im <= w_next_im_add) or (w_next_im_add < r_current_im) then
-                            -- Target reached or target unreachable because it is too near to an edge for the step width
-                            r_next_target_im <= '1';
-                        end if;
-                    else
-                        -- Step in negative direction if no overflow
-                        if w_next_im_sub <= r_current_im then
-                            r_current_im <= w_next_im_sub;
-                        end if;
-                        -- Target reached or overflow 
-                        if (w_target_im >= w_next_im_sub) or (w_next_im_sub > r_current_im) then
-                            -- Target reached or target unreachable because it is too near to an edge for the step width
-                            r_next_target_im <= '1';
-                        end if;
+                    -- Target reached or overflow 
+                    if (w_target_re <= w_next_re_add) or (w_next_re_add < r_current_re) then
+                        -- Target reached or target unreachable because it is too near to an edge for the step width
+                        r_next_target_re <= '1';
+                    end if;
+                else
+                    -- Step in negative direction if no overflow
+                    if w_next_re_sub <= r_current_re then
+                        r_current_re <= w_next_re_sub;
+                    end if;
+                    -- Target reached or overflow 
+                    if (w_target_re >= w_next_re_sub) or (w_next_re_sub > r_current_re) then
+                        -- Target reached or target unreachable because it is too near to an edge for the step width
+                        r_next_target_re <= '1';
+                    end if;
+                end if;
+                -- IM step
+                if w_target_im > r_current_im then
+                    -- Step in positive direction if no overflow
+                    if w_next_im_add >= r_current_im then
+                        r_current_im <= w_next_im_add;
+                    end if;
+                    -- Target reached or overflow 
+                    if (w_target_im <= w_next_im_add) or (w_next_im_add < r_current_im) then
+                        -- Target reached or target unreachable because it is too near to an edge for the step width
+                        r_next_target_im <= '1';
+                    end if;
+                else
+                    -- Step in negative direction if no overflow
+                    if w_next_im_sub <= r_current_im then
+                        r_current_im <= w_next_im_sub;
+                    end if;
+                    -- Target reached or overflow 
+                    if (w_target_im >= w_next_im_sub) or (w_next_im_sub > r_current_im) then
+                        -- Target reached or target unreachable because it is too near to an edge for the step width
+                        r_next_target_im <= '1';
                     end if;
                 end if;
             end if;

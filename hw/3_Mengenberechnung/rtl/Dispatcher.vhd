@@ -116,7 +116,7 @@ begin
         end if;
     end process;
 
-    SWITCH_LOGIC: process(w_handshake_s1, w_handshake_s2, r_s1_selected, w_buf_out_valid, i_s1_ready)
+    SWITCH_LOGIC: process(w_handshake_s1, w_handshake_s2, r_s1_selected, w_buf_out_valid, i_s1_ready, i_s2_ready)
 	begin
         o_s1_valid <= '0';
         o_s2_valid <= '0';

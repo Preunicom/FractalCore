@@ -19,6 +19,7 @@ set project_data_dir [file normalize "$script_dir/.."]
 set proj_name "FractalCore"
 set proj_top_module "FractalCore"
 set proj_part "xc7a100tcsg324-1"
+set board_part "digilentinc.com:arty-z7-20:part0:1.1"
 set proj_dir "[file normalize "$project_data_dir/../../xilinx/vivado/$proj_name"]"
 set proj_IP_dir "[file normalize "$project_data_dir/ip"]"
 set general_files_dir "[file normalize "$project_data_dir/../0_General"]"
@@ -37,6 +38,9 @@ set_property -name "part" -value $proj_part -objects $obj
 set_property -name "simulator_language" -value "Mixed" -objects $obj
 set_property -name "target_language" -value "VHDL" -objects $obj
 set_property -name "source_mgmt_mode" -value "All" -objects $obj
+if {[info exists board_part] && $board_part ne ""} {
+    set_property board_part $board_part -objects $obj
+}
 
 # ================ FILES ================
 set ip_files [find_files $proj_IP_dir "*.xci"]
