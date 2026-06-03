@@ -90,6 +90,10 @@
 | |  |  |  |
 | **KW 22** | **-** | **119** | **Zwischensumme** |
 | |  |  |  |
+| 03.06.2026 | 9 | 4 | HW Integration im Team |
+| |  |  |  |
+| **KW 23** | **-** | **122** | **Zwischensumme** |
+| |  |  |  |
 
 
 ## Feature Nummerierung

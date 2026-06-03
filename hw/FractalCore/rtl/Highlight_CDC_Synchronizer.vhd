@@ -34,7 +34,7 @@ entity Highlight_CDC_Synchronizer is
 end Highlight_CDC_Synchronizer;
 
 architecture Behavioral of Highlight_CDC_Synchronizer is
-    signal r_highlight_info : std_logic_vector(28 downto 0);
+    signal r_highlight_info : std_logic_vector(38 downto 0);
 begin
 
     -- These signals change infrequent and there is a lot of time to stabilize before used due to the stages in the cores and scheduling/arbitration
