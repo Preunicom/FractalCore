@@ -50,6 +50,7 @@ architecture Behavioral of VGA is
     signal h_count : integer range 0 to 799 := 0;
     signal v_count : integer range 0 to 524 := 0;
     signal visible : std_logic;
+    signal frame_counter : unsigned(1 downto 0) := (others => '0');
 
 begin
 
@@ -67,12 +68,14 @@ begin
             if i_resetn_vga = '0' then
                 h_count <= 0;
                 v_count <= 0;
+                frame_counter <= (others => '0');
             else
                 if h_count = 799 then
                     h_count <= 0;
 
                     if v_count = 524 then
                         v_count <= 0;
+                        frame_counter <= frame_counter + 1;
                     else
                         v_count <= v_count + 1;
                     end if;
