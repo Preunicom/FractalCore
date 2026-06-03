@@ -43,6 +43,8 @@ if app_src_dir.exists():
     for file in app_src_dir.glob("*.h"):
         if file.name != "platform.h":
             shutil.copy2(file, temp_dir / file.name)
+    for file in app_src_dir.glob("*.ld"):
+        shutil.copy2(file, temp_dir / file.name)
 
 app_dir = workspace / app_name
 if app_dir.exists():
@@ -95,6 +97,8 @@ try:
             shutil.copy2(file, app_src_dir / file.name)
         for file in temp_dir.glob("*.h"):
             shutil.copy2(file, app_src_dir / file.name)
+        for file in temp_dir.glob("*.ld"):
+            shutil.copy2(file, app_src_dir / file.name) # Overwrites created linker script without warning
 
     if temp_dir.exists():
         shutil.rmtree(temp_dir)

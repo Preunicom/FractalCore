@@ -59,10 +59,10 @@ void menu_stepwidth(CTRL_Data *ctrl);
 void menu_zoom(CTRL_Data *ctrl);
 void menu_lfsr(CTRL_Data *ctrl);
 void menu_diamond(CTRL_Data *ctrl);
-void menu_color(CTRL_Data *ctrl, COL_Data *col);
+void menu_color(COL_Data *col);
 void menu_minimap(CTRL_Data *ctrl);
 void menu_system_info(CTRL_Data *ctrl);
-void menu_status(CTRL_Data *ctrl, COL_Data *col);
+void menu_status(CTRL_Data *ctrl);
 void menu_color_schemes(COL_Data *col);
 /************************** Function Definitions ***************************/
 
@@ -269,10 +269,10 @@ void menu_main(CTRL_Data *ctrl, COL_Data *col) {
             case '4': menu_zoom(ctrl); break;
             case '5': menu_lfsr(ctrl); break;
             case '6': menu_diamond(ctrl); break;
-            case '7': menu_color(ctrl, col); break;
+            case '7': menu_color(col); break;
             case '8': menu_minimap(ctrl); break;
             case '9': menu_system_info(ctrl); break;
-            case '0': menu_status(ctrl, col); break;
+            case '0': menu_status(ctrl); break;
             default:
                 xil_printf("Invalid input.\n\r");
                 break;
@@ -393,8 +393,8 @@ void menu_lfsr(CTRL_Data *ctrl) {
 
         xil_printf("\n\r");
         xil_printf("===== LFSR Settings =====\n\r");
-        xil_printf("  XOR mask Real:  0x%05X\n\r", xor_re);
-        xil_printf("  XOR mask Imag:  0x%05X\n\r", xor_im);
+        xil_printf("  XOR mask Real:  0x%04X\n\r", xor_re);
+        xil_printf("  XOR mask Imag:  0x%04X\n\r", xor_im);
         xil_printf("  Seed Real factor: %u (0x%05X)\n\r", seed_re, seed_re);
         xil_printf("  Seed Imag factor: %u (0x%05X)\n\r", seed_im, seed_im);
         xil_printf(" 1 - XOR mask Real\n\r");
@@ -411,26 +411,26 @@ void menu_lfsr(CTRL_Data *ctrl) {
         switch (c) {
             case '1': {
                 uint32_t val;
-                xil_printf("Current: 0x%05X\n\rNew XOR mask Real (Hex 0x00000-0x1FFFF, q=cancel):\n\r", xor_re);
-                if (menu_read_hex32(&val, 0, 0x1FFFF) == XST_SUCCESS) {
+                xil_printf("Current: 0x%04X\n\rNew XOR mask Real (Hex 0x0000-0xFFFF, q=cancel):\n\r", xor_re);
+                if (menu_read_hex32(&val, 0, 0xFFFF) == XST_SUCCESS) {
                     CTRL_SetXorMaskLfsrRe(ctrl, val);
-                    xil_printf("XOR mask Real = 0x%05X\n\r", val);
+                    xil_printf("XOR mask Real = 0x%04X\n\r", val);
                 }
                 break;
             }
             case '2': {
                 uint32_t val;
-                xil_printf("Current: 0x%05X\n\rNew XOR mask Imag (Hex 0x00000-0x1FFFF, q=cancel):\n\r", xor_im);
-                if (menu_read_hex32(&val, 0, 0x1FFFF) == XST_SUCCESS) {
+                xil_printf("Current: 0x%04X\n\rNew XOR mask Imag (Hex 0x0000-0xFFFF, q=cancel):\n\r", xor_im);
+                if (menu_read_hex32(&val, 0, 0xFFFF) == XST_SUCCESS) {
                     CTRL_SetXorMaskLfsrIm(ctrl, val);
-                    xil_printf("XOR mask Imag = 0x%05X\n\r", val);
+                    xil_printf("XOR mask Imag = 0x%04X\n\r", val);
                 }
                 break;
             }
             case '3': {
                 uint32_t val;
-                xil_printf("Current: %u (0x%05X)\n\rNew Seed Real (Hex 0x00000-0x3FFFF, q=cancel):\n\r", seed_re, seed_re);
-                if (menu_read_hex32(&val, 0, 0x3FFFF) == XST_SUCCESS) {
+                xil_printf("Current: %u (0x%05X)\n\rNew Seed Real (Hex 0x00000-0x1FFFF, q=cancel):\n\r", seed_re, seed_re);
+                if (menu_read_hex32(&val, 0, 0x1FFFF) == XST_SUCCESS) {
                     CTRL_SetSeedLfsrRe(ctrl, val);
                     xil_printf("Seed Real = %u (0x%05X)\n\r", val, val);
                 }
@@ -438,8 +438,8 @@ void menu_lfsr(CTRL_Data *ctrl) {
             }
             case '4': {
                 uint32_t val;
-                xil_printf("Current: %u (0x%05X)\n\rNew Seed Imag (Hex 0x00000-0x3FFFF, q=cancel):\n\r", seed_im, seed_im);
-                if (menu_read_hex32(&val, 0, 0x3FFFF) == XST_SUCCESS) {
+                xil_printf("Current: %u (0x%05X)\n\rNew Seed Imag (Hex 0x00000-0x1FFFF, q=cancel):\n\r", seed_im, seed_im);
+                if (menu_read_hex32(&val, 0, 0x1FFFF) == XST_SUCCESS) {
                     CTRL_SetSeedLfsrIm(ctrl, val);
                     xil_printf("Seed Imag = %u (0x%05X)\n\r", val, val);
                 }
@@ -469,8 +469,8 @@ void menu_diamond(CTRL_Data *ctrl) {
 
         xil_printf("\n\r");
         xil_printf("===== Diamond Settings =====\n\r");
-        xil_printf("  Width factor:  %u (0x%05X)\n\r", dw, dw);
-        xil_printf("  Height factor: %u (0x%05X)\n\r", dh, dh);
+        xil_printf("  Width factor:  %u (0x%04X)\n\r", dw, dw);
+        xil_printf("  Height factor: %u (0x%04X)\n\r", dh, dh);
         xil_printf(" 1 - Diamond Width (factor)\n\r");
         xil_printf(" 2 - Diamond Height (factor)\n\r");
         xil_printf(" q - Back\n\r");
@@ -482,19 +482,19 @@ void menu_diamond(CTRL_Data *ctrl) {
         switch (c) {
             case '1': {
                 uint32_t val;
-                xil_printf("Current: %u (0x%05X)\n\rNew width factor (Hex 0x00000-0x1FFFF, q=cancel):\n\r", dw, dw);
-                if (menu_read_hex32(&val, 0, 0x1FFFF) == XST_SUCCESS) {
+                xil_printf("Current: %u (0x%04X)\n\rNew width factor (Hex 0x0000-0xFFFF, q=cancel):\n\r", dw, dw);
+                if (menu_read_hex32(&val, 0, 0xFFFF) == XST_SUCCESS) {
                     CTRL_SetDiamondWidth(ctrl, val);
-                    xil_printf("Diamond width factor = %u (0x%05X)\n\r", val, val);
+                    xil_printf("Diamond width factor = %u (0x%04X)\n\r", val, val);
                 }
                 break;
             }
             case '2': {
                 uint32_t val;
-                xil_printf("Current: %u (0x%05X)\n\rNew height factor (Hex 0x00000-0x1FFFF, q=cancel):\n\r", dh, dh);
-                if (menu_read_hex32(&val, 0, 0x1FFFF) == XST_SUCCESS) {
+                xil_printf("Current: %u (0x%04X)\n\rNew height factor (Hex 0x0000-0xFFFF, q=cancel):\n\r", dh, dh);
+                if (menu_read_hex32(&val, 0, 0xFFFF) == XST_SUCCESS) {
                     CTRL_SetDiamondHeight(ctrl, val);
-                    xil_printf("Diamond height factor = %u (0x%05X)\n\r", val, val);
+                    xil_printf("Diamond height factor = %u (0x%04X)\n\r", val, val);
                 }
                 break;
             }
@@ -512,7 +512,7 @@ void menu_diamond(CTRL_Data *ctrl) {
 //  convergent pixel color (COL_CONV_ADDR_OFFSET),
 //  minimap target/pixel colors (COL_MINIMAP_*_ADDR_OFFSET).
 // ----------------------------------------------------------------
-void menu_color(CTRL_Data *ctrl, COL_Data *col) {
+void menu_color(COL_Data *col) {
     char c;
     while (1) {
         xil_printf("\n\r");
@@ -637,8 +637,8 @@ void menu_minimap(CTRL_Data *ctrl) {
         xil_printf("\n\r");
         xil_printf("===== Minimap =====\n\r");
         xil_printf("Current: %s\n\r", state ? "On" : "Off");
+        xil_printf(" 0 - Off\n\r");
         xil_printf(" 1 - On\n\r");
-        xil_printf(" 2 - Off\n\r");
         xil_printf(" q - Back\n\r");
         xil_printf("====================\n\r");
         xil_printf("Choice: ");
@@ -646,13 +646,13 @@ void menu_minimap(CTRL_Data *ctrl) {
         c = menu_getkey();
         xil_printf("\n\r");
         switch (c) {
+            case '0':
+                CTRL_SetMinimapEnable(ctrl, 0);
+                xil_printf("Minimap disabled.\n\r");
+                break;
             case '1':
                 CTRL_SetMinimapEnable(ctrl, 1);
                 xil_printf("Minimap enabled.\n\r");
-                break;
-            case '2':
-                CTRL_SetMinimapEnable(ctrl, 0);
-                xil_printf("Minimap disabled.\n\r");
                 break;
             case 'q': case 'Q': return;
             default:
@@ -681,7 +681,7 @@ void menu_system_info(CTRL_Data *ctrl) {
 //  ALL SETTINGS DISPLAY
 //  Read-only: dumps every CTRL register value at once.
 // ----------------------------------------------------------------
-void menu_status(CTRL_Data *ctrl, COL_Data *col) {
+void menu_status(CTRL_Data *ctrl) {
     char c;
     uint32_t mode = CTRL_GetMode(ctrl);
     const char *mode_str;
