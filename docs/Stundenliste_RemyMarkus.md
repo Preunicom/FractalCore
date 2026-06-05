@@ -176,3 +176,7 @@
 | |  |  |  |
 | **KW 22** | **-** | **73** | **Zwischensumme** |
 | |  |  |  |
+| 02.06.2026 | 2 | Vitis CI Skript überarbeiten, Linker Skript zu Git hinzufügen und Tests |
+| |  |  |  |
+| **KW 23** | **-** | **75** | **Zwischensumme** |
+| |  |  |  |

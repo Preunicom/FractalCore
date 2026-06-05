@@ -27,7 +27,7 @@ static void color_linear_gradient(COL_Data *COL,
     uint8_t r0, uint8_t g0, uint8_t b0,
     uint8_t r1, uint8_t g1, uint8_t b1)
 {
-    for (uint16_5 i = 0; i < 256; i++) {
+    for (uint16_t i = 0; i < 256; i++) {
         COLOR_t c;
         c.red   = (uint8_t)(r0 + ((int)(r1 - r0) * i / 255));
         c.green = (uint8_t)(g0 + ((int)(g1 - g0) * i / 255));
@@ -67,40 +67,40 @@ static void color_set_common(COL_Data *COL,
 //  1 - Grayscale: black -> white
 // ------------------------------------------------------------------
 void color_scheme_grayscale(COL_Data *COL) {
-    color_linear_gradient(COL, 0, 0, 0, 255, 255, 255);
-    color_set_common(COL, 255, 255, 255, 255, 0, 0, 255, 255, 0);
+    color_linear_gradient(COL, 255, 255, 255, 0, 0, 0);
+    color_set_common(COL, 0, 0, 0, 255, 0, 0, 255, 255, 0);
 }
 
 // ------------------------------------------------------------------
 //  2 - Red: dark red -> bright red
 // ------------------------------------------------------------------
 void color_scheme_red(COL_Data *COL) {
-    color_linear_gradient(COL, 10, 0, 0, 255, 10, 10);
-    color_set_common(COL, 255, 255, 255, 0, 255, 255, 255, 255, 0);
+    color_linear_gradient(COL, 255, 0, 0, 10, 0, 0);
+    color_set_common(COL, 0, 0, 0, 0, 255, 255, 255, 255, 0);
 }
 
 // ------------------------------------------------------------------
 //  3 - Green: dark green -> bright green
 // ------------------------------------------------------------------
 void color_scheme_green(COL_Data *COL) {
-    color_linear_gradient(COL, 0, 10, 0, 10, 255, 10);
-    color_set_common(COL, 255, 255, 255, 255, 0, 255, 255, 255, 0);
+    color_linear_gradient(COL, 0, 255, 0, 0, 10, 0);
+    color_set_common(COL, 0, 0, 0, 255, 0, 255, 255, 255, 0);
 }
 
 // ------------------------------------------------------------------
 //  4 - Blue: dark blue -> bright blue
 // ------------------------------------------------------------------
 void color_scheme_blue(COL_Data *COL) {
-    color_linear_gradient(COL, 0, 0, 10, 10, 10, 255);
-    color_set_common(COL, 255, 255, 255, 255, 255, 0, 255, 0, 0);
+    color_linear_gradient(COL, 0, 0, 255, 0, 0, 10);
+    color_set_common(COL, 0, 0, 0, 255, 255, 0, 255, 0, 0);
 }
 
 // ------------------------------------------------------------------
 //  5 - Plasma: purple -> cyan
 // ------------------------------------------------------------------
 void color_scheme_plasma(COL_Data *COL) {
-    color_linear_gradient(COL, 80, 0, 128, 0, 255, 200);
-    color_set_common(COL, 255, 255, 255, 255, 255, 0, 255, 0, 255);
+    color_linear_gradient(COL, 0, 255, 200, 80, 0, 128);
+    color_set_common(COL, 0, 0, 0, 255, 255, 0, 255, 0, 255);
 }
 
 // ------------------------------------------------------------------
@@ -127,7 +127,7 @@ void color_scheme_rainbow(COL_Data *COL) {
         }
         COL_SetIterationColor(COL, i, &c);
     }
-    color_set_common(COL, 255, 255, 255, 255, 0, 0, 0, 255, 255);
+    color_set_common(COL, 255, 255, 255, 0, 0, 0, 0, 0, 255);
 }
 
 // ------------------------------------------------------------------
@@ -155,7 +155,7 @@ void color_scheme_fire(COL_Data *COL) {
         }
         COL_SetIterationColor(COL, i, &c);
     }
-    color_set_common(COL, 255, 255, 255, 255, 0, 0, 0, 255, 255);
+    color_set_common(COL, 255, 0, 0, 255, 255, 255, 0, 255, 255);
 }
 
 // ------------------------------------------------------------------
@@ -179,7 +179,7 @@ void color_scheme_jet(COL_Data *COL) {
         c.red = r; c.green = g; c.blue = b;
         COL_SetIterationColor(COL, i, &c);
     }
-    color_set_common(COL, 255, 255, 255, 0, 255, 0, 255, 0, 255);
+    color_set_common(COL, 0, 0, 0, 0, 255, 0, 255, 0, 255);
 }
 
 // ------------------------------------------------------------------
@@ -211,5 +211,5 @@ void color_scheme_hot(COL_Data *COL) {
         }
         COL_SetIterationColor(COL, i, &c);
     }
-    color_set_common(COL, 255, 255, 255, 255, 0, 0, 0, 255, 255);
+    color_set_common(COL, 255, 255, 255, 0, 0, 255, 0, 255, 255);
 }

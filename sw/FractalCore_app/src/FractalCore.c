@@ -70,11 +70,16 @@ XStatus testSystem(CTRL_Data *ctrl, COL_Data *col) {
 
 void loadDefaultSettings(CTRL_Data *ctrl) {
     CTRL_SetJuliaDiamondMode(ctrl);
-    CTRL_SetPixelDistance(ctrl, (uint32_t)255);
-    CTRL_SetDiamondHeight(ctrl, (uint32_t)5000);
-    CTRL_SetDiamondWidth(ctrl, (uint32_t)5000);
+    CTRL_SetPixelDistance(ctrl, (uint32_t)50);
+    CTRL_SetDiamondHeight(ctrl, (uint32_t)32512);
+    CTRL_SetDiamondWidth(ctrl, (uint32_t)32512);
     CTRL_SetAnimationSpeed(ctrl, (uint32_t)2); // 30 fps animation
-    CTRL_SetStepWidth(ctrl, (uint32_t)50);
+    CTRL_SetStepWidth(ctrl, (uint32_t)100);
+    CTRL_SetSeedLfsrRe(ctrl, (uint32_t)1);
+    CTRL_SetSeedLfsrIm(ctrl, (uint32_t)100);
+    CTRL_LoadLfsrSeeds(ctrl);
+    CTRL_SetXorMaskLfsrRe(ctrl, 26624);
+    CTRL_SetXorMaskLfsrIm(ctrl, 26624);
     CTRL_SetMinimapEnable(ctrl, (uint8_t)1);
 }
 
