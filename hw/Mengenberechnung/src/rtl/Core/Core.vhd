@@ -27,6 +27,9 @@ library work;
 use work.Pkg_Core.all;
 
 entity Core is
+    generic(
+        g_MAX_ITERATIONS : integer := 100
+    );
     port(
         i_resetn : in std_logic;
         i_clk : in std_logic;
@@ -89,6 +92,9 @@ begin
     o_ready <= w_load_data_ready;
 
     CONTROL: entity work.Core_Control
+    generic map (
+        g_MAX_ITERATIONS          => g_MAX_ITERATIONS
+    )
     port map (
         i_resetn                  => i_resetn,
         i_clk                     => i_clk,

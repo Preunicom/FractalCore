@@ -197,17 +197,17 @@ XStatus menu_read_hex32(uint32_t *out, uint32_t min, uint32_t max) {
     }
 }
 
-// Prompt for R, G, B values (each 0-255). Returns XST_FAILURE if any prompt is cancelled.
+// Prompt for R, G, B values (each 0-MAX_COLOR_VALUE). Returns XST_FAILURE if any prompt is cancelled.
 XStatus menu_read_rgb(uint8_t *r, uint8_t *g, uint8_t *b) {
     uint32_t val;
-    xil_printf("  Red (0-255): ");
-    if (menu_read_uint32(&val, 0, 255) != XST_SUCCESS) return XST_FAILURE;
+    xil_printf("  Red (0-%u): ", MAX_COLOR_VALUE);
+    if (menu_read_uint32(&val, 0, MAX_COLOR_VALUE) != XST_SUCCESS) return XST_FAILURE;
     *r = (uint8_t)val;
-    xil_printf("  Green (0-255): ");
-    if (menu_read_uint32(&val, 0, 255) != XST_SUCCESS) return XST_FAILURE;
+    xil_printf("  Green (0-%u): ", MAX_COLOR_VALUE);
+    if (menu_read_uint32(&val, 0, MAX_COLOR_VALUE) != XST_SUCCESS) return XST_FAILURE;
     *g = (uint8_t)val;
-    xil_printf("  Blue (0-255): ");
-    if (menu_read_uint32(&val, 0, 255) != XST_SUCCESS) return XST_FAILURE;
+    xil_printf("  Blue (0-%u): ", MAX_COLOR_VALUE);
+    if (menu_read_uint32(&val, 0, MAX_COLOR_VALUE) != XST_SUCCESS) return XST_FAILURE;
     *b = (uint8_t)val;
     return XST_SUCCESS;
 }
@@ -517,7 +517,7 @@ void menu_color(COL_Data *col) {
     while (1) {
         xil_printf("\n\r");
         xil_printf("===== Color Palette =====\n\r");
-        xil_printf(" 1 - Set iteration color (0-255)\n\r");
+        xil_printf(" 1 - Set iteration color (0-%u)\n\r", MAX_USED_ITERATION_REGISTER);
         xil_printf(" 2 - Convergent color\n\r");
         xil_printf(" 3 - Minimap target color\n\r");
         xil_printf(" 4 - Minimap pixel color\n\r");
@@ -532,8 +532,8 @@ void menu_color(COL_Data *col) {
             case '1': {
                 uint32_t iteration;
                 COLOR_t color;
-                xil_printf("Iteration index (0-255, q=cancel):\n\r");
-                if (menu_read_uint32(&iteration, 0, 255) != XST_SUCCESS) break;
+                xil_printf("Iteration index (0-%u, q=cancel):\n\r", MAX_USED_ITERATION_REGISTER);
+                if (menu_read_uint32(&iteration, 0, MAX_USED_ITERATION_REGISTER) != XST_SUCCESS) break;
                 COL_GetIterationColor(col, (uint8_t)iteration, &color);
                 if (menu_edit_color(&color) == XST_SUCCESS) {
                     COL_SetIterationColor(col, (uint8_t)iteration, &color);

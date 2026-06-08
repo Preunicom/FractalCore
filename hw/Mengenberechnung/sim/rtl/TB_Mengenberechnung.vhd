@@ -78,7 +78,8 @@ begin
     
     UUT: entity work.Mengenberechnung
     generic map (
-        g_AMOUNT_CORES => c_AMOUNT_CORES
+        g_AMOUNT_CORES    => c_AMOUNT_CORES,
+        g_MAX_ITERATIONS  => 100
     )
     port map (
         i_clk                    => s_clk,

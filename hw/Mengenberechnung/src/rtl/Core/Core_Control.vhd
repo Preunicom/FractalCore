@@ -27,6 +27,9 @@ library work;
 use work.Pkg_Core.all;
 
 entity Core_Control is
+    generic(
+        g_MAX_ITERATIONS : integer := 100
+    );
     port(
         i_resetn : in std_logic;
         i_clk : in std_logic;
@@ -48,6 +51,10 @@ architecture Behavioral of Core_Control is
     signal r_select_loaded_data : std_logic;
 begin
 
+    assert g_MAX_ITERATIONS < 255
+        report "The MAX_ITERATIONS amount has to be less than 255!"
+        severity failure;
+
     REG_S3_to_1: process(i_clk) 
 	begin
         if rising_edge(i_clk) then
@@ -62,10 +69,10 @@ begin
                     or r_s3_control.ready = '1' then -- Remain ended calc.
                         r_s1_control.ready <= '1';
                         r_s1_control.iteration_counter <= r_s3_control.iteration_counter;
-                    elsif r_s3_control.iteration_counter >= 100 then -- End calc. because of max. iterations reached
+                    elsif r_s3_control.iteration_counter >= g_MAX_ITERATIONS then -- End calc. because of max. iterations reached
                         r_s1_control.ready <= '1';
                         -- Set convergent
-                        r_s1_control.iteration_counter <= 101;
+                        r_s1_control.iteration_counter <= g_MAX_ITERATIONS + 1;
                     else
                         r_s1_control.iteration_counter <= r_s3_control.iteration_counter + 1;
                     end if;
@@ -76,7 +83,7 @@ begin
 
     o_transmit_data_valid <= r_s1_control.ready and r_s1_control.valid;
     o_transmit_iteration_data <= std_logic_vector(to_signed(r_s1_control.iteration_counter, 8));
-    o_transmit_is_convergent <= '1' when r_s1_control.iteration_counter > 100 else '0';
+    o_transmit_is_convergent <= '1' when r_s1_control.iteration_counter > g_MAX_ITERATIONS else '0';
 
     REG_S1_to_2: process(i_clk) 
 	begin

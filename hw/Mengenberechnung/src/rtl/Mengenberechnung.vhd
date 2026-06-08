@@ -27,7 +27,8 @@ use work.Pkg_Core.all;
 
 entity Mengenberechnung is
     generic(
-        g_AMOUNT_CORES: natural := 40
+        g_AMOUNT_CORES: natural := 40;
+        g_MAX_ITERATIONS: natural := 100
     );
     port(
         i_clk : in std_logic;
@@ -85,6 +86,9 @@ architecture Behavioral of Mengenberechnung is
         );
     end component;
     component Core is
+        generic(
+            g_MAX_ITERATIONS : integer := 100
+        );
         port(
             i_resetn : in std_logic;
             i_clk : in std_logic;
@@ -187,6 +191,9 @@ begin
 
     gen_CORE: for idx in g_AMOUNT_CORES - 1 to 2 * (g_AMOUNT_CORES - 1) generate
         COR: Core
+        generic map (
+            g_MAX_ITERATIONS         => g_MAX_ITERATIONS
+        )
         port map (
             i_resetn                 => i_rstn,
             i_clk                    => i_clk,

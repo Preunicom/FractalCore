@@ -179,5 +179,9 @@
 | 02.06.2026 | 2 | Vitis CI Skript überarbeiten, Linker Skript zu Git hinzufügen und Tests |
 | 07.06.2026 | 2 | Tests auf Arty Z7-20 und Bug Fixes|
 | |  |  |  |
-| **KW 23** | **-** | **75** | **Zwischensumme** |
+| **KW 23** | **-** | **77** | **Zwischensumme** |
+| |  |  |  |
+| 08.06.2026 | 2 | Bug Fixes color scheme|
+| |  |  |  |
+| **KW 24** | **-** | **79** | **Zwischensumme** |
 | |  |  |  |

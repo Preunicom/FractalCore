@@ -8,9 +8,9 @@
 #include "ctrl_selftest_pio.h"
 #include "col_selftest_pio.h"
 #include "menu.h"
+#include "color_scheme.h"
 
 XStatus testSystem(CTRL_Data *ctrl, COL_Data *col);
-void loadDefaultColors(COL_Data *col);
 void loadDefaultSettings(CTRL_Data *ctrl);
 
 int main() {
@@ -38,7 +38,7 @@ int main() {
     }
 
     loadDefaultSettings(CTRL_InstPtr);
-    loadDefaultColors(COL_InstPtr);
+    color_scheme_fire(COL_InstPtr);
 
     menu_run(CTRL_InstPtr, COL_InstPtr);
 
@@ -70,32 +70,15 @@ XStatus testSystem(CTRL_Data *ctrl, COL_Data *col) {
 
 void loadDefaultSettings(CTRL_Data *ctrl) {
     CTRL_SetJuliaDiamondMode(ctrl);
-    CTRL_SetPixelDistance(ctrl, (uint32_t)50);
+    CTRL_SetPixelDistance(ctrl, (uint32_t)100);
     CTRL_SetDiamondHeight(ctrl, (uint32_t)32512);
     CTRL_SetDiamondWidth(ctrl, (uint32_t)32512);
-    CTRL_SetAnimationSpeed(ctrl, (uint32_t)2); // 30 fps animation
-    CTRL_SetStepWidth(ctrl, (uint32_t)100);
+    CTRL_SetAnimationSpeed(ctrl, (uint32_t)1); // 60 fps animation
+    CTRL_SetStepWidth(ctrl, (uint32_t)5);
     CTRL_SetSeedLfsrRe(ctrl, (uint32_t)1);
     CTRL_SetSeedLfsrIm(ctrl, (uint32_t)100);
     CTRL_LoadLfsrSeeds(ctrl);
     CTRL_SetXorMaskLfsrRe(ctrl, 26624);
     CTRL_SetXorMaskLfsrIm(ctrl, 26624);
     CTRL_SetMinimapEnable(ctrl, (uint8_t)1);
-}
-
-void loadDefaultColors(COL_Data *col) {
-    COLOR_t color;
-    color.red = 0;
-    color.green = 0;
-    color.blue = 0;
-    COL_SetConvergentColor(col, &color);
-    for (uint16_t i = 0; i <= 255; i++) {
-        color.red = 255 - i;
-        COL_SetIterationColor(col, (uint8_t)i, &color);
-    }
-    color.red = 0;
-    color.blue = 255;
-    COL_SetCurrentMinimapColor(col, &color);
-    color.green = 255;
-    COL_SetTargetMinimapColor(col, &color);
 }
