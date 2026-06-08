@@ -28,6 +28,9 @@
 #define COL_GREEN_MASK     				0x0000FF00
 #define COL_BLUE_MASK      				0x00FF0000
 
+#define USED_COLOR_BITS 8
+#define MAX_USED_ITERATION_REGISTER 100
+
 ///Required for _g-file config mechanism (col_driver_g.c and col_driver_sinit.c)
 #ifndef XPAR_COL_NUM_INSTANCES
 #define XPAR_COL_NUM_INSTANCES	1

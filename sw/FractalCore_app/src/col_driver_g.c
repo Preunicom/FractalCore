@@ -20,7 +20,7 @@
 COL_Config COL_ConfigTable[] __attribute__ ((section (".drvcfg_sec"))) = {
 	{
 		"xlnx,col-1.0.0", /* compatible */
-		0x10000000, /* reg */ //baseaddress of IP
+		0x40000000, /* reg */ //baseaddress of IP
 		0x5f5e100, /* clock-frequency */ 
                //100MHz = 100e6 (hex value)
 		0x4001, /* interrupts */ //interruptid and interrupt properties  

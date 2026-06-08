@@ -294,6 +294,16 @@ So entfällt der Aufwand ein eigenes AXI Lite Interface mit 259 Registern in RTL
 
 _@author: Markus Remy_
 
+#### 8.1.4 HDMI
+
+Zuerst wird ein VGA Signal mit acht Bits pro Farbe erzeugt.
+Dieses liefert aber zusätzlich zu den Synchronisationssignalen auch ein Signal, das aussagt, ob die Daten aktuell im sichtbaren Bereich sind oder nicht.
+Dieses Signal wird dann an den [rgb2dvi IP](https://github.com/Digilent/vivado-library/blob/master/ip/rgb2dvi/src/rgb2dvi.vhd) von Digilent gegeben, der es wiederum in ein DVI Signal umwandelt.
+Das geschieht indem das Signal mit 8b/10b encoded wird und dann an beiden Flanken auf fünf-facher Geschwindigkeit gesendet wird.
+Das Signal wird dann direkt auf die HDMI Pins gegeben.
+
+_@author: Markus Remy_
+
 ### 8.2 Systemintegration
 
 Für das Arty Z7-20 Projekt wurde sich dazu entschieden, dass es nur drei Clock Domains gibt.
@@ -339,5 +349,13 @@ Die Minimap wurde anfangs mit einem Punkt für den Zielwert sowie für den aktue
 Jedoch irritiert diese Darstellung besondern im LFSR Modus, da der Zielpunkt nicht erreicht wird, sondern nur die beiden Achsen.
 Deshalb wurde die Darstellung so geändert, dass nur der aktuelle Punkt ein Punkt ist und der Zielwert als Fadenkruz dargestellt wird.
 Dies bildet das reale Verhalten besser ab da auch die Achsen für den LFSR Modus abgebildet werden.
+
+_@author: Markus Remy_
+
+#### 8.3.4 HDMI
+
+Das Eingangssignal zum rgb2dvi entpricht nicht wie erwartet dem RGB Schema mit Rot als niederwertigstem Bit folgend von Grün und Blau.
+Das Signal benötigt die Werte gedreht.
+Dabei entsprechen die acht niederwertigten Bits der Fabre Grün, die mittleren acht Bits der Farbe Blau und die höchstwertigen Bits der Farbe Rot.
 
 _@author: Markus Remy_

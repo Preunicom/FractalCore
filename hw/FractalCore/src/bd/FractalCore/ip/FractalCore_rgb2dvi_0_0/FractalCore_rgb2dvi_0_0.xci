@@ -1,14 +1,14 @@
 {
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
-    "xci_name": "FractalCore_rgb2dvi_1_0",
-    "cell_name": "rgb2dvi",
+    "xci_name": "FractalCore_rgb2dvi_0_0",
+    "cell_name": "rgb2dvi_0",
     "component_reference": "digilentinc.com:ip:rgb2dvi:1.4",
     "ip_revision": "8",
     "gen_directory": ".",
     "parameters": {
       "component_parameters": {
-        "Component_Name": [ { "value": "FractalCore_rgb2dvi_1_0", "resolve_type": "user", "usage": "all" } ],
+        "Component_Name": [ { "value": "FractalCore_rgb2dvi_0_0", "resolve_type": "user", "usage": "all" } ],
         "kRstActiveHigh": [ { "value": "false", "value_src": "user", "resolve_type": "user", "format": "bool", "usage": "all" } ],
         "kClkPrimitive": [ { "value": "PLL", "resolve_type": "user", "enabled": false, "usage": "all" } ],
         "kGenerateSerialClk": [ { "value": "false", "value_src": "user", "resolve_type": "user", "format": "bool", "usage": "all" } ],

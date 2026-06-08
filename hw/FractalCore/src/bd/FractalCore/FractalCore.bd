@@ -27,7 +27,7 @@
         "m01_couplers": {}
       },
       "Anzeige_0": "",
-      "rgb2dvi": ""
+      "rgb2dvi_0": ""
     },
     "interface_ports": {
       "DDR": {
@@ -3422,12 +3422,12 @@
           }
         }
       },
-      "rgb2dvi": {
+      "rgb2dvi_0": {
         "vlnv": "digilentinc.com:ip:rgb2dvi:1.4",
         "ip_revision": "8",
-        "xci_name": "FractalCore_rgb2dvi_1_0",
-        "xci_path": "ip/FractalCore_rgb2dvi_1_0/FractalCore_rgb2dvi_1_0.xci",
-        "inst_hier_path": "rgb2dvi",
+        "xci_name": "FractalCore_rgb2dvi_0_0",
+        "xci_path": "ip/FractalCore_rgb2dvi_0_0/FractalCore_rgb2dvi_0_0.xci",
+        "inst_hier_path": "rgb2dvi_0",
         "parameters": {
           "kGenerateSerialClk": {
             "value": "false"
@@ -3486,38 +3486,38 @@
       "Anzeige_0_o_vga_blue": {
         "ports": [
           "Anzeige_0/o_vga_blue",
-          "xlconcat_0/In2"
+          "xlconcat_0/In1"
         ]
       },
       "Anzeige_0_o_vga_green": {
         "ports": [
           "Anzeige_0/o_vga_green",
-          "xlconcat_0/In1"
+          "xlconcat_0/In0"
         ]
       },
       "Anzeige_0_o_vga_h_sync": {
         "ports": [
           "Anzeige_0/o_vga_h_sync",
-          "rgb2dvi/vid_pHSync"
+          "rgb2dvi_0/vid_pHSync"
         ]
       },
       "Anzeige_0_o_vga_red": {
         "ports": [
           "Anzeige_0/o_vga_red",
-          "xlconcat_0/In0"
+          "xlconcat_0/In2"
         ]
       },
       "Anzeige_0_o_vga_v_sync": {
         "ports": [
           "Anzeige_0/o_vga_v_sync",
-          "rgb2dvi/vid_pVSync"
+          "rgb2dvi_0/vid_pVSync"
         ]
       },
       "CDC_Synchronizer_0_o_data": {
         "ports": [
           "CDC_Synchronizer_0/o_data",
           "Anzeige_0/i_rstn_vga",
-          "rgb2dvi/aRst_n"
+          "rgb2dvi_0/aRst_n"
         ]
       },
       "Initialwerterzeugung_0_o_c_img": {
@@ -3634,10 +3634,10 @@
           "Anzeige_0/i_video_pix_row"
         ]
       },
-      "clk_wiz_0_clk_dvi": {
+      "Video_Clk_Gen_clk_dvi": {
         "ports": [
           "Video_Clk_Gen/clk_dvi",
-          "rgb2dvi/SerialClk"
+          "rgb2dvi_0/SerialClk"
         ]
       },
       "clk_wiz_0_clk_vga": {
@@ -3645,7 +3645,7 @@
           "Video_Clk_Gen/clk_vga",
           "CDC_Synchronizer_0/i_clk_out",
           "Anzeige_0/i_clk_vga",
-          "rgb2dvi/PixelClk"
+          "rgb2dvi_0/PixelClk"
         ]
       },
       "clk_wiz_0_locked": {
@@ -3692,27 +3692,27 @@
           "Video_Clk_Gen/reset"
         ]
       },
-      "rgb2dvi_TMDS_Clk_n": {
+      "rgb2dvi_0_TMDS_Clk_n": {
         "ports": [
-          "rgb2dvi/TMDS_Clk_n",
+          "rgb2dvi_0/TMDS_Clk_n",
           "TMDS_Clk_n_0"
         ]
       },
-      "rgb2dvi_TMDS_Clk_p": {
+      "rgb2dvi_0_TMDS_Clk_p": {
         "ports": [
-          "rgb2dvi/TMDS_Clk_p",
+          "rgb2dvi_0/TMDS_Clk_p",
           "TMDS_Clk_p_0"
         ]
       },
-      "rgb2dvi_TMDS_Data_n": {
+      "rgb2dvi_0_TMDS_Data_n": {
         "ports": [
-          "rgb2dvi/TMDS_Data_n",
+          "rgb2dvi_0/TMDS_Data_n",
           "TMDS_Data_n_0"
         ]
       },
-      "rgb2dvi_TMDS_Data_p": {
+      "rgb2dvi_0_TMDS_Data_p": {
         "ports": [
-          "rgb2dvi/TMDS_Data_p",
+          "rgb2dvi_0/TMDS_Data_p",
           "TMDS_Data_p_0"
         ]
       },
@@ -3725,13 +3725,13 @@
       "util_vector_logic_0_Res": {
         "ports": [
           "util_vector_logic_0/Res",
-          "rgb2dvi/vid_pVDE"
+          "rgb2dvi_0/vid_pVDE"
         ]
       },
       "xlconcat_0_dout": {
         "ports": [
           "xlconcat_0/dout",
-          "rgb2dvi/vid_pData"
+          "rgb2dvi_0/vid_pData"
         ]
       }
     },

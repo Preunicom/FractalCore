@@ -27,11 +27,11 @@ static void color_linear_gradient(COL_Data *COL,
     uint8_t r0, uint8_t g0, uint8_t b0,
     uint8_t r1, uint8_t g1, uint8_t b1)
 {
-    for (uint16_t i = 0; i < 256; i++) {
+    for (uint16_t i = 0; i <= MAX_USED_ITERATION_REGISTER; i++) {
         COLOR_t c;
-        c.red   = (uint8_t)(r0 + ((int)(r1 - r0) * i / 255));
-        c.green = (uint8_t)(g0 + ((int)(g1 - g0) * i / 255));
-        c.blue  = (uint8_t)(b0 + ((int)(b1 - b0) * i / 255));
+        c.red   = (uint8_t)(r0 + ((int)(r1 - r0) * i / MAX_USED_ITERATION_REGISTER));
+        c.green = (uint8_t)(g0 + ((int)(g1 - g0) * i / MAX_USED_ITERATION_REGISTER));
+        c.blue  = (uint8_t)(b0 + ((int)(b1 - b0) * i / MAX_USED_ITERATION_REGISTER));
         COL_SetIterationColor(COL, i, &c);
     }
 }
