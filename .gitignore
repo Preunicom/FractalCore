@@ -4,12 +4,6 @@
 !.github
 !.github/**/*
 !README.md
-!CONTRIBUTING.md
-!examples/
-!examples/TB_Example.vhd
-!examples/Example.vhd
-# Allow Doxygen file
-!Doxyfile
 # Allow script files
 !scripts/
 !scripts/**/*.tcl
@@ -21,16 +15,22 @@
 hw/ip_repo_vivado_library
 # Allow software related files
 !sw
-!sw/**
+!sw/*_app
+!sw/*_app/**
 sw/**/*.*
-!sw/**/src/*.c
-!sw/**/src/*.h
-sw/**/src/platform.*
-# _ide already ignored by workspace level rules
+!sw/*_app/src/**/*.c
+!sw/*_app/src/**/*.h
+sw/*_app/src/platform.h
+sw/*_app/src/platform.c
 # Docs for DAPI
 !docs/
+!docs/**
 !docs/**/*
 # Vivado logs
 vivado.jou
 vivado.log
 !*.xsa
+# Folder structure for vivado projects
+!xilinx/
+!xilinx/vivado/
+!.gitkeep
