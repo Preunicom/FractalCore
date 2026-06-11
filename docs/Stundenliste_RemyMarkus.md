@@ -95,8 +95,9 @@
 | **KW 23** | **-** | **124** | **Zwischensumme** |
 | |  |  |  |
 | 10.06.2026 | 9 | 2 | HW/SW Integration |
+| 11.06.2026 | 9 | 2 | HW/SW Integration |
 | |  |  |  |
-| **KW 24** | **-** | **126** | **Zwischensumme** |
+| **KW 24** | **-** | **128** | **Zwischensumme** |
 | |  |  |  |
 
 
@@ -185,4 +186,13 @@
 | 28.05.2026 | 1 | Vibe Coded Farbschemata |
 | |  |  |  |
 | **KW 22** | **-** | **73** | **Zwischensumme** |
+| |  |  |  |
+| 02.06.2026 | 2 | Vitis CI Skript überarbeiten, Linker Skript zu Git hinzufügen und Tests |
+| 07.06.2026 | 2 | Tests auf Arty Z7-20 und Bug Fixes|
+| |  |  |  |
+| **KW 23** | **-** | **77** | **Zwischensumme** |
+| |  |  |  |
+| 08.06.2026 | 2 | Bug Fixes color scheme|
+| |  |  |  |
+| **KW 24** | **-** | **79** | **Zwischensumme** |
 | |  |  |  |
