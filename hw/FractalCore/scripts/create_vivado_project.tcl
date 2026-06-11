@@ -17,7 +17,7 @@ set script_dir [file dirname [info script]]
 set project_data_dir [file normalize "$script_dir/.."]
 
 set proj_name "FractalCore"
-set proj_top_module "FractalCore"
+set proj_top_module "FractalCore_wrapper"
 set proj_part "xc7a100tcsg324-1"
 set board_part "digilentinc.com:arty-a7-100:part0:1.1"
 set proj_dir "[file normalize "$project_data_dir/../../xilinx/vivado/$proj_name"]"

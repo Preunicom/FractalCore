@@ -47,6 +47,10 @@ if {[llength [get_projects]] > 0} {
 open_project "$project_file"
 
 set_property -name {xsim.simulate.runtime} -value {0ns} -objects [get_filesets sim_1] 
+
+set_msg_config -severity INFO -suppress
+set_msg_config -severity WARNING -suppress
+
 set exit_code 0
 
 puts "============================================================"
@@ -60,17 +64,17 @@ foreach tb $tb_files {
     puts "------------------------------------------------------------"
 
     # Reset simulation environment
-    reset_simulation -quiet
+    reset_simulation
 
     set top_name [file rootname [file tail $tb]]
     set_property top $top_name [get_filesets sim_1]
 
-    update_compile_order -fileset sim_1 -quiet
+    update_compile_order -fileset sim_1
 
-    launch_simulation -quiet
+    launch_simulation
 
     # Restart simulation to also get asserts at the beginning which were already executed by launch_simulation.
-    restart -quiet
+    restart
 
     run -all
 
@@ -83,7 +87,7 @@ foreach tb $tb_files {
     }
 
     # Close simulation
-    close_sim -force -quiet
+    close_sim -force
 }
 
 puts "============================================================"

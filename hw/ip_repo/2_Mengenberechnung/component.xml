@@ -21,7 +21,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>be15e924</spirit:value>
+            <spirit:value>e23a0c2f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -40,7 +40,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>be15e924</spirit:value>
+            <spirit:value>e23a0c2f</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -421,11 +421,13 @@
         <spirit:name>src/AXIS_ASyncFIFO_Arbiter/AXIS_ASyncFIFO_Arbiter.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_ARBITE_FIFO</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/AXIS_AsyncFIFO_Dispatcher/AXIS_AsyncFIFO_Dispatcher.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_DISPATCH_FIFO</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/Pkg_Core.vhd</spirit:name>
@@ -495,11 +497,13 @@
         <spirit:name>src/AXIS_ASyncFIFO_Arbiter/AXIS_ASyncFIFO_Arbiter.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_ARBITE_FIFO</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/AXIS_AsyncFIFO_Dispatcher/AXIS_AsyncFIFO_Dispatcher.xci</spirit:name>
         <spirit:userFileType>xci</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
+        <spirit:userFileType>CELL_NAME_DISPATCH_FIFO</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/Pkg_Core.vhd</spirit:name>
@@ -589,7 +593,7 @@
       </spirit:file>
     </spirit:fileSet>
   </spirit:fileSets>
-  <spirit:description>Mengenberechnung der Mandelbrotgleichung fuer das FractalCore Projekt</spirit:description>
+  <spirit:description>Mengenberechnung des FractalCore Projects</spirit:description>
   <spirit:parameters>
     <spirit:parameter>
       <spirit:name>g_AMOUNT_CORES</spirit:name>
@@ -604,22 +608,7 @@
   <spirit:vendorExtensions>
     <xilinx:coreExtensions>
       <xilinx:supportedFamilies>
-        <xilinx:family xilinx:lifeCycle="Production">kintex7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">kintex7l</xilinx:family>
         <xilinx:family xilinx:lifeCycle="Production">artix7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">artix7l</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">aartix7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">zynq</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">azynq</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">spartan7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">aspartan7</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">virtexuplus</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">virtexuplusHBM</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">virtexuplus58g</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">kintexuplus</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">artixuplus</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">zynquplus</xilinx:family>
-        <xilinx:family xilinx:lifeCycle="Production">kintexu</xilinx:family>
       </xilinx:supportedFamilies>
       <xilinx:taxonomies>
         <xilinx:taxonomy>/UserIP</xilinx:taxonomy>
@@ -627,15 +616,14 @@
       <xilinx:displayName>Mengenberechnung_v1_0</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
       <xilinx:xpmLibraries>
-        <xilinx:xpmLibrary>XPM_CDC</xilinx:xpmLibrary>
         <xilinx:xpmLibrary>XPM_FIFO</xilinx:xpmLibrary>
       </xilinx:xpmLibraries>
       <xilinx:coreRevision>2</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2026-05-30T12:15:53Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2026-06-11T20:13:20Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2023.2</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="2a9080ca"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="d50a5508"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="7ef59ea3"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="024bb6ab"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="7517da7e"/>

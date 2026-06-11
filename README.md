@@ -39,7 +39,7 @@ _@author: Markus Remy_
 Anmerkung: Dieser Schritt kann übersprungen werden, da die IPs bereits gepackt als Teil des Repositories mitgliefert werden.
 
 Um im FractalCore Projekt auf die Einzelnen IPs zugreifen zu können müssen diese zuerst ins IP Repository aufgenommen werden.
-Dazu werden alle drei Projekte in Vivado nacheinander geöffnet und als IP unter hw/ip_repo gepackt.
+Dazu werden die von eins bis drei nummerierten Projekte in Vivado nacheinander geöffnet und als IP unter hw/ip_repo gepackt.
 
 Dabei sind folgende Schritte auszuführen:
 1) Tools -> Create and Package New IP auswählen
@@ -48,8 +48,9 @@ Dabei sind folgende Schritte auszuführen:
 4) Öffnen des temporären Projekts bestätigen
 5) Setzen der Parameter unter Identification.
 Dabei muss der Name des Projekts ohne Nummer beibehalten werden. (z.B.: Name: Anzeige, Display Name: Anzeige_v1_0)
+Besonders auf den Anzeige IP muss geachtet werden, denn dieser wird nicht autoamtisch korrekt benannt!
 6) Compatibility -> "Package for IPI" und "Ignore Freq_Hz" anwählen
-7) File Groups -> Standard -> Synthesis -> Alle .xdc Dateien mit Rechtsklick -> Entfernen löschen
+7) File Groups -> Standard -> Synthesis -> Alle .xdc Dateien mit Rechtsklick -> Remove File löschen
 8) Review and Package -> "Re-Package IP" auswählen
 
 _@author: Markus Remy_
@@ -57,8 +58,13 @@ _@author: Markus Remy_
 #### Bitstream erzeugen
 
 Wenn bis zu diesem Punkt alle Schritte korrekt ausgeführt wurden ist es ohne Fehler möglich einen Bitstream in Vivado zu erzeugen.
-Dazu wird zuerst das FractalCore Vivado Projekt geöffnet-
-Dann muss rechts unten unter "Program and Debug" "Generate Bitstream" ausgewählt werden.
+Dazu wird zuerst das FractalCore Vivado Projekt geöffnet.
+
+Falls die IPs manuell neu gepackt wurden müssen diese zuerst geupdated werden.
+Dazu wird Reports -> "Report IP Status" ausgewählt.
+Im sich öffnenden Fenster wird dann "Upgrade Selected" durchgeführt und die Output Products bei Aufforderung generiert.
+
+Dann muss rechts unten unter "Program and Debug" -> "Generate Bitstream" ausgewählt werden.
 
 Nach Abschluss dieses Schritts wird die Hardwarebeschreibungsdatei exportiert.
 Dazu wird unter File -> Export -> Export Hardware... ausgewählt.

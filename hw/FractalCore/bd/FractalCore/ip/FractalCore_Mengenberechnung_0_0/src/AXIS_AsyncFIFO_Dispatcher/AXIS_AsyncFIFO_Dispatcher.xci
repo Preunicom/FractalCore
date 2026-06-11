@@ -2,6 +2,7 @@
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
     "xci_name": "AXIS_AsyncFIFO_Dispatcher",
+    "cell_name": "DISPATCH_FIFO",
     "component_reference": "xilinx.com:ip:axis_data_fifo:2.0",
     "ip_revision": "11",
     "gen_directory": ".",

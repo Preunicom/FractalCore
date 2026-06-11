@@ -226,7 +226,7 @@
       <spirit:displayName>s00_axi</spirit:displayName>
       <spirit:addressBlock>
         <spirit:name>reg0</spirit:name>
-        <spirit:displayName>CTRL</spirit:displayName>
+        <spirit:displayName>reg0</spirit:displayName>
         <spirit:baseAddress spirit:format="bitString" spirit:bitStringLength="1">0x0</spirit:baseAddress>
         <spirit:range spirit:format="long" spirit:resolve="dependent" spirit:dependency="pow(2,(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S00_AXI_ADDR_WIDTH&apos;)) - 1) - 0 + 1)" spirit:minimum="4096" spirit:rangeType="long">4096</spirit:range>
         <spirit:width spirit:format="long" spirit:resolve="dependent" spirit:dependency="(spirit:decode(id(&apos;MODELPARAM_VALUE.C_S00_AXI_DATA_WIDTH&apos;)) - 1) - 0 + 1">32</spirit:width>
@@ -293,7 +293,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>cebfdfdc</spirit:value>
+            <spirit:value>c6886ca5</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1025,12 +1025,12 @@
       <spirit:file>
         <spirit:name>xgui/Initialwerterzeugung_v1_0.tcl</spirit:name>
         <spirit:fileType>tclSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_cebfdfdc</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_c6886ca5</spirit:userFileType>
         <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
   </spirit:fileSets>
-  <spirit:description>Startwerterzeugung fuer das FractalCore Projekt.</spirit:description>
+  <spirit:description>Initialwerterzeugung des FractalCore Projects</spirit:description>
   <spirit:parameters>
     <spirit:parameter>
       <spirit:name>C_S00_AXI_DATA_WIDTH</spirit:name>
@@ -1073,13 +1073,13 @@
       <xilinx:displayName>Initialwerterzeugung_v1_0</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
       <xilinx:coreRevision>2</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2026-05-30T11:58:54Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2026-06-11T20:11:39Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2023.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="f76adff7"/>
-      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="67487092"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="bd94bbd9"/>
+      <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="0c04c4c2"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="a77b7ae1"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="965d9970"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="e9c11669"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="ca0a94c1"/>

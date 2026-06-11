@@ -1571,7 +1571,7 @@
       },
       "Anzeige_0": {
         "vlnv": "user.org:user:Anzeige:1.0",
-        "ip_revision": "3",
+        "ip_revision": "1",
         "xci_name": "FractalCore_Anzeige_0_0",
         "xci_path": "ip/FractalCore_Anzeige_0_0/FractalCore_Anzeige_0_0.xci",
         "inst_hier_path": "Anzeige_0",
