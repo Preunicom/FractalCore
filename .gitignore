@@ -14,25 +14,18 @@
 !scripts/
 !scripts/**/*.tcl
 !scripts/**/*.sh
+!scripts/**/*.py
 # Allow hardware related files
 !hw
 !hw/**/
 hw/ip_repo_vivado_library
 # Allow software related files
 !sw
-## Manage Vitis files according to https://docs.amd.com/r/en-US/ug1400-vitis-embedded/Source-Control
-## Manage workspace level Vitis files
-sw/**/_ide
-!sw/**/_ide/version.ini
-sw/**/.rigel_lopper
-## Manage platform component level Vitis files
-sw/**/export
-sw/**/hw/sdt
-sw/**/resources
-sw/**/logs
-## Manage application component level Vitis files
-sw/**/build
-sw/**/compile_commands.json
+!sw/**
+sw/**/*.*
+!sw/**/src/*.c
+!sw/**/src/*.h
+sw/**/src/platform.*
 # _ide already ignored by workspace level rules
 # Docs for DAPI
 !docs/
@@ -40,3 +33,4 @@ sw/**/compile_commands.json
 # Vivado logs
 vivado.jou
 vivado.log
+!*.xsa

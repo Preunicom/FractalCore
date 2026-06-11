@@ -88,12 +88,17 @@
 | 27.05.2026 | 9 | 1 | Teammeeting |
 | 30.05.2026 | 9 | 1 | DDR für Microblaze und aktuelle IPs (Initialwerterzeugung & Mengenberechnung) erzeugen |
 | |  |  |  |
-| **KW 22** | **-** | **119** | **Zwischensumme** |
+| **KW 22** | **-** | **120** | **Zwischensumme** |
 | |  |  |  |
 | 03.06.2026 | 9 | 4 | HW Integration im Team |
 | |  |  |  |
-| **KW 23** | **-** | **122** | **Zwischensumme** |
+| **KW 23** | **-** | **124** | **Zwischensumme** |
 | |  |  |  |
+| 10.06.2026 | 9 | 2 | HW/SW Integration |
+| |  |  |  |
+| **KW 24** | **-** | **126** | **Zwischensumme** |
+| |  |  |  |
+
 
 
 ## Feature Nummerierung

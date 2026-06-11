@@ -58,7 +58,7 @@ architecture Behavioral of Axis_Pixel_DMUX is
 
 begin
 
-    fifo_select <= s_axis_tdata(30);
+    fifo_select <= s_axis_tdata(1); -- Choose from Frame Idx
 
     m0_axis_tdata <= s_axis_tdata;
     m1_axis_tdata <= s_axis_tdata;
