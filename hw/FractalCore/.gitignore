@@ -14,9 +14,8 @@ src/**/*.*
 !src/rtl/**/*.sv
 ## BD
 !src/bd/**/*.bd
-!src/bd/**/ip/**/*.xci
 ## IPs
-!src/**/*.xci
+!src/ip/**/*.xci
 # SIM
 !sim/
 !sim/**
@@ -27,9 +26,8 @@ sim/**/*.*
 !sim/rtl/**/*.sv
 ## BD
 !sim/bd/**/*.bd
-!sim/bd/**/ip/**/*.xci
 ## IPs
-!sim/**/*.xci
+!sim/ip/**/*.xci
 # Git
 !.gitignore
 !.gitkeep

@@ -5,12 +5,6 @@
 !.github
 !.github/**/*
 !README.md
-!CONTRIBUTING.md
-!examples/
-!examples/TB_Example.vhd
-!examples/Example.vhd
-# Allow Doxygen file
-!Doxyfile
 # Allow script files
 !scripts/
 !scripts/**/*.tcl
@@ -30,6 +24,9 @@ sw/**/*.*
 !sw/*_app/src/**/*.ld
 sw/*_app/src/platform.h
 sw/*_app/src/platform.c
+# BOOT.bin
+!output/
+!output/BOOT.bin
 # Docs for DAPI
 !docs/
 !docs/**/
@@ -39,6 +36,10 @@ docs/**/*.*
 !docs/**/*.md
 !docs/**/*.drawio
 !docs/**/*.svg
+# Vivado project file structure
+!xilinx/
+!xilinx/vivado/
+!.gitkeep
 # Vivado logs
 vivado.jou
 vivado.log
