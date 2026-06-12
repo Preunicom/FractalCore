@@ -28,15 +28,7 @@
 #include "ctrl_menu.h"
 #include "ctrl_selftest_pio.h"
 
-#if defined(XPAR_TOP_FARBCODIERUNG_0_S_AXI_BASEADDR)
-#define COLOR_BASEADDR TOP_FARBCODIERUNG_0_S_AXI_BASEADDR  //TODO
-#elif defined(XPAR_TOP_FARBCODIERUNG_0_BASEADDR)
-#define COLOR_BASEADDR OP_FARBCODIERUNG_0_BASEADDR
-#elif defined(XPAR_AXI_LITE_COLOR_CONFIG_0_BASEADDR)
-#define COLOR_BASEADDR AXI_Lite_Color_Config_0_BASEADDR    //TODO
-#endif
-
-#define COLOR_BASEADDR 0x4000u                          //TEMP
+#define COLOR_BASEADDR 0x4000u
 
 #define CMD_BUFFER_SIZE 32
 

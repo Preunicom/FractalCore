@@ -13,31 +13,12 @@
 #include "xil_types.h"
 #include "xstatus.h"
 
-// inbyte() provided by the Xilinx BSP
+// inbyte() provided by Xilinx
 extern char inbyte(void);
 
 /************************** Constant Definitions ***************************/
 
 #define MENU_BUF_SIZE 32
-
-/**************************** Type Definitions *****************************/
-
-/************************** Variable Definitions ***************************/
-
-static uint8_t g_active_color_scheme = 0; // 0 = custom, 1..9 = named scheme
-
-static const char *g_color_scheme_names[] = {
-    "Custom",
-    "Grayscale",
-    "Red",
-    "Green",
-    "Blue",
-    "Plasma",
-    "Rainbow",
-    "Fire",
-    "Jet",
-    "Hot"
-};
 
 /************************** Function Prototypes ****************************/
 // Input helpers

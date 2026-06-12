@@ -14,6 +14,8 @@ _@author: Markus Remy_
 Das Projekt wird unter der Verwendung von Vivado und Vitis auf das FPGA geladen.
 Dabei wird im folgenden Linux sowie Xilinx Tools der Version 2023.2 vorrausgesetzt.
 
+Um die UART Schnittstelle anzusprechend wird eine 8N1 Konfiguration mit 9600 Baud an der verbauten USB Buchse verwendet.
+
 _@author: Markus Remy_
 
 ### Vivado
@@ -96,6 +98,13 @@ Das Projekt kann auf zwei Arten auf den FPGA geladen werden:
 
 1) Schreiben der BOOT.bin Datei auf eine SD Karte.
 2) Erstellen des Projekts und flashen dieses über Vitis.
+
+_Anmerkung_: Das Git Submodul muss ebenfalls geladen werden!
+```
+git submodule update --init --recursive
+```
+
+Um die UART Schnittstelle anzusprechend wird eine 8N1 Konfiguration mit 115200 Baud an der verbauten USB Buchse verwendet.
 
 _@author: Markus Remy_
 
