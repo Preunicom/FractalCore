@@ -19,7 +19,7 @@ jobs:
     runs-on: vivado
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Build project
         run: ./scripts/create_all_vivado_projects.sh
