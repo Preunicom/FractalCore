@@ -11,6 +11,10 @@
 !Registerbeschreibungen/Initialwerterzeugung/src/chapters/*.tex
 !Registerbeschreibungen/Initialwerterzeugung/out
 !Registerbeschreibungen/Initialwerterzeugung/out/*.pdf
+!Endpraesentation/
+!Endpraesentation/*.pptx
+!Endpraesentation/*.drawio
+!Endpraesentation/*.jpg
 !*.md
 !.gitignore
 .DS_Store
