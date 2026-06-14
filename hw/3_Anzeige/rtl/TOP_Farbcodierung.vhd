@@ -28,8 +28,8 @@ entity Top_Farbcodierung is
 		C_S_AXI_ADDR_WIDTH	: integer	:= 6
     );
     port(
-        i_clk_calc : in std_logic;
-        i_rstn_calc : in std_logic;
+        i_clk_color : in std_logic;
+        i_rstn_color : in std_logic;
         i_pixel_clk : in std_logic;
         i_pixel_rstn : in std_logic;
         o_ready : out std_logic;
@@ -288,8 +288,8 @@ begin
 
     AXI_PIX_MUX_i: Axis_Pixel_DMUX
     port map (
-        i_clk          => i_clk_calc,
-        i_resetn       => i_rstn_calc,
+        i_clk          => i_clk_color,
+        i_resetn       => i_rstn_color,
         s_axis_tdata   => w_input_data_combined,
         s_axis_tvalid  => i_valid,
         s_axis_tready  => o_ready,
@@ -305,8 +305,8 @@ begin
     port map (
         wr_rst_busy   => open,
         rd_rst_busy   => open,
-        s_aclk        => i_clk_calc,
-        s_aresetn     => i_rstn_calc,
+        s_aclk        => i_clk_color,
+        s_aresetn     => i_rstn_color,
         s_axis_tvalid => w_fifo_0_in_valid,
         s_axis_tready => w_fifo_0_in_ready,
         s_axis_tdata  => w_fifo_0_in_data,
@@ -319,8 +319,8 @@ begin
     port map (
         wr_rst_busy   => open,
         rd_rst_busy   => open,
-        s_aclk        => i_clk_calc,
-        s_aresetn     => i_rstn_calc,
+        s_aclk        => i_clk_color,
+        s_aresetn     => i_rstn_color,
         s_axis_tvalid => w_fifo_1_in_valid,
         s_axis_tready => w_fifo_1_in_ready,
         s_axis_tdata  => w_fifo_1_in_data,
@@ -331,8 +331,8 @@ begin
 
     AXI_READ_FIFO_i: Axis_FIFO_MUX_Reader
     port map (
-        i_clk          => i_clk_calc,
-        i_resetn       => i_rstn_calc,
+        i_clk          => i_clk_color,
+        i_resetn       => i_rstn_color,
         i_read_select  => w_frame_counter_vga_out(0),
         s0_axis_tdata  => w_fifo_0_out_data,
         s0_axis_tvalid => w_fifo_0_out_valid,
@@ -353,7 +353,7 @@ begin
         DATA_WIDTH => 9
     )
     port map (
-        i_clk_wr  => i_clk_calc,
+        i_clk_wr  => i_clk_color,
         i_we      => w_write_en_buf_in,
         i_wr_x    => w_x_buf_in,
         i_wr_y    => w_y_buf_in,
