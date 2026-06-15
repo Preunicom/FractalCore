@@ -44,7 +44,7 @@ architecture Testbench of TB_Julia_C_Generation is
     signal s_lfsr_seed_im : std_logic_vector(16 downto 0);
     signal s_lfsr_xor_mask_re : std_logic_vector(15 downto 0);
     signal s_lfsr_xor_mask_im : std_logic_vector(15 downto 0);
-    signal s_diamond_heigh : std_logic_vector(15 downto 0);
+    signal s_diamond_height: std_logic_vector(15 downto 0);
     signal s_diamond_width : std_logic_vector(15 downto 0);
     
     -- CHECK
@@ -76,7 +76,7 @@ begin
         i_lfsr_seed_im     => s_lfsr_seed_im,
         i_lfsr_xor_mask_re => s_lfsr_xor_mask_re,
         i_lfsr_xor_mask_im => s_lfsr_xor_mask_im,
-        i_diamond_heigh    => s_diamond_heigh,
+        i_diamond_height   => s_diamond_height,
         i_diamond_width    => s_diamond_width,
         o_target_re        => c_target_re,
         o_target_im        => c_target_im,
@@ -92,7 +92,7 @@ begin
         wait until s_resetn = '1';
         -- Test diamond mode - step width 0, height 0, width 0
         s_en <= '1';
-        s_diamond_heigh <= std_logic_vector(to_unsigned(0, 16));
+        s_diamond_height <= std_logic_vector(to_unsigned(0, 16));
         s_diamond_width <= std_logic_vector(to_unsigned(0, 16));
         s_frames_per_step <= std_logic_vector(to_unsigned(0, 16));
         s_step_width <= std_logic_vector(to_unsigned(0, 17)); 
@@ -105,7 +105,7 @@ begin
         wait_for_clock_cycles(s_clk, 5);
         -- Test diamond mode
         s_en <= '1';
-        s_diamond_heigh <= std_logic_vector(to_unsigned(300, 16));
+        s_diamond_height <= std_logic_vector(to_unsigned(300, 16));
         s_diamond_width <= std_logic_vector(to_unsigned(200, 16));
         s_frames_per_step <= std_logic_vector(to_unsigned(1, 16));
         s_step_width <= std_logic_vector(to_unsigned(100, 17)); 
@@ -113,7 +113,7 @@ begin
         wait_for_clock_cycles(s_clk, 5);
         -- Test diamond mode
         s_en <= '1';
-        s_diamond_heigh <= std_logic_vector(to_unsigned(1000, 16));
+        s_diamond_height <= std_logic_vector(to_unsigned(1000, 16));
         s_diamond_width <= std_logic_vector(to_unsigned(1000, 16));
         s_frames_per_step <= std_logic_vector(to_unsigned(2, 16));
         s_step_width <= std_logic_vector(to_unsigned(100, 17)); 
@@ -121,7 +121,7 @@ begin
         wait_for_clock_cycles(s_clk, 10);
         -- Test diamond mode
         s_en <= '1';
-        s_diamond_heigh <= std_logic_vector(to_unsigned(10, 16));
+        s_diamond_height <= std_logic_vector(to_unsigned(10, 16));
         s_diamond_width <= std_logic_vector(to_unsigned(10, 16));
         s_frames_per_step <= std_logic_vector(to_unsigned(4, 16));
         s_step_width <= std_logic_vector(to_unsigned(100, 17)); 
@@ -144,7 +144,7 @@ begin
         wait_for_clock_cycles(s_clk, 10);
         -- Test diamond mode
         s_en <= '1';
-        s_diamond_heigh <= (others => '1');
+        s_diamond_height <= (others => '1');
         s_diamond_width <= (others => '1');
         s_frames_per_step <= std_logic_vector(to_unsigned(1, 16));
         s_step_width <= (others => '1'); 
@@ -325,11 +325,11 @@ begin
             if s_mode = '0' then
                 -- Check Diamond target
                 assert (c_target_re = "00" & s_diamond_width and c_target_im = std_logic_vector(to_signed(0, 18)))
-                or (c_target_re = std_logic_vector(to_signed(0, 18)) and c_target_im = "00" & s_diamond_heigh)
+                or (c_target_re = std_logic_vector(to_signed(0, 18)) and c_target_im = "00" & s_diamond_height)
                 or (c_target_re = std_logic_vector(-signed("00" & s_diamond_width)) and c_target_im = std_logic_vector(to_signed(0, 18)))
-                or (c_target_re = std_logic_vector(to_signed(0, 18)) and c_target_im = std_logic_vector(-signed("00" & s_diamond_heigh)))
+                or (c_target_re = std_logic_vector(to_signed(0, 18)) and c_target_im = std_logic_vector(-signed("00" & s_diamond_height)))
                     report "Diamond targets not set!" & LF
-                        & "Exp.: Width (RE): " & to_string("00" & s_diamond_width) & " | Height (IM): " & to_string("00" & s_diamond_heigh) & LF
+                        & "Exp.: Width (RE): " & to_string("00" & s_diamond_width) & " | Height (IM): " & to_string("00" & s_diamond_height) & LF
                         & "Got:  RE: " & to_string(c_target_re) & " | IM: " & to_string(c_target_im)
                     severity failure;
             end if;

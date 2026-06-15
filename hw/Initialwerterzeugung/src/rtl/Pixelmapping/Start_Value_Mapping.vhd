@@ -43,7 +43,7 @@ entity Start_Value_Mapping is
         i_lfsr_seed_im      : in std_logic_vector(16 downto 0);
         i_lfsr_xor_mask_re  : in std_logic_vector(15 downto 0);
         i_lfsr_xor_mask_im  : in std_logic_vector(15 downto 0);
-        i_diamond_heigh     : in std_logic_vector(15 downto 0);
+        i_diamond_height    : in std_logic_vector(15 downto 0);
         i_diamond_width     : in std_logic_vector(15 downto 0);
         -- Outputs
         o_valid             : out std_logic;
@@ -77,7 +77,7 @@ architecture Behavioral of Start_Value_Mapping is
             i_lfsr_seed_im : in std_logic_vector(16 downto 0);
             i_lfsr_xor_mask_re : in std_logic_vector(15 downto 0);
             i_lfsr_xor_mask_im : in std_logic_vector(15 downto 0);
-            i_diamond_heigh : in std_logic_vector(15 downto 0);
+            i_diamond_height : in std_logic_vector(15 downto 0);
             i_diamond_width : in std_logic_vector(15 downto 0);
             o_target_re : out std_logic_vector(17 downto 0);
             o_target_im : out std_logic_vector(17 downto 0);        
@@ -122,7 +122,7 @@ begin
         i_lfsr_seed_im     => i_lfsr_seed_im,
         i_lfsr_xor_mask_re => i_lfsr_xor_mask_re,
         i_lfsr_xor_mask_im => i_lfsr_xor_mask_im,
-        i_diamond_heigh    => i_diamond_heigh,
+        i_diamond_height   => i_diamond_height,
         i_diamond_width    => i_diamond_width,
         o_target_re        => w_target_re,
         o_target_im        => w_target_im,

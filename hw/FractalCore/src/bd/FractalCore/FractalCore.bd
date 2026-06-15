@@ -3661,9 +3661,9 @@
           "ps7_0_axi_periph/M00_ARESETN",
           "ps7_0_axi_periph/ARESETN",
           "ps7_0_axi_periph/M01_ARESETN",
-          "Initialwerterzeugung_0/s00_axi_aresetn",
           "Anzeige_0/s00_axi_aresetn",
-          "Mengenberechnung_0/i_rstn"
+          "Mengenberechnung_0/i_rstn",
+          "Initialwerterzeugung_0/s00_axi_aresetn"
         ]
       },
       "processing_system7_0_FCLK_CLK0": {
@@ -3675,9 +3675,9 @@
           "ps7_0_axi_periph/S00_ACLK",
           "ps7_0_axi_periph/M00_ACLK",
           "ps7_0_axi_periph/M01_ACLK",
-          "Initialwerterzeugung_0/s00_axi_aclk",
           "Anzeige_0/s00_axi_aclk",
-          "Mengenberechnung_0/i_clk"
+          "Mengenberechnung_0/i_clk",
+          "Initialwerterzeugung_0/s00_axi_aclk"
         ]
       },
       "processing_system7_0_FCLK_RESET0_N": {

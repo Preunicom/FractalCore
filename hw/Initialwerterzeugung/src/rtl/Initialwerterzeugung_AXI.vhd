@@ -25,7 +25,7 @@ entity Initialwerterzeugung_AXI is
 		o_lfsr_seed_im : out std_logic_vector(16 downto 0);
 		o_lfsr_xor_mask_re : out std_logic_vector(15 downto 0);
 		o_lfsr_xor_mask_im : out std_logic_vector(15 downto 0);
-		o_diamond_heigh : out std_logic_vector(15 downto 0);
+		o_diamond_height : out std_logic_vector(15 downto 0);
 		o_diamond_width : out std_logic_vector(15 downto 0);
 		o_load_seed : out std_logic;
 		-- User ports ends
@@ -392,7 +392,7 @@ begin
 	DWCR_reg(31 downto 16) <= (others => '0'); -- reserved
 
 	---- DHCR Diamond Height Control Register 0x38
-	o_diamond_heigh <= DHCR_reg(15 downto 0); -- axi rw ip r
+	o_diamond_height <= DHCR_reg(15 downto 0); -- axi rw ip r
 	DHCR_reg(31 downto 16) <= (others => '0'); -- reserved
 
 	---- ZOMCR Zoom Control Register 0x3C
