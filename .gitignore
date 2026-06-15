@@ -1,7 +1,6 @@
 *
 # Allow GitHub related files
 !.gitignore
-!.gitmodules
 !.github
 !.github/**/*
 !README.md
@@ -21,26 +20,16 @@
 sw/**/*.*
 !sw/*_app/src/**/*.c
 !sw/*_app/src/**/*.h
-!sw/*_app/src/**/*.ld
 sw/*_app/src/platform.h
 sw/*_app/src/platform.c
-# BOOT.bin
-!output/
-!output/BOOT.bin
 # Docs for DAPI
 !docs/
-!docs/**/
-docs/**/*.*
-!docs/**/*.tex
-!docs/**/*.pdf
-!docs/**/*.md
-!docs/**/*.drawio
-!docs/**/*.svg
-# Vivado project file structure
-!xilinx/
-!xilinx/vivado/
-!.gitkeep
+!docs/**
+!docs/**/*
 # Vivado logs
 vivado.jou
 vivado.log
-.DS_Store
+# Folder structure for vivado projects
+!xilinx/
+!xilinx/vivado/
+!.gitkeep

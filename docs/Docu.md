@@ -25,47 +25,65 @@ Damit ergibt sich für die Portierung auf das Arty Z7-20 folgende Arbeitsaufteil
 - Anzeige: Markus Remy
 - Systemintegration: Markus Remy
 
+Zusätzlich wurde auf dem Arty Z7 eine Minimap als Zusatzfeature hinzugefügt.
+Diese ermöglicht ein besseres Verständniss der Julia Menge.
+Die Minimap Daten werden auch auf dem Arty A7 erzeugt, jedoch unterstütz die Software sowie das Anzeigemodul dieses Zusatzfeature aus zeitlichen Gründen nicht.
+
+_@author: Markus Remy_
+
 ## Systementwurf und Schnittstellendefinition
 
 Das System besteht aus folgenden Komponenten:  
 ![Komponentendiagramm](./pictures/DAPI_Projektvorschlag.drawio.svg)
 
+Die Farbcodierung und Anzeige sind dabei jedoch in einer Implementierungseinheit zusammengefasst, da sie stark voneinander abhängen.
+
 Die Schnittstellen sind im folgenden genauer visualisiert:  
 ![Schnittstellen auf IP Ebene](./pictures/FractalCore_Schnittstellendefinition.drawio.svg)
 
-Dabei sind ein paar Designentscheidungen gesondert aufzuführen:
+Die Schnittstellenvisualiisierung beziehgt sich auf den Arty A7.
+Die geschrichelte Linie der Minimap Daten wurde auf dem Arty A7 nicht implmentiert, ist als weiteres Zusatzfeature jedoch als Ausblick umsetzbar.
+Der Arty Z7 verwendet des weiteren einen DVI Encoder um das erzeuge VGA Signal weiterzuverarbeiten.
+
+Ein paar Designentscheidungen sind gesondert aufzuführen:
 - Das gewählte interne Kommunikationsprotokoll basiert auf AXI Stream, sendet aber mehrere Datenwörter mit verschiedenen Breiten parallel basierend auf dem gleichen Ready/Valid Handshake.
 - Es werden 18 Bit Festkommazahlen für Real- und Imaginärteil der Zahlen verwendet, da die DSP des Arty A7 Multiplikationen mit maximal 25x18 Bit durchführen können.
 - Die Festkommazahlen sind signed und im Format 3.15 gewählt.
-Damit sind Werte im Bereich [-8,8[ möglich, was die relevanten Stellen abdeckt und dennoch eine hohe Präzision ermöglicht.
+Damit sind Werte im Bereich [-4,4[ möglich, was die relevanten Stellen abdeckt und dennoch eine hohe Präzision ermöglicht.
 - Dia VGA Auflösung beträgt 640x480 Pixel und damit werden 10 (horizontal) bzw. 9 (vertikal) Bits benötigt um die Pixel zu nummerieren
-- Um eine Priorisierung bei der Arbitrierung auf Basis des Pixels sowie die Zuordnung im Framebuffer zu gewährleisten wird das Frame zum Pixel mit 2 Bit übertragen (=> Frame mod 4).
+- Um eine Priorisierung bei der Arbitrierung auf Basis des Pixels sowie die Zuordnung im Framebuffer zu gewährleisten wird die Nummer des Frames zum Pixel mit 2 Bit übertragen (=> Frame Index mod 4).
 2 Bit deshalb, um bei der Arbitrierung zu entscheiden welcher Frame weiter in der Zukunft liegt falls zwei Pixel in verschiedenen Frames liegen.
+Andernfalls wäre nicht eindeutig definiert ob der Wechsel von Frame 0 zu Frame 1 oder von Frame 1 zu Frame 0 wäre.
 - Da der Pmod VGA 12 Bit Farben unterstützt wurden die Bitbreiten der Farben entsprechend gewält.
-- Um die langsamen Folgenberechnungen schneller zu berechnen sowie das VGA Timing einzuhalten werden verschiedene Clock Domainen verwendet.
+(In der Implementierung des HDMI Zusatzfeatures werden 8 Bit pro Farbe unterstützt)
+- Um die langsamen Folgenberechnungen schneller zu berechnen sowie das VGA Timing einzuhalten werden verschiedene Clock Domainen verwendet. 
+(In der Implementierung des Arty Z7 Zusatzfeatures wird die gesamte Logik bis auf den durch das Videoprotokoll festgelegten Anteil auf der schnellsten Clock Domain berechnet um möglichst wenig Übergänge zwischen Clock Domainen zu haben)
 - Die Abbruchbedingung liegt bei maximal 100 Iterationen.
 Es wurden dennoch 8 Bit Datenbreite für die Anzahl an Takte bis zur konvergenz gewählt um die maximale Anzahl an Iterationen gegebenenfalls einfach erhöhen zu können, falls die Farbgebung bei 100 Iterationen nicht zufriedenstellend sein sollte.
-
-Für die Portierung auf den Arty Z7 gilt zudem:
-- Da HDMI auf Basis von DVI 8 Bit Farben unterstützt wurden die Farben entsprechend angepasst.
 
 _@author: Markus Remy_
 
 ## 0. Gesamtsystem
 
-Um den verschiedenen Taktdomainen entsprechende Takt- und Resetsignale zur Verfügung zu stellen werden zwei Clocking Wizard IPs verwendet.
-Der erste stellt allen Taktdomainen außer VGA das Taktsignal zur Verfügung.
-Da der MMCM des ersten Clocking Wizards nicht parallel zu den anderen Taktsignalen auch 25,175 MHz erzuegen kann, wurde für den VGA Pixeltakt ein eigener Clocking Wizard mit MMCM verwendet.
-Dieser erzeugt zwar auch keine 25,175 MHz, aber er liegt nur <0,01 MHz daneben, was ausreichend genau ist.
-Als Resetsignale wird das locked signal der Clocking Wizards verwendet.
-Da dieses nicht synchron in den Taktdomains sein muss, wird es mit zwei FlipFlops auf die jeweilige Taktdomaine synchronisiert um Metastabilität zu vermeiden.
-Außerdem werden die beiden Taktdomainen für den Microblaze und die AXI Lite Verbindungen als ein SoC Signal vom Clocking Wizard erzeugt um die Komplexität des Systems möglichst gering zu halten.
+Um den verschiedenen Taktdomainen entsprechende Takt- und Resetsignale zur Verfügung zu stellen wird ein Clocking Wizard IP verwendet.
+Da der MMCM des Clocking Wizards nicht genau 25,175 MHz erzuegen kann, werden für den VGA Pixeltakt ca. 25 MHz verwendet.
+Dieser liegt nur <0,2 MHz neben den laut Protokoll vorgeschriebenen 25.175 MHz, was für die meisten Bildschirme ausreichend genau ist.
+Als Resetsignal wird das locked Signal der Clocking Wizards verwendet.
+Da dieses nicht synchron in den Taktdomains sein muss, wird es mit zwei FlipFlops auf die jeweilige Taktdomaine synchronisiert um Metastabilität zu vermeiden und einen synchronen Reset zu ermöglichen.
 
 _@author: Markus Remy_
 
 ## 1. MicroBlaze
 
+TODO @Thomas
+
+_@author: Thomas Schiergl_
+
 ## 2. UART Schnittstelle
+
+TODO @Thomas
+
+_@author: Thomas Schiergl_
 
 ## 3. Initialwertkoponente
 
@@ -141,6 +159,10 @@ Da der Wert jedoch pro Frameindex gespeichert wird, müsste der Wert Pixel von d
 Das liegt daran, dass der Frameindex sich alle 4 Bilder wiederholt.
 Es ist aber nicht möglich so viele Pixel gleichzeitig im System zu speichern.
 Dementsprechend kann der Wert diese Pixelanzahl auch nicht überholen und damit können auch keine Race Conditions entstehen.
+
+_Anmerkung_: Dieses Feature wird von der Iniitalwerterzeugung unterstützt, jedoch ist es nur auf dem Arty Z7 auch in der Anzeige implementiert.
+
+_@author: Markus Remy_
 
 ## 4. Berechnung
 
@@ -249,16 +271,48 @@ _@author: Markus Remy_
 
 ## 6. Farbcodierung
 
+TODO @Thomas
+
+_@author: Thomas Schiergl_
+
 ## 7. VGA
 
-## 8. Zusatzfeature: Portierung auf Arty Z7-20
+TODO @Thomas
 
-Da Markus Remy mit den ihm zugeteilten Aufgaben unter den 150 Stunden war und noch Puffer hatte, wurde das Projekt auf den Arty Z7-20 portiert.
-Da dieser keine High-Speed Pmod Steckplätze hat, dafür jedoch das moderne HDMI wurde die mit der Anzeige sowie dem MicroBlaze verbundene Architektur für HDMI via DVI-D neu entwickelt.
+_@author: Thomas Schiergl_
 
-### 8.1 Anzeige mit Farbcodierung
+## 8. Anmerkungen
 
-#### 8.1.1 Framebuffer 
+### 8.1 Clock Domainen
+
+Ursprünglich war geplant, dass es fünf Clock Domainen gibt.
+Eine für die Initialwerterzeugung, eine für die Berechnung, eine für die Farbcodierung, eine für die VGA Pixel Clock und eine für den Prozessor sowie die zugehörigen AXI Schnittstellen.
+Jedoch stellte sich heraus, dass die Initialwerterzeugung ohne Änderungen auch auf den 100 MHz des Prozessors läuft.
+Daher wurde die AXI Clock der Initialwerterzeugung direkt auf die 100 MHz des Prozessors gelegt um einen Übergang zwischen zwei Clock Domainen zu sparen.
+Die Prozessor Clock und Mengenberechnungsclock sind in der endgültigen Implementierung gleich schnell, jedoch ist das System des Arty A7 darauf ausgelegt unterschiedliche Clocks zu unterstützen.
+Das wäre nötig, wenn eine höhere maximale Iterationsanzahl angestrebt wird, da ab einem gewissen Punkt die 100 MHz für die Mengenberechnung nicht mehr ausreichen.
+
+_@author: Markus Remy_
+
+### 8.2 Minimap
+
+Ursprünglich war die Minimap als Zusatzfeature für beide FPGAs geplant.
+Aufgrund zeitlicher Einschränkungen wurde sie in der Anzeige jedoch nur auf dem Arty Z7 umgesetzt.
+Die Initialwertberechnung des Arty A7 unterstützt die Minimap jedoch bereits.
+
+_@author: Markus Remy_
+
+## 9. Zusatzfeature: Portierung auf Arty Z7-20
+
+Da Markus Remy mit den ihm zugeteilten Aufgaben unter den 150 Stunden war und somit noch Puffer hatte, wurde das Projekt auf den Arty Z7-20 portiert.
+Da dieser einen HDMI Output hat, wurde die mit der Anzeige sowie dem MicroBlaze verbundene Architektur für HDMI via DVI-D neu entwickelt.
+Zusätzlich gab es kleinere Anpassungen in der Architektur des Gesamtsystems um beispielsweise Clock Domain Crossing zu minimieren.
+
+_@author: Markus Remy_
+
+### 9.1 Anzeige mit Farbcodierung
+
+#### 9.1.1 Framebuffer 
 
 Das größte Problem des FractalCore Projekt ist die Knappheit an BRAM.
 Somit wird an jeder möglichen Stelle BRAM gespart.
@@ -269,7 +323,7 @@ Zusätzlich wurde die Addressierung dicht gewählt, sodass die BRAMs voll ausgel
 
 _@author: Markus Remy_
 
-#### 8.1.2 Sortierung der Ergebnisse
+#### 9.1.2 Sortierung der Ergebnisse
 
 Das zweite große Problem der Anzeige ist das Sortieren der Daten.
 Die Daten sind nach der Mengenberechnung unsortiert und müssen ihren ursrpünglichen Frames zugeordnet werden.
@@ -279,23 +333,26 @@ Damit können je Frame abwechselnd zwischen den beiden FIFOs Daten entnommen wer
 
 Die FIFOs wurden in ihrer Größe so gewählt, dass ein Pixel mit der maximaler Berechnungsdauer von 303 Takten bis zum Abbruch von allen drei Stages in den 40 Cores mit je Pixel mit Berechnugsdauern von drei Takten einmal überholt werden kann.
 
+Außerdem wurde das Schreiben der Werte aus den FIFOs in den Framebuffer so implementiert, dass die erste Hälfte des nächsten Frames bereits beschrieben werden darf wenn die VGA Ausgabe in der zweiten Hälfte des vorherigen Frames ist.
+
 _@author: Markus Remy_
 
-#### 8.1.3 Farbcodierung
+#### 9.1.3 Farbcodierung
 
 Für die Farbcodierung wurde ein True Dual Port BRAM gewählt, bei dem das PS (Processing System) über einen BRAM Controller und AXIL auf den einen Port zugreift und die PL (Programmable Logic) über den anderen.
 Dabei entsprechen die ersten 256 Addressen den Farben für die jeweilige Iteration.
 Die folgenden drei Addressen sind in der genannten Reihenfolge für die Konvergenten Pixel, die Minimap C Koordinaten und das Ziel der Minimap C Koordinaten.
 Die Farben werden dabei je Addresse in den unteren 24 der 32 Bit kodiert.
-Die ersten acht Bit sind dabei rot, die folgenden grün und die letzten acht blau.
+Die niedrigwertigsten acht Bit sind dabei rot, die folgenden grün und die höchstwertigen acht blau.
 Die verbleibenden Bits sind Padding und werden von der PL nicht ausgelesen.
 
 So entfällt der Aufwand ein eigenes AXI Lite Interface mit 259 Registern in RTL zu entwerfen. 
 
 _@author: Markus Remy_
 
-#### 8.1.4 HDMI
+#### 9.1.4 HDMI
 
+Um ein HDMI Signal zu erzeugen wird die Abwärtskompatibilität zu DVI-D genutzt.
 Zuerst wird ein VGA Signal mit acht Bits pro Farbe erzeugt.
 Dieses liefert aber zusätzlich zu den Synchronisationssignalen auch ein Signal, das aussagt, ob die Daten aktuell im sichtbaren Bereich sind oder nicht.
 Dieses Signal wird dann an den [rgb2dvi IP](https://github.com/Digilent/vivado-library/blob/master/ip/rgb2dvi/src/rgb2dvi.vhd) von Digilent gegeben, der es wiederum in ein DVI Signal umwandelt.
@@ -304,20 +361,20 @@ Das Signal wird dann direkt auf die HDMI Pins gegeben.
 
 _@author: Markus Remy_
 
-### 8.2 Systemintegration
+### 9.2 Systemintegration
 
 Für das Arty Z7-20 Projekt wurde sich dazu entschieden, dass es nur drei Clock Domains gibt.
-Eine für VGA, eine für DVI und eine für den Rest.
-Das minimiert CDC und vereinfacht die Constraints.
+Eine für die VGA Pixel Clock, eine für die DVI Pixel Clock und eine für den Rest.
+Das minimiert Clock Domain Crossing und vereinfacht die Constraints.
 Das Timing wurde dadurch zwar straffer, jedoch führte das nur zu Problemen beim synchronen Reset.
 Dieses Problem wurde gelöst, indem die Resets des Datenpfades der Cores entfernt wurden und nur die Valid Flags resetted werden.
 So werden bei 40 Cores mit je drei Stages und vielen Flip Flops je der Reset entfernt, was die Platzierung entzerrt und das Timing, wenn auch nur knapp, erfüllt.
 
 _@author: Markus Remy_
 
-### 8.3 Probleme
+### 9.3 Probleme
 
-#### 8.3.1 Spiegelung der Anzeige
+#### 9.3.1 Spiegelung der Anzeige
 
 Der erste nach der Inbetriebnahme auffalende Fehler ist die Spiegelung der Anzeige.
 Dieser Umstand tritt jedoch nur auf, wenn der 8 Bit Pixelabstand 128 oder größer gewählt wurde.
@@ -331,7 +388,7 @@ Erst nach der Neuerstellung des Projekts wurde die Änderung im erstellten Bitst
 
 _@author: Markus Remy_
 
-#### 8.3.2 Minimap - Bugs
+#### 9.3.2 Minimap - Bugs
 
 Die weiteren Fehler beziehen sich auf die Minimap.
 Das erste auffällige war, dass teilweise die Zielpixel der LFSR und damit nach einiger Zeit auch der aktuelle Pixel außerhalb der Minimap sind.
@@ -343,19 +400,19 @@ So ist der Bereich auch auf der kürzeren Seite der Minimap vollständig abgebil
 
 _@author: Markus Remy_
 
-#### 8.3.3 Minimap - Visualisierung
+#### 9.3.3 Minimap - Visualisierung
 
 Die Minimap wurde anfangs mit einem Punkt für den Zielwert sowie für den aktuellen Wert entwickelt.
 Jedoch irritiert diese Darstellung besondern im LFSR Modus, da der Zielpunkt nicht erreicht wird, sondern nur die beiden Achsen.
-Deshalb wurde die Darstellung so geändert, dass nur der aktuelle Punkt ein Punkt ist und der Zielwert als Fadenkruz dargestellt wird.
-Dies bildet das reale Verhalten besser ab da auch die Achsen für den LFSR Modus abgebildet werden.
+Deshalb wurde die Darstellung so geändert, dass nur der aktuelle Punkt ein Punkt ist und der Zielwert als Fadenkreuz dargestellt wird.
+Dies bildet das reale Verhalten besser ab, da auch die Achsen für den LFSR Modus abgebildet werden.
 
 _@author: Markus Remy_
 
-#### 8.3.4 HDMI
+#### 9.3.4 HDMI
 
-Das Eingangssignal zum rgb2dvi entpricht nicht wie erwartet dem RGB Schema mit Rot als niederwertigstem Bit folgend von Grün und Blau.
+Das Eingangssignal zum rgb2dvi entpricht nicht wie erwartet dem RGB Schema mit Rot als niederwertigstem Byte folgend von Grün und Blau.
 Das Signal benötigt die Werte gedreht.
-Dabei entsprechen die acht niederwertigten Bits der Fabre Grün, die mittleren acht Bits der Farbe Blau und die höchstwertigen Bits der Farbe Rot.
+Dabei entsprechen die acht niederwertigten Bits der Farbe Grün, die mittleren acht Bits der Farbe Blau und die höchstwertigen Bits der Farbe Rot.
 
 _@author: Markus Remy_

@@ -86,9 +86,27 @@
 | **KW 21** | **-** | **118** | **Zwischensumme** |
 | |  |  |  |
 | 27.05.2026 | 9 | 1 | Teammeeting |
+| 30.05.2026 | 9 | 1 | DDR für Microblaze und aktuelle IPs (Initialwerterzeugung & Mengenberechnung) erzeugen |
 | |  |  |  |
-| **KW 22** | **-** | **119** | **Zwischensumme** |
+| **KW 22** | **-** | **120** | **Zwischensumme** |
 | |  |  |  |
+| 03.06.2026 | 9 | 4 | HW Integration im Team |
+| |  |  |  |
+| **KW 23** | **-** | **124** | **Zwischensumme** |
+| |  |  |  |
+| 10.06.2026 | 9 | 2 | HW/SW Integration |
+| 11.06.2026 | 1.2 | 1 | CTRL Treiber integrieren von HDMI |
+| 11.06.2026 | 1.3 | 1 | CTRL Menü integrieren von HDMI |
+| 12.06.2026 | 9 | 3 | Build Skripte testen |
+| 14.06.2026 | 9 | 2 | Clk Pfade fixen |
+| |  |  |  |
+| **KW 24** | **-** | **133** | **Zwischensumme** |
+| |  |  |  |
+| 15.06.2026 | 9 | 1 | Clk Pfade fixen |
+| |  |  |  |
+| **KW 25** | **-** | **134** | **Zwischensumme** |
+| |  |  |  |
+
 
 
 ## Feature Nummerierung
@@ -138,13 +156,13 @@
 # Stundenliste Arty Z7-20 Portierung
 
 | Datum | Dauer [h] | Beschreibung | 
-|-------|---------|-----------|--------------|
+|-------|-----------|--------------|
 | 15.05.2026 | 3 | Portieren der Projektstruktur auf den Arty Z7-20 und das Haupt-Block-Design auf Zynq |
 | 15.05.2026 | 1 | Erstellen FIFO IPs und Framebuffer |
 | 17.05.2026 | 3 | TB FIFO IP und TB Framebuffer |
-| |  |  |  |
-| **KW 20** | **-** | **7** | **Zwischensumme** |
-| |  |  |  |
+| |  |  |
+| **KW 20** | **7** | **Zwischensumme** |
+| |  |  |
 | 18.05.2026 | 1 | Result Frame Sorting + TB |
 | 18.05.2026 | 2 | Framebuffer Manager |
 | 19.05.2026 | 5 | VGA Control + Anzeige|
@@ -161,9 +179,9 @@
 | 23.05.2026 | 2 | Bugsuche (Multiple Driven Signal) |
 | 24.05.2026 | 3 | Constraints setzen für CDC |
 | 24.05.2026 | 1 | Bug Fixes |
-| |  |  |  |
-| **KW 21** | **-** | **44** | **Zwischensumme** |
-| |  |  |  |
+| |  |  |
+| **KW 21** | **44** | **Zwischensumme** |
+| |  |  |
 | 25.05.2026 | 3 | Bug Fixes, Tests und Timing Verbesserungen |
 | 25.05.2026 | 3 | CI für Vitis |
 | 25.05.2026 | 2 | SW Treiber |
@@ -173,15 +191,15 @@
 | 27.05.2026 | 10 | Tests auf echter Hardware + Bug fixes |
 | 28.05.2026 | 3 | Bug Fix (Overflow mit pixel distance, Minimapbereich zu klein, LFSR Werte zu groß) |
 | 28.05.2026 | 1 | Vibe Coded Farbschemata |
-| |  |  |  |
-| **KW 22** | **-** | **73** | **Zwischensumme** |
-| |  |  |  |
+| |  |  |
+| **KW 22** | **73** | **Zwischensumme** |
+| |  |  |
 | 02.06.2026 | 2 | Vitis CI Skript überarbeiten, Linker Skript zu Git hinzufügen und Tests |
 | 07.06.2026 | 2 | Tests auf Arty Z7-20 und Bug Fixes|
-| |  |  |  |
-| **KW 23** | **-** | **77** | **Zwischensumme** |
-| |  |  |  |
+| |  |  |
+| **KW 23** | **77** | **Zwischensumme** |
+| |  |  |
 | 08.06.2026 | 2 | Bug Fixes color scheme|
-| |  |  |  |
-| **KW 24** | **-** | **79** | **Zwischensumme** |
-| |  |  |  |
+| |  |  |
+| **KW 24** |  **79** | **Zwischensumme** |
+| |  |  |
