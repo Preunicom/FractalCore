@@ -291,7 +291,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>0f867423</spirit:value>
+            <spirit:value>bfe5df63</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -310,7 +310,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>0f867423</spirit:value>
+            <spirit:value>bfe5df63</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -331,7 +331,7 @@
     </spirit:views>
     <spirit:ports>
       <spirit:port>
-        <spirit:name>i_clk_calc</spirit:name>
+        <spirit:name>i_clk_color</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:wireTypeDefs>
@@ -344,7 +344,7 @@
         </spirit:wire>
       </spirit:port>
       <spirit:port>
-        <spirit:name>i_rstn_calc</spirit:name>
+        <spirit:name>i_rstn_color</spirit:name>
         <spirit:wire>
           <spirit:direction>in</spirit:direction>
           <spirit:wireTypeDefs>
@@ -971,7 +971,7 @@
       <spirit:file>
         <spirit:name>src/TOP_Farbcodierung.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_e4cd2f29</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_9ec35eb5</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -1049,7 +1049,7 @@
       </spirit:file>
     </spirit:fileSet>
   </spirit:fileSets>
-  <spirit:description>Anzeige des FractalCore Projects</spirit:description>
+  <spirit:description>Anzeige of the FractalCore project</spirit:description>
   <spirit:parameters>
     <spirit:parameter>
       <spirit:name>C_S_AXI_DATA_WIDTH</spirit:name>
@@ -1084,14 +1084,14 @@
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>user.org:user:Top_Farbcodierung:1.0</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2026-06-11T20:15:49Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2026-06-14T19:03:06Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2023.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="7ab9c28f"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="0879c9e7"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="4cd9122c"/>
-      <xilinx:checksum xilinx:scope="ports" xilinx:value="18e845f9"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="58edc92c"/>
+      <xilinx:checksum xilinx:scope="ports" xilinx:value="c89ddf30"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="43b92443"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="c4d6ccf6"/>
       <xilinx:targetDRCs>

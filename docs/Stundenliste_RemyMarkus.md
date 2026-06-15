@@ -98,9 +98,15 @@
 | 11.06.2026 | 1.2 | 1 | CTRL Treiber integrieren von HDMI |
 | 11.06.2026 | 1.3 | 1 | CTRL Menü integrieren von HDMI |
 | 12.06.2026 | 9 | 3 | Build Skripte testen |
+| 14.06.2026 | 9 | 2 | Clk Pfade fixen |
 | |  |  |  |
-| **KW 24** | **-** | **131** | **Zwischensumme** |
+| **KW 24** | **-** | **133** | **Zwischensumme** |
 | |  |  |  |
+| 15.06.2026 | 9 | 1 | Clk Pfade fixen |
+| |  |  |  |
+| **KW 25** | **-** | **134** | **Zwischensumme** |
+| |  |  |  |
+
 
 
 ## Feature Nummerierung

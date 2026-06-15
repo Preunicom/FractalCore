@@ -326,7 +326,7 @@
             "value": "210.820"
           },
           "CLKOUT4_REQUESTED_OUT_FREQ": {
-            "value": "100"
+            "value": "100.000"
           },
           "CLKOUT4_USED": {
             "value": "false"
@@ -350,10 +350,10 @@
             "value": "o_clk_vga_pixel_clk"
           },
           "CLK_OUT4_PORT": {
-            "value": "o_clk_sys"
+            "value": "clk_out4"
           },
           "CLK_OUT5_PORT": {
-            "value": "o_clk_sys"
+            "value": "clk_out5"
           },
           "MMCM_CLKFBOUT_MULT_F": {
             "value": "8.000"
@@ -791,8 +791,8 @@
       "Highlight_CDC_Synchr_CH_0": {
         "vlnv": "xilinx.com:module_ref:Highlight_CDC_Synchronizer:1.0",
         "ip_revision": "1",
-        "xci_name": "FractalCore_Highlight_CDC_Synchr_0_0",
-        "xci_path": "ip/FractalCore_Highlight_CDC_Synchr_0_0/FractalCore_Highlight_CDC_Synchr_0_0.xci",
+        "xci_name": "FractalCore_Highlight_CDC_Synchr_CH_0_0",
+        "xci_path": "ip/FractalCore_Highlight_CDC_Synchr_CH_0_0/FractalCore_Highlight_CDC_Synchr_CH_0_0.xci",
         "inst_hier_path": "Highlight_CDC_Synchr_CH_0",
         "reference_info": {
           "ref_type": "hdl",
@@ -833,8 +833,8 @@
       "Highlight_CDC_Synchr_CH_1": {
         "vlnv": "xilinx.com:module_ref:Highlight_CDC_Synchronizer:1.0",
         "ip_revision": "1",
-        "xci_name": "FractalCore_Highlight_CDC_Synchr_1_0",
-        "xci_path": "ip/FractalCore_Highlight_CDC_Synchr_1_0/FractalCore_Highlight_CDC_Synchr_1_0.xci",
+        "xci_name": "FractalCore_Highlight_CDC_Synchr_CH_1_0",
+        "xci_path": "ip/FractalCore_Highlight_CDC_Synchr_CH_1_0/FractalCore_Highlight_CDC_Synchr_CH_1_0.xci",
         "inst_hier_path": "Highlight_CDC_Synchr_CH_1",
         "reference_info": {
           "ref_type": "hdl",
@@ -875,8 +875,8 @@
       "Highlight_CDC_Synchr_CH_2": {
         "vlnv": "xilinx.com:module_ref:Highlight_CDC_Synchronizer:1.0",
         "ip_revision": "1",
-        "xci_name": "FractalCore_Highlight_CDC_Synchr_2_0",
-        "xci_path": "ip/FractalCore_Highlight_CDC_Synchr_2_0/FractalCore_Highlight_CDC_Synchr_2_0.xci",
+        "xci_name": "FractalCore_Highlight_CDC_Synchr_CH_2_0",
+        "xci_path": "ip/FractalCore_Highlight_CDC_Synchr_CH_2_0/FractalCore_Highlight_CDC_Synchr_CH_2_0.xci",
         "inst_hier_path": "Highlight_CDC_Synchr_CH_2",
         "reference_info": {
           "ref_type": "hdl",
@@ -917,8 +917,8 @@
       "Highlight_CDC_Synchr_CH_3": {
         "vlnv": "xilinx.com:module_ref:Highlight_CDC_Synchronizer:1.0",
         "ip_revision": "1",
-        "xci_name": "FractalCore_Highlight_CDC_Synchr_0_1",
-        "xci_path": "ip/FractalCore_Highlight_CDC_Synchr_0_1/FractalCore_Highlight_CDC_Synchr_0_1.xci",
+        "xci_name": "FractalCore_Highlight_CDC_Synchr_CH_3_0",
+        "xci_path": "ip/FractalCore_Highlight_CDC_Synchr_CH_3_0/FractalCore_Highlight_CDC_Synchr_CH_3_0.xci",
         "inst_hier_path": "Highlight_CDC_Synchr_CH_3",
         "reference_info": {
           "ref_type": "hdl",
@@ -1735,7 +1735,7 @@
         "ports": [
           "CDC_Synchronizer_1/o_data",
           "Mengenberechnung_0/i_resetn_color",
-          "Anzeige_0/i_rstn_calc"
+          "Anzeige_0/i_rstn_color"
         ]
       },
       "CDC_Synchronizer_2_o_data": {
@@ -1870,9 +1870,9 @@
       "clk_wiz_0_o_clk_50mhz": {
         "ports": [
           "clk_wiz_0/o_clk_50mhz",
-          "Anzeige_0/i_clk_calc",
           "CDC_Synchronizer_1/i_clk_out",
-          "Mengenberechnung_0/i_clk_color"
+          "Mengenberechnung_0/i_clk_color",
+          "Anzeige_0/i_clk_color"
         ]
       },
       "clk_wiz_0_o_clk_vga": {
@@ -1912,11 +1912,11 @@
           "microblaze_0_axi_periph/M01_ACLK",
           "axi_uartlite_0/s_axi_aclk",
           "microblaze_0_axi_periph/M02_ACLK",
-          "Anzeige_0/S_AXI_ACLK",
           "Initialwerterzeugung_0/s00_axi_aclk",
           "Mengenberechnung_0/i_clk_init",
           "CDC_Synchronizer_0/i_clk_out",
-          "Mengenberechnung_0/i_clk_calc"
+          "Mengenberechnung_0/i_clk_calc",
+          "Anzeige_0/S_AXI_ACLK"
         ]
       },
       "mig_7series_0_mmcm_locked": {
@@ -1986,9 +1986,9 @@
           "microblaze_0_axi_periph/M01_ARESETN",
           "axi_uartlite_0/s_axi_aresetn",
           "microblaze_0_axi_periph/M02_ARESETN",
-          "Anzeige_0/S_AXI_ARESETN",
           "Initialwerterzeugung_0/s00_axi_aresetn",
-          "Mengenberechnung_0/i_resetn_init"
+          "Mengenberechnung_0/i_resetn_init",
+          "Anzeige_0/S_AXI_ARESETN"
         ]
       },
       "rst_mig_7series_0_81M_peripheral_aresetn": {

@@ -51,7 +51,7 @@ Andernfalls wäre nicht eindeutig definiert ob der Wechsel von Frame 0 zu Frame 
 - Da der Pmod VGA 12 Bit Farben unterstützt wurden die Bitbreiten der Farben entsprechend gewält.
 (In der Implementierung des HDMI Zusatzfeatures werden 8 Bit pro Farbe unterstützt)
 - Um die langsamen Folgenberechnungen schneller zu berechnen sowie das VGA Timing einzuhalten werden verschiedene Clock Domainen verwendet. 
-(In der Implementierung des Arty Z7 Zusatzfeatures wird die gesamte Logik bis auf den durch das Videoprotokoll festgelegten Anteil auf der schnellsten Clock Domain berechnet um möglichst wenig Übergänge zwischen Clock Domains zu haben)
+(In der Implementierung des Arty Z7 Zusatzfeatures wird die gesamte Logik bis auf den durch das Videoprotokoll festgelegten Anteil auf der schnellsten Clock Domain berechnet um möglichst wenig Übergänge zwischen Clock Domainen zu haben)
 - Die Abbruchbedingung liegt bei maximal 100 Iterationen.
 Es wurden dennoch 8 Bit Datenbreite für die Anzahl an Takte bis zur konvergenz gewählt um die maximale Anzahl an Iterationen gegebenenfalls einfach erhöhen zu können, falls die Farbgebung bei 100 Iterationen nicht zufriedenstellend sein sollte.
 
@@ -275,16 +275,38 @@ TODO @Thomas
 
 _@author: Thomas Schiergl_
 
-## 8. Zusatzfeature: Portierung auf Arty Z7-20
+## 8. Anmerkungen
 
-Da Markus Remy mit den ihm zugeteilten Aufgaben unter den 150 Stunden war und somit noch Puffer hatte, wurde das Projekt auf den Arty Z7-20 portiert.
-Da dieser einen HDMI Output hat, wurde die mit der Anzeige sowie dem MicroBlaze verbundene Architektur für HDMI via DVI-D neu entwickelt.
+### 8.1 Clock Domainen
+
+Ursprünglich war geplant, dass es fünf Clock Domainen gibt.
+Eine für die Initialwerterzeugung, eine für die Berechnung, eine für die Farbcodierung, eine für die VGA Pixel Clock und eine für den Prozessor sowie die zugehörigen AXI Schnittstellen.
+Jedoch stellte sich heraus, dass die Initialwerterzeugung ohne Änderungen auch auf den 100 MHz des Prozessors läuft.
+Daher wurde die AXI Clock der Initialwerterzeugung direkt auf die 100 MHz des Prozessors gelegt um einen Übergang zwischen zwei Clock Domainen zu sparen.
+Die Prozessor Clock und Mengenberechnungsclock sind in der endgültigen Implementierung gleich schnell, jedoch ist das System des Arty A7 darauf ausgelegt unterschiedliche Clocks zu unterstützen.
+Das wäre nötig, wenn eine höhere maximale Iterationsanzahl angestrebt wird, da ab einem gewissen Punkt die 100 MHz für die Mengenberechnung nicht mehr ausreichen.
 
 _@author: Markus Remy_
 
-### 8.1 Anzeige mit Farbcodierung
+### 8.2 Minimap
 
-#### 8.1.1 Framebuffer 
+Ursprünglich war die Minimap als Zusatzfeature für beide FPGAs geplant.
+Aufgrund zeitlicher Einschränkungen wurde sie in der Anzeige jedoch nur auf dem Arty Z7 umgesetzt.
+Die Initialwertberechnung des Arty A7 unterstützt die Minimap jedoch bereits.
+
+_@author: Markus Remy_
+
+## 9. Zusatzfeature: Portierung auf Arty Z7-20
+
+Da Markus Remy mit den ihm zugeteilten Aufgaben unter den 150 Stunden war und somit noch Puffer hatte, wurde das Projekt auf den Arty Z7-20 portiert.
+Da dieser einen HDMI Output hat, wurde die mit der Anzeige sowie dem MicroBlaze verbundene Architektur für HDMI via DVI-D neu entwickelt.
+Zusätzlich gab es kleinere Anpassungen in der Architektur des Gesamtsystems um beispielsweise Clock Domain Crossing zu minimieren.
+
+_@author: Markus Remy_
+
+### 9.1 Anzeige mit Farbcodierung
+
+#### 9.1.1 Framebuffer 
 
 Das größte Problem des FractalCore Projekt ist die Knappheit an BRAM.
 Somit wird an jeder möglichen Stelle BRAM gespart.
@@ -295,7 +317,7 @@ Zusätzlich wurde die Addressierung dicht gewählt, sodass die BRAMs voll ausgel
 
 _@author: Markus Remy_
 
-#### 8.1.2 Sortierung der Ergebnisse
+#### 9.1.2 Sortierung der Ergebnisse
 
 Das zweite große Problem der Anzeige ist das Sortieren der Daten.
 Die Daten sind nach der Mengenberechnung unsortiert und müssen ihren ursrpünglichen Frames zugeordnet werden.
@@ -309,7 +331,7 @@ Außerdem wurde das Schreiben der Werte aus den FIFOs in den Framebuffer so impl
 
 _@author: Markus Remy_
 
-#### 8.1.3 Farbcodierung
+#### 9.1.3 Farbcodierung
 
 Für die Farbcodierung wurde ein True Dual Port BRAM gewählt, bei dem das PS (Processing System) über einen BRAM Controller und AXIL auf den einen Port zugreift und die PL (Programmable Logic) über den anderen.
 Dabei entsprechen die ersten 256 Addressen den Farben für die jeweilige Iteration.
@@ -322,7 +344,7 @@ So entfällt der Aufwand ein eigenes AXI Lite Interface mit 259 Registern in RTL
 
 _@author: Markus Remy_
 
-#### 8.1.4 HDMI
+#### 9.1.4 HDMI
 
 Um ein HDMI Signal zu erzeugen wird die Abwärtskompatibilität zu DVI-D genutzt.
 Zuerst wird ein VGA Signal mit acht Bits pro Farbe erzeugt.
@@ -333,20 +355,20 @@ Das Signal wird dann direkt auf die HDMI Pins gegeben.
 
 _@author: Markus Remy_
 
-### 8.2 Systemintegration
+### 9.2 Systemintegration
 
 Für das Arty Z7-20 Projekt wurde sich dazu entschieden, dass es nur drei Clock Domains gibt.
 Eine für die VGA Pixel Clock, eine für die DVI Pixel Clock und eine für den Rest.
-Das minimiert CDC und vereinfacht die Constraints.
+Das minimiert Clock Domain Crossing und vereinfacht die Constraints.
 Das Timing wurde dadurch zwar straffer, jedoch führte das nur zu Problemen beim synchronen Reset.
 Dieses Problem wurde gelöst, indem die Resets des Datenpfades der Cores entfernt wurden und nur die Valid Flags resetted werden.
 So werden bei 40 Cores mit je drei Stages und vielen Flip Flops je der Reset entfernt, was die Platzierung entzerrt und das Timing, wenn auch nur knapp, erfüllt.
 
 _@author: Markus Remy_
 
-### 8.3 Probleme
+### 9.3 Probleme
 
-#### 8.3.1 Spiegelung der Anzeige
+#### 9.3.1 Spiegelung der Anzeige
 
 Der erste nach der Inbetriebnahme auffalende Fehler ist die Spiegelung der Anzeige.
 Dieser Umstand tritt jedoch nur auf, wenn der 8 Bit Pixelabstand 128 oder größer gewählt wurde.
@@ -360,7 +382,7 @@ Erst nach der Neuerstellung des Projekts wurde die Änderung im erstellten Bitst
 
 _@author: Markus Remy_
 
-#### 8.3.2 Minimap - Bugs
+#### 9.3.2 Minimap - Bugs
 
 Die weiteren Fehler beziehen sich auf die Minimap.
 Das erste auffällige war, dass teilweise die Zielpixel der LFSR und damit nach einiger Zeit auch der aktuelle Pixel außerhalb der Minimap sind.
@@ -372,7 +394,7 @@ So ist der Bereich auch auf der kürzeren Seite der Minimap vollständig abgebil
 
 _@author: Markus Remy_
 
-#### 8.3.3 Minimap - Visualisierung
+#### 9.3.3 Minimap - Visualisierung
 
 Die Minimap wurde anfangs mit einem Punkt für den Zielwert sowie für den aktuellen Wert entwickelt.
 Jedoch irritiert diese Darstellung besondern im LFSR Modus, da der Zielpunkt nicht erreicht wird, sondern nur die beiden Achsen.
@@ -381,7 +403,7 @@ Dies bildet das reale Verhalten besser ab, da auch die Achsen für den LFSR Modu
 
 _@author: Markus Remy_
 
-#### 8.3.4 HDMI
+#### 9.3.4 HDMI
 
 Das Eingangssignal zum rgb2dvi entpricht nicht wie erwartet dem RGB Schema mit Rot als niederwertigstem Byte folgend von Grün und Blau.
 Das Signal benötigt die Werte gedreht.
