@@ -36,10 +36,16 @@ _@author: Markus Remy_
 Das System besteht aus folgenden Komponenten:  
 ![Komponentendiagramm](./pictures/DAPI_Projektvorschlag.drawio.svg)
 
+Die Farbcodierung und Anzeige sind dabei jedoch in einer Implementierungseinheit zusammengefasst, da sie stark voneinander abhängen.
+
 Die Schnittstellen sind im folgenden genauer visualisiert:  
 ![Schnittstellen auf IP Ebene](./pictures/FractalCore_Schnittstellendefinition.drawio.svg)
 
-Dabei sind ein paar Designentscheidungen gesondert aufzuführen:
+Die Schnittstellenvisualiisierung beziehgt sich auf den Arty A7.
+Die geschrichelte Linie der Minimap Daten wurde auf dem Arty A7 nicht implmentiert, ist als weiteres Zusatzfeature jedoch als Ausblick umsetzbar.
+Der Arty Z7 verwendet des weiteren einen DVI Encoder um das erzeuge VGA Signal weiterzuverarbeiten.
+
+Ein paar Designentscheidungen sind gesondert aufzuführen:
 - Das gewählte interne Kommunikationsprotokoll basiert auf AXI Stream, sendet aber mehrere Datenwörter mit verschiedenen Breiten parallel basierend auf dem gleichen Ready/Valid Handshake.
 - Es werden 18 Bit Festkommazahlen für Real- und Imaginärteil der Zahlen verwendet, da die DSP des Arty A7 Multiplikationen mit maximal 25x18 Bit durchführen können.
 - Die Festkommazahlen sind signed und im Format 3.15 gewählt.
@@ -60,7 +66,7 @@ _@author: Markus Remy_
 ## 0. Gesamtsystem
 
 Um den verschiedenen Taktdomainen entsprechende Takt- und Resetsignale zur Verfügung zu stellen wird ein Clocking Wizard IP verwendet.
-Da der MMCM des Clocking Wizards nicht parallel zu den anderen Taktsignalen auch 25,175 MHz erzuegen kann, wurden für den VGA Pixeltakt 25 MHz verwendet.
+Da der MMCM des Clocking Wizards nicht genau 25,175 MHz erzuegen kann, werden für den VGA Pixeltakt ca. 25 MHz verwendet.
 Dieser liegt nur <0,2 MHz neben den laut Protokoll vorgeschriebenen 25.175 MHz, was für die meisten Bildschirme ausreichend genau ist.
 Als Resetsignal wird das locked Signal der Clocking Wizards verwendet.
 Da dieses nicht synchron in den Taktdomains sein muss, wird es mit zwei FlipFlops auf die jeweilige Taktdomaine synchronisiert um Metastabilität zu vermeiden und einen synchronen Reset zu ermöglichen.
