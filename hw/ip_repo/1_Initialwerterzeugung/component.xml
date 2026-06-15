@@ -248,7 +248,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>581763f2</spirit:value>
+            <spirit:value>af4e3682</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -264,7 +264,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>581763f2</spirit:value>
+            <spirit:value>af4e3682</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -936,7 +936,7 @@
       <spirit:file>
         <spirit:name>src/Initialwerterzeugung.vhd</spirit:name>
         <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_df3063c1</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_e2b98e9e</spirit:userFileType>
         <spirit:userFileType>IMPORTED_FILE</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -1030,7 +1030,7 @@
       </spirit:file>
     </spirit:fileSet>
   </spirit:fileSets>
-  <spirit:description>Initialwerterzeugung des FractalCore Projects</spirit:description>
+  <spirit:description>Initialwerterzeugung of the FractalCore project</spirit:description>
   <spirit:parameters>
     <spirit:parameter>
       <spirit:name>C_S00_AXI_DATA_WIDTH</spirit:name>
@@ -1073,13 +1073,13 @@
       <xilinx:displayName>Initialwerterzeugung_v1_0</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
       <xilinx:coreRevision>2</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2026-06-11T20:11:39Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2026-06-15T15:04:41Z</xilinx:coreCreationDateTime>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2023.2</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="f76adff7"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="0c04c4c2"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="a77b7ae1"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="a5b50a23"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="965d9970"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="e9c11669"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="ca0a94c1"/>

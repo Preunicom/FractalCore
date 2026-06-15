@@ -51,7 +51,7 @@ architecture Testbench of TB_Start_Value_Mapping is
     signal s_lfsr_seed_im        : std_logic_vector(16 downto 0);
     signal s_lfsr_xor_mask_re    : std_logic_vector(15 downto 0);
     signal s_lfsr_xor_mask_im    : std_logic_vector(15 downto 0);
-    signal s_diamond_heigh       : std_logic_vector(15 downto 0);
+    signal s_diamond_height      : std_logic_vector(15 downto 0);
     signal s_diamond_width       : std_logic_vector(15 downto 0);
 
     -- CHECK
@@ -173,7 +173,7 @@ begin
         i_lfsr_seed_im      => s_lfsr_seed_im,
         i_lfsr_xor_mask_re  => s_lfsr_xor_mask_re,
         i_lfsr_xor_mask_im  => s_lfsr_xor_mask_im,
-        i_diamond_heigh     => s_diamond_heigh,
+        i_diamond_height    => s_diamond_height,
         i_diamond_width     => s_diamond_width,
         o_valid             => c_valid,
         o_frame_idx         => c_frame_idx,
@@ -213,7 +213,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(1000, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1000, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1000, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(10, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(10, 16));
         s_diamond_width       <= std_logic_vector(to_signed(10, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 1;
@@ -233,7 +233,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(0, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(0, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(0, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(10, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(10, 16));
         s_diamond_width       <= std_logic_vector(to_signed(10, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 2;
@@ -253,7 +253,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(10, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(10, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(10, 16));
         s_diamond_width       <= std_logic_vector(to_signed(10, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 3;
@@ -273,7 +273,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(10, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(10, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(10, 16));
         s_diamond_width       <= std_logic_vector(to_signed(10, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 4;
@@ -293,7 +293,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(10, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(10, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(10, 16));
         s_diamond_width       <= std_logic_vector(to_signed(10, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 5;
@@ -313,7 +313,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(10, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(10, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(10, 16));
         s_diamond_width       <= std_logic_vector(to_signed(10, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 6;
@@ -333,7 +333,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(10, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(10, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(10, 16));
         s_diamond_width       <= std_logic_vector(to_signed(10, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 7;
@@ -353,7 +353,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(10, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(10, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(10, 16));
         s_diamond_width       <= std_logic_vector(to_signed(10, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 8;
@@ -373,7 +373,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(10, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(10, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(10, 16));
         s_diamond_width       <= std_logic_vector(to_signed(10, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 9;
@@ -393,7 +393,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(10, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(10, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(10, 16));
         s_diamond_width       <= std_logic_vector(to_signed(10, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 10;
@@ -413,7 +413,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(10, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(10, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(10, 16));
         s_diamond_width       <= std_logic_vector(to_signed(10, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 11;
@@ -433,7 +433,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(1, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(1, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(1, 16));
         s_diamond_width       <= std_logic_vector(to_signed(1, 16));
         wait until rising_edge(s_clk);
         tb_current_test_step  <= 12;
@@ -453,7 +453,7 @@ begin
         s_lfsr_seed_im        <= std_logic_vector(to_signed(1, 17));
         s_lfsr_xor_mask_re    <= std_logic_vector(to_signed(1, 16));
         s_lfsr_xor_mask_im    <= std_logic_vector(to_signed(1, 16));
-        s_diamond_heigh       <= std_logic_vector(to_signed(1, 16));
+        s_diamond_height      <= std_logic_vector(to_signed(1, 16));
         s_diamond_width       <= std_logic_vector(to_signed(1, 16));
         wait until rising_edge(s_clk);  
         tb_current_test_step  <= 13;

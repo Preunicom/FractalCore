@@ -81,7 +81,7 @@ architecture arch_imp of Initialwerterzeugung is
 			o_lfsr_seed_im : out std_logic_vector(16 downto 0);
 			o_lfsr_xor_mask_re : out std_logic_vector(15 downto 0);
 			o_lfsr_xor_mask_im : out std_logic_vector(15 downto 0);
-			o_diamond_heigh : out std_logic_vector(15 downto 0);
+			o_diamond_height : out std_logic_vector(15 downto 0);
 			o_diamond_width : out std_logic_vector(15 downto 0);
 			o_load_seed : out std_logic;
 			S_AXI_ACLK	: in std_logic;
@@ -122,7 +122,7 @@ architecture arch_imp of Initialwerterzeugung is
 			i_lfsr_seed_im : in std_logic_vector(16 downto 0);
 			i_lfsr_xor_mask_re : in std_logic_vector(15 downto 0);
 			i_lfsr_xor_mask_im : in std_logic_vector(15 downto 0);
-			i_diamond_heigh : in std_logic_vector(15 downto 0);
+			i_diamond_height : in std_logic_vector(15 downto 0);
 			i_diamond_width : in std_logic_vector(15 downto 0);
 			-- Control
 			i_load_seed : in std_logic;
@@ -152,7 +152,7 @@ architecture arch_imp of Initialwerterzeugung is
 	signal w_lfsr_seed_im     : std_logic_vector(16 downto 0);
 	signal w_lfsr_xor_mask_re : std_logic_vector(15 downto 0);
 	signal w_lfsr_xor_mask_im : std_logic_vector(15 downto 0);
-	signal w_diamond_heigh    : std_logic_vector(15 downto 0);
+	signal w_diamond_height   : std_logic_vector(15 downto 0);
 	signal w_diamond_width    : std_logic_vector(15 downto 0);
 	signal w_load_seed : std_logic;
 begin
@@ -173,7 +173,7 @@ begin
 		o_lfsr_seed_im     => w_lfsr_seed_im,
 		o_lfsr_xor_mask_re => w_lfsr_xor_mask_re,
 		o_lfsr_xor_mask_im => w_lfsr_xor_mask_im,
-		o_diamond_heigh    => w_diamond_heigh,
+		o_diamond_height   => w_diamond_height,
 		o_diamond_width    => w_diamond_width,
 		o_load_seed        => w_load_seed,
 		S_AXI_ACLK         => S00_AXI_ACLK,
@@ -213,7 +213,7 @@ begin
 		i_lfsr_seed_im     => w_lfsr_seed_im,
 		i_lfsr_xor_mask_re => w_lfsr_xor_mask_re,
 		i_lfsr_xor_mask_im => w_lfsr_xor_mask_im,
-		i_diamond_heigh    => w_diamond_heigh,
+		i_diamond_height   => w_diamond_height,
 		i_diamond_width    => w_diamond_width,
 		i_load_seed        => w_load_seed,
 		i_ready            => i_ready,

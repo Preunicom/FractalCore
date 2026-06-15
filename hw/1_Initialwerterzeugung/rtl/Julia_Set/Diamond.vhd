@@ -27,7 +27,7 @@ entity Diamond is
 		i_resetn    : in  std_logic;
 		i_clk       : in  std_logic;
 		i_en        : in  std_logic;
-        i_diamond_heigh : in std_logic_vector(15 downto 0);
+        i_diamond_height : in std_logic_vector(15 downto 0);
         i_diamond_width : in std_logic_vector(15 downto 0);
         o_target_re : out std_logic_vector(16 downto 0);
         o_target_im : out std_logic_vector(16 downto 0)
@@ -51,7 +51,7 @@ begin
     end process;
 
     -- Target points by counter clock wise rotation of 90 degree starting on the right
-    TRANSITION: process(r_state, i_diamond_heigh, i_diamond_width, i_en)
+    TRANSITION: process(r_state, i_diamond_height, i_diamond_width, i_en)
 	begin
         w_next_state <= r_state;
         case(r_state) is
@@ -63,7 +63,7 @@ begin
                 end if;
             when s_TOP =>
                 o_target_re <= (others => '0');
-                o_target_im <= '0' & i_diamond_heigh;
+                o_target_im <= '0' & i_diamond_height;
                 if i_en = '1' then
                     w_next_state <= s_LEFT;
                 end if;
@@ -75,7 +75,7 @@ begin
                 end if;
             when s_BOTTOM =>
                 o_target_re <= (others => '0');
-                o_target_im <= std_logic_vector(-signed('0' & i_diamond_heigh));
+                o_target_im <= std_logic_vector(-signed('0' & i_diamond_height));
                 if i_en = '1' then
                     w_next_state <= s_RIGHT;
                 end if;

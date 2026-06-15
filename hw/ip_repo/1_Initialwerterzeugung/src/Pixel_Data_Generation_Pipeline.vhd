@@ -39,7 +39,7 @@ entity Pixel_Data_Generation_Pipeline is
         i_lfsr_seed_im : in std_logic_vector(16 downto 0);
         i_lfsr_xor_mask_re : in std_logic_vector(15 downto 0);
         i_lfsr_xor_mask_im : in std_logic_vector(15 downto 0);
-        i_diamond_heigh : in std_logic_vector(15 downto 0);
+        i_diamond_height : in std_logic_vector(15 downto 0);
         i_diamond_width : in std_logic_vector(15 downto 0);
         -- Control
         i_load_seed : in std_logic;
@@ -111,7 +111,7 @@ architecture Behavioral of Pixel_Data_Generation_Pipeline is
             i_lfsr_seed_im      : in std_logic_vector(16 downto 0);
             i_lfsr_xor_mask_re  : in std_logic_vector(15 downto 0);
             i_lfsr_xor_mask_im  : in std_logic_vector(15 downto 0);
-            i_diamond_heigh     : in std_logic_vector(15 downto 0);
+            i_diamond_height    : in std_logic_vector(15 downto 0);
             i_diamond_width     : in std_logic_vector(15 downto 0);
             -- Outputs
             o_valid             : out std_logic;
@@ -236,7 +236,7 @@ begin
         i_lfsr_seed_im      => i_lfsr_seed_im,
         i_lfsr_xor_mask_re  => i_lfsr_xor_mask_re,
         i_lfsr_xor_mask_im  => i_lfsr_xor_mask_im,
-        i_diamond_heigh     => i_diamond_heigh,
+        i_diamond_height    => i_diamond_height,
         i_diamond_width     => i_diamond_width,
         o_valid             => w_sval_valid,
         o_frame_idx         => w_sval_frame_idx,

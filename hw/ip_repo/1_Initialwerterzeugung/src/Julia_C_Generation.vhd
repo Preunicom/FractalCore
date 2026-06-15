@@ -35,7 +35,7 @@ entity Julia_C_Generation is
         i_lfsr_seed_im : in std_logic_vector(16 downto 0);
         i_lfsr_xor_mask_re : in std_logic_vector(15 downto 0);
         i_lfsr_xor_mask_im : in std_logic_vector(15 downto 0);
-        i_diamond_heigh : in std_logic_vector(15 downto 0);
+        i_diamond_height : in std_logic_vector(15 downto 0);
         i_diamond_width : in std_logic_vector(15 downto 0);
         o_target_re : out std_logic_vector(17 downto 0);
         o_target_im : out std_logic_vector(17 downto 0);        
@@ -61,13 +61,13 @@ architecture Behavioral of Julia_C_Generation is
     end component;
     component Diamond is
         port (
-            i_resetn    : in  std_logic;
-            i_clk       : in  std_logic;
-            i_en        : in  std_logic;
-            i_diamond_heigh : in std_logic_vector(15 downto 0);
-            i_diamond_width : in std_logic_vector(15 downto 0);
-            o_target_re : out std_logic_vector(16 downto 0);
-            o_target_im : out std_logic_vector(16 downto 0)
+            i_resetn            : in  std_logic;
+            i_clk               : in  std_logic;
+            i_en                : in  std_logic;
+            i_diamond_height    : in std_logic_vector(15 downto 0);
+            i_diamond_width     : in std_logic_vector(15 downto 0);
+            o_target_re         : out std_logic_vector(16 downto 0);
+            o_target_im         : out std_logic_vector(16 downto 0)
         );
     end component;
     signal w_lfsr_target_re : std_logic_vector(16 downto 0);
@@ -116,13 +116,13 @@ begin
     );
     DIA: Diamond
     port map (
-        i_resetn        => i_resetn,
-        i_clk           => i_clk,
-        i_en            => r_next_target_combined,
-        i_diamond_heigh => i_diamond_heigh,
-        i_diamond_width => i_diamond_width,
-        o_target_re     => w_diamond_target_re,
-        o_target_im     => w_diamond_target_im
+        i_resetn            => i_resetn,
+        i_clk               => i_clk,
+        i_en                => r_next_target_combined,
+        i_diamond_height    => i_diamond_height,
+        i_diamond_width     => i_diamond_width,
+        o_target_re         => w_diamond_target_re,
+        o_target_im         => w_diamond_target_im
     );
 	
     -- Counts the amount of frames (enables) and resets when the amount of frames per step is reached

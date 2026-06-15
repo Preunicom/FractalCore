@@ -1912,11 +1912,11 @@
           "microblaze_0_axi_periph/M01_ACLK",
           "axi_uartlite_0/s_axi_aclk",
           "microblaze_0_axi_periph/M02_ACLK",
-          "Initialwerterzeugung_0/s00_axi_aclk",
           "Mengenberechnung_0/i_clk_init",
           "CDC_Synchronizer_0/i_clk_out",
           "Mengenberechnung_0/i_clk_calc",
-          "Anzeige_0/S_AXI_ACLK"
+          "Anzeige_0/S_AXI_ACLK",
+          "Initialwerterzeugung_0/s00_axi_aclk"
         ]
       },
       "mig_7series_0_mmcm_locked": {
@@ -1986,9 +1986,9 @@
           "microblaze_0_axi_periph/M01_ARESETN",
           "axi_uartlite_0/s_axi_aresetn",
           "microblaze_0_axi_periph/M02_ARESETN",
-          "Initialwerterzeugung_0/s00_axi_aresetn",
           "Mengenberechnung_0/i_resetn_init",
-          "Anzeige_0/S_AXI_ARESETN"
+          "Anzeige_0/S_AXI_ARESETN",
+          "Initialwerterzeugung_0/s00_axi_aresetn"
         ]
       },
       "rst_mig_7series_0_81M_peripheral_aresetn": {
