@@ -103,6 +103,7 @@
 | **KW 24** | **-** | **133** | **Zwischensumme** |
 | |  |  |  |
 | 15.06.2026 | 9 | 1 | Clk Pfade fixen |
+| 15.06.2026 | 9 | 1 | Typo heigh -> height fixen |
 | |  |  |  |
 | **KW 25** | **-** | **134** | **Zwischensumme** |
 | |  |  |  |
