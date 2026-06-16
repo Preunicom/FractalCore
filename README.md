@@ -12,9 +12,9 @@ _@author: Markus Remy_
 ## Einrichtung (Arty A7-100)
 
 Das Projekt wird unter der Verwendung von Vivado und Vitis auf das FPGA geladen.
-Dabei wird im folgenden Linux sowie Xilinx Tools der Version 2023.2 vorrausgesetzt.
+Dabei wird im folgenden Linux sowie Xilinx Tools der Version 2023.2 vorausgesetzt.
 
-Um die UART Schnittstelle anzusprechend wird eine 8N1 Konfiguration mit 9600 Baud an der verbauten USB Buchse verwendet.
+Um die UART Schnittstelle anzusprechen wird eine 8N1 Konfiguration mit 9600 Baud an der verbauten USB Buchse verwendet.
 
 _@author: Markus Remy_
 
@@ -24,7 +24,7 @@ _@author: Markus Remy_
 
 Zuerst müssen vier Vivado Projekte angelegt werden.
 Dazu muss das create_all_vivado_projects.sh Skript im Terminal mit gesetzten Vivado Umgebungsvariablen ausgeführt werden.
-Um die Vivado Umgebungsvariablen zu setzen muss die im Vivado Installationspfad liegende settings64.sh Datei gescourced werden.
+Um die Vivado Umgebungsvariablen zu setzen muss die im Vivado Installationspfad liegende settings64.sh Datei gesourct werden.
 ```
 source <Pfad_zu_Vivado>/Vivado/2023.2/settings64.sh
 ```
@@ -38,7 +38,7 @@ _@author: Markus Remy_
 
 #### IPs erzeugen
 
-Anmerkung: Dieser Schritt kann übersprungen werden, da die IPs bereits gepackt als Teil des Repositories mitgliefert werden.
+Anmerkung: Dieser Schritt kann übersprungen werden, da die IPs bereits gepackt als Teil des Repositories mitgeliefert werden.
 
 Um im FractalCore Projekt auf die Einzelnen IPs zugreifen zu können müssen diese zuerst ins IP Repository aufgenommen werden.
 Dazu werden die von eins bis drei nummerierten Projekte in Vivado nacheinander geöffnet und als IP unter hw/ip_repo gepackt.
@@ -50,7 +50,7 @@ Dabei sind folgende Schritte auszuführen:
 4) Öffnen des temporären Projekts bestätigen
 5) Setzen der Parameter unter Identification.
 Dabei muss der Name des Projekts ohne Nummer beibehalten werden. (z.B.: Name: Anzeige, Display Name: Anzeige_v1_0)
-Besonders auf den Anzeige IP muss geachtet werden, denn dieser wird nicht autoamtisch korrekt benannt!
+Besonders auf den Anzeige IP muss geachtet werden, denn dieser wird nicht automatisch korrekt benannt!
 6) Compatibility -> "Package for IPI" und "Ignore Freq_Hz" anwählen
 7) File Groups -> Standard -> Synthesis -> Alle .xdc Dateien mit Rechtsklick -> Remove File löschen
 8) Review and Package -> "Re-Package IP" auswählen
@@ -62,7 +62,7 @@ _@author: Markus Remy_
 Wenn bis zu diesem Punkt alle Schritte korrekt ausgeführt wurden ist es ohne Fehler möglich einen Bitstream in Vivado zu erzeugen.
 Dazu wird zuerst das FractalCore Vivado Projekt geöffnet.
 
-Falls die IPs manuell neu gepackt wurden müssen diese zuerst geupdated werden.
+Falls die IPs manuell neu gepackt wurden müssen diese zuerst aktualisiert werden.
 Dazu wird Reports -> "Report IP Status" ausgewählt.
 Im sich öffnenden Fenster wird dann "Upgrade Selected" durchgeführt und die Output Products bei Aufforderung generiert.
 
@@ -78,7 +78,7 @@ _@author: Markus Remy_
 
 Um die aus Vivado exportierte Hardwarebeschreibungsdatei für Vitis zu verwenden wird ein Vitis Projekt angelegt.
 Dazu muss das create_vitis_project.sh Skript im Terminal mit gesetzten Vitis Umgebungsvariablen ausgeführt werden.
-Um die Vitis Umgebungsvariablen zu setzen muss die im Vitis Installationspfad liegende settings64.sh Datei gescourced werden.
+Um die Vitis Umgebungsvariablen zu setzen muss die im Vitis Installationspfad liegende settings64.sh Datei gesourct werden.
 ```
 source <Pfad_zu_Vitis>/Vitis/2023.2/settings64.sh
 ```
@@ -104,7 +104,7 @@ _Anmerkung_: Das Git Submodul muss ebenfalls geladen werden!
 git submodule update --init --recursive
 ```
 
-Um die UART Schnittstelle anzusprechend wird eine 8N1 Konfiguration mit 115200 Baud an der verbauten USB Buchse verwendet.
+Um die UART Schnittstelle anzusprechen wird eine 8N1 Konfiguration mit 115200 Baud an der verbauten USB Buchse verwendet.
 
 _@author: Markus Remy_
 
@@ -126,7 +126,7 @@ _@author: Markus Remy_
 
 #### Vivado
 
-Um den Bitream zu erstellen, wird Vivado im Skriptmodus mit dem create_vivado_project.tcl Skript ausgeführt:
+Um den Bitstream zu erstellen, wird Vivado im Skriptmodus mit dem create_vivado_project.tcl Skript ausgeführt:
 ```
 vivado -mode batch -source "./scripts/create_vivado_project.tcl"
 ```
@@ -138,7 +138,7 @@ _@author: Markus Remy_
 #### Vitis
 
 Um das Vitis Projekt zu erstellen muss das create_vitis_project.sh Skript im Terminal mit gesetzten Vitis Umgebungsvariablen ausgeführt werden.
-Um die Vitis Umgebungsvariablen zu setzen muss die im Vitis Installationspfad liegende settings64.sh Datei gescourced werden.
+Um die Vitis Umgebungsvariablen zu setzen muss die im Vitis Installationspfad liegende settings64.sh Datei gesourct werden.
 ```
 source <Pfad_zu_Vitis>/Vitis/2023.2/settings64.sh
 ```
