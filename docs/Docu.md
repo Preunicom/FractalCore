@@ -128,4 +128,99 @@ Das nachfolgende System muss diese Einschränkung entsprechend beachten.
 
 ## 6. Farbcodierung
 
+Die Farbcodierung wandelt die vom Framebuffer bereitgestellten Iterationszahlen in RGB-Farbwerte um. Dadurch wird die eigentliche Fraktalstruktur für den Benutzer sichtbar gemacht.
+Da die Berechnung und die Darstellung voneinander getrennt sind, kann das verwendete Farbschema geändert werden, ohne dass die Fraktaldaten neu berechnet werden müssen. Der Framebuffer speichert nur die Anzahl der Iterationen bis zur Divergenz und keine fertigen Farbwerte.
+
+### 6.1 Trennung von Berechnung und Darstellung
+
+Die Cores berechnen für jeden Pixel lediglich die Anzahl der Iterationen bis zum Erreichen der Abbruchbedingung. Dieser Wert wird als 8-Bit-Zahl gespeichert.
+
+Die Umwandlung in eine Farbe erfolgt erst bei der Ausgabe. Dadurch ergeben sich mehrere Vorteile:
+
+- Der Speicherbedarf des Framebuffers wird reduziert.
+- Das Farbschema kann jederzeit geändert werden.
+- Für unterschiedliche Darstellungen müssen keine neuen Fraktaldaten berechnet werden.
+
+### 6.2 Farbschemata
+
+Die Farbcodierung unterstützt mehrere Farbschemata, zwischen denen während der Laufzeit gewechselt werden kann.
+
+Mögliche Schemata sind:
+
+- Graustufen
+- Schwarz-Weiß
+- Blau → Grün → Gelb → Rot
+- Feuerfarbschema
+
+Die Auswahl des Farbschemas erfolgt über ein separates Steuersignal.
+Dadurch können unterschiedliche Darstellungen derselben Fraktalmenge erzeugt werden, ohne die eigentliche Berechnung zu beeinflussen.
+
+### 6.3 Behandlung konvergenter Punkte
+
+Die Iterationsanzahl wird mit 8 Bit gespeichert. Obwohl aktuell maximal 100 Iterationen berechnet werden, erlaubt die gewählte Datenbreite eine spätere Erhöhung dieses Grenzwertes.
+Erreicht ein Punkt die maximale Iterationsanzahl, ohne die Divergenzbedingung zu erfüllen, wird er als konvergent betrachtet.
+Diese Punkte werden in der Regel mit einer festen Farbe dargestellt, beispielsweise Schwarz. Dadurch wird das Innere der Mandelbrotmenge klar vom äußeren Bereich abgegrenzt.
+
+### 6.4 Ressourcenbedarf
+
+Die Farbcodierung besteht ausschließlich aus kombinatorischer Logik und benötigt keine DSP-Blöcke.
+Da lediglich Vergleiche und einfache Zuordnungen von Farbwerten durchgeführt werden, ist der Ressourcenverbrauch gering und die Komponente kann mit hohen Taktraten betrieben werden.
+
 ## 7. VGA
+
+Die VGA-Komponente erzeugt die für den Pmod VGA benötigten Synchronisationssignale sowie die Ausgabe der Farbwerte.
+Sie arbeitet unabhängig von der Berechnungslogik und liest die benötigten Pixeldaten aus dem Framebuffer.
+
+### 7.1 VGA-Timing
+
+Für die Bildausgabe wird der Standardmodus 640 × 480 @ 60 Hz verwendet.
+Dieser Modus benötigt einen Pixeltakt von ungefähr 25,175 MHz.
+Da dieser Takt nicht exakt durch die vorhandenen Clocking-Ressourcen erzeugt werden kann, wird ein sehr nahe liegender Takt verwendet.
+Die Abweichung ist gering genug, um von VGA-Monitoren problemlos akzeptiert zu werden.
+
+### 7.2 Erzeugung der Synchronisationssignale
+
+Die VGA-Komponente erzeugt die horizontalen und vertikalen Synchronisationssignale durch zwei Zähler:
+
+- Horizontalzähler
+- Vertikalzähler
+
+Der Horizontalzähler zählt die Pixel einer Zeile.
+Nach Erreichen des Zeilenendes wird er zurückgesetzt und der Vertikalzähler erhöht.
+Die Synchronisationssignale werden aus den aktuellen Zählerständen abgeleitet.
+
+### 7.3 Sichtbarer Bildbereich
+
+Nicht alle Zählerstände entsprechen sichtbaren Pixeln.
+
+Neben dem eigentlichen Bildbereich existieren zusätzliche Zeitbereiche für:
+
+- Front Porch
+- Sync Pulse
+- Back Porch
+
+Nur während des sichtbaren Bereichs werden Farbwerte ausgegeben.
+Außerhalb dieses Bereichs werden die Farbkanäle auf Null gesetzt.
+Dadurch werden ausschließlich gültige Bilddaten an den Monitor übertragen.
+
+### 7.4 Anbindung des Framebuffers
+
+Die VGA-Komponente verwendet die aktuellen Pixelkoordinaten direkt als Leseadresse für den Framebuffer.
+Damit ergibt sich eine kontinuierliche Rasterabtastung des Bildspeichers.
+
+Für jedes sichtbare Pixel werden die folgenden Schritte ausgeführt:
+
+1. Ermittlung der aktuellen Pixelkoordinate
+2. Lesen des Iterationswertes aus dem Framebuffer
+3. Umwandlung des Iterationswertes in einen RGB-Farbwert durch die Farbcodierung
+4. Ausgabe der Farbe an den VGA-Port
+
+Dadurch wird das vollständige Fraktalbild zyklisch mit der Bildwiederholrate aktualisiert.
+
+### 7.5 Taktdomäne
+
+Die VGA-Komponente arbeitet in einer eigenen Taktdomäne.
+Dadurch ist die Bildausgabe unabhängig von der Berechnungsgeschwindigkeit der Fraktalberechnung.
+Kurze Schwankungen oder Verzögerungen bei der Berechnung beeinflussen daher nicht das VGA-Timing.
+Die Trennung der Taktdomänen vereinfacht die Einhaltung der Timing-Anforderungen des Systems und erhöht die Stabilität der Bildausgabe.
+
