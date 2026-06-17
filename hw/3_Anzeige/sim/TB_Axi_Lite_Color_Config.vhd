@@ -107,62 +107,76 @@ begin
         end procedure;
 
         procedure axi_write(
-            constant addr : in std_logic_vector(3 downto 0);
-            constant data : in std_logic_vector(31 downto 0);
-            constant strb : in std_logic_vector(3 downto 0)
-        ) is
-        begin
-            awaddr <= addr;
-            wdata <= data;
-            wstrb <= strb;
-            awvalid <= '1';
-            wvalid <= '1';
-            bready <= '1';
+    constant addr : in std_logic_vector(3 downto 0);
+    constant data : in std_logic_vector(31 downto 0);
+    constant strb : in std_logic_vector(3 downto 0)
+) is
+begin
+    awaddr  <= addr;
+    wdata   <= data;
+    wstrb   <= strb;
+    awvalid <= '1';
+    wvalid  <= '1';
+    bready  <= '1';
 
-            loop
-                tick;
-                exit when awready = '1' and wready = '1';
-            end loop;
+    loop
+        tick;
+        exit when awready = '1';
+    end loop;
+    awvalid <= '0';
 
-            awvalid <= '0';
-            wvalid <= '0';
+    loop
+        tick;
+        exit when wready = '1';
+    end loop;
+    wvalid <= '0';
 
-            assert bvalid = '1' and bresp = "00"
-                report "AXI write response falsch"
-                severity failure;
+    loop
+        tick;
+        exit when bvalid = '1';
+    end loop;
 
-            tick;
-            bready <= '0';
-        end procedure;
+    assert bresp = "00"
+        report "AXI write response falsch"
+        severity failure;
+
+    tick;
+    bready <= '0';
+end procedure;
 
         procedure axi_read(
-            constant addr : in std_logic_vector(3 downto 0);
-            constant expected : in std_logic_vector(31 downto 0);
-            constant msg : in string
-        ) is
-        begin
-            araddr <= addr;
-            arvalid <= '1';
-            rready <= '1';
+    constant addr : in std_logic_vector(3 downto 0);
+    constant expected : in std_logic_vector(31 downto 0);
+    constant msg : in string
+) is
+begin
+    araddr  <= addr;
+    arvalid <= '1';
+    rready  <= '1';
 
-            loop
-                tick;
-                exit when arready = '1';
-            end loop;
+    loop
+        tick;
+        exit when arready = '1';
+    end loop;
 
-            arvalid <= '0';
+    arvalid <= '0';
 
-            assert rvalid = '1' and rresp = "00"
-                report "AXI read response falsch"
-                severity failure;
+    loop
+        tick;
+        exit when rvalid = '1';
+    end loop;
 
-            assert rdata = expected
-                report msg
-                severity failure;
+    assert rresp = "00"
+        report "AXI read response falsch"
+        severity failure;
 
-            tick;
-            rready <= '0';
-        end procedure;
+    assert rdata = expected
+        report msg
+        severity failure;
+
+    tick;
+    rready <= '0';
+end procedure;
 
     begin
         resetn <= '0';
