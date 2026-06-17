@@ -271,13 +271,92 @@ _@author: Markus Remy_
 
 ## 6. Farbcodierung
 
-TODO @Thomas
+Die Farbcodierung wandelt die vom Framebuffer bereitgestellten Iterationszahlen in RGB-Farbwerte um. Dadurch wird die eigentliche Fraktalstruktur für den Benutzer sichtbar gemacht.
+Da die Berechnung und die Darstellung voneinander getrennt sind, kann das verwendete Farbschema geändert werden, ohne dass die Fraktaldaten neu berechnet werden müssen. Der Framebuffer speichert nur die Anzahl der Iterationen bis zur Divergenz und keine fertigen Farbwerte.
+
+### 6.1 Trennung von Berechnung und Darstellung
+
+Die Cores berechnen für jeden Pixel lediglich die Anzahl der Iterationen bis zum Erreichen der Abbruchbedingung. Dieser Wert wird als 8-Bit-Zahl gespeichert.
+
+Die Umwandlung in eine Farbe erfolgt erst bei der Ausgabe. Dadurch ergeben sich mehrere Vorteile:
+
+- Der Speicherbedarf des Framebuffers wird reduziert.
+- Das Farbschema kann jederzeit geändert werden.
+- Für unterschiedliche Darstellungen müssen keine neuen Fraktaldaten berechnet werden.
+
+### 6.2 Farbschemata
+
+Die Farbcodierung unterstützt mehrere Farbschemata, zwischen denen während der Laufzeit gewechselt werden kann.
+
+Mögliche Schemata sind:
+
+- Graustufen
+- Schwarz-Weiß
+- Blau → Grün → Gelb → Rot
+- Feuerfarbschema
+
+Die Auswahl des Farbschemas erfolgt über ein separates Steuersignal.
+Dadurch können unterschiedliche Darstellungen derselben Fraktalmenge erzeugt werden, ohne die eigentliche Berechnung zu beeinflussen.
+
+### 6.3 Behandlung konvergenter Punkte
+
+Die Iterationsanzahl wird mit 8 Bit gespeichert. Obwohl aktuell maximal 100 Iterationen berechnet werden, erlaubt die gewählte Datenbreite eine spätere Erhöhung dieses Grenzwertes.
+Erreicht ein Punkt die maximale Iterationsanzahl, ohne die Divergenzbedingung zu erfüllen, wird er als konvergent betrachtet.
+Diese Punkte werden in der Regel mit einer festen Farbe dargestellt, beispielsweise Schwarz. Dadurch wird das Innere der Mandelbrotmenge klar vom äußeren Bereich abgegrenzt.
+
+### 6.4 Ressourcenbedarf
+
+Die Farbcodierung besteht ausschließlich aus kombinatorischer Logik und benötigt keine DSP-Blöcke.
+Da lediglich Vergleiche und einfache Zuordnungen von Farbwerten durchgeführt werden, ist der Ressourcenverbrauch gering und die Komponente kann mit hohen Taktraten betrieben werden.
+
+### 6.5 Entwurfsentscheidungen und Speicheroptimierung
+
+Ursprünglich war vorgesehen, den Framebuffer nach der Farbcodierung zu platzieren und somit die bereits fertig berechneten RGB-Farbwerte zwischenzuspeichern.
+Dabei hätte jeder Pixel direkt mit seinen 12 Bit Farbinformationen gespeichert werden müssen, da der Pmod VGA vier Bit pro Farbkanal verwendet.
+Bei einer Auflösung von 640 × 480 Pixeln ergibt sich damit ein Speicherbedarf von:
+
+```
+640 × 480 × 12 Bit = 3 686 400 Bit
+```
+
+Dies entspricht ungefähr 450 KiB Speicher pro Bild.
+Da auf dem FPGA nur eine begrenzte Menge an Block RAM zur Verfügung steht, erwies sich dieser Ansatz als ungeeignet.
+
+Stattdessen wurde die Reihenfolge der Komponenten geändert:
+
+```
+Framebuffer → Farbcodierung → VGA
+```
+
+Dadurch speichert der Framebuffer lediglich die Anzahl der Iterationen bis zur Divergenz.
+
+Mit einer Datenbreite von 8 Bit ergibt sich ein Speicherbedarf von:
+
+```
+640 × 480 × 8 Bit = 2 457 600 Bit
+```
+
+Dadurch reduziert sich der Speicherbedarf um ein Drittel, während gleichzeitig die Möglichkeit erhalten bleibt, das Farbschema zur Laufzeit zu ändern.
+Die gewählte Architektur ist daher sowohl ressourcenschonender als auch flexibler als die ursprüngliche Lösung.
+
+### 6.6 Unvollständige Sortierung der Pixel
+
+Durch die parallele Berechnung der Fraktalwerte werden Pixel unterschiedlich schnell fertiggestellt.
+Obwohl der Arbiter die Daten anhand ihrer Pixelposition priorisiert, kann keine vollständig sortierte Reihenfolge garantiert werden.
+Ein Pixel kann daher nach Pixeln übertragen werden, die im Bild eigentlich später erscheinen.
+Um dennoch eine korrekte Darstellung zu gewährleisten, speichert der Framebuffer die Daten anhand ihrer Pixelkoordinaten und nicht anhand der Reihenfolge ihres Eintreffens.
 
 _@author: Thomas Schiergl_
 
 ## 7. VGA
 
-TODO @Thomas
+Die VGA-Komponente erzeugt die für den Pmod VGA benötigten Synchronisationssignale sowie die Ausgabe der Farbwerte.
+Sie arbeitet unabhängig von der Berechnungslogik und liest die benötigten Pixeldaten aus dem Framebuffer.
+
+### 7.1 VGA-Timing
+
+Für die Bildausgabe wird der Standardmodus 640 × 480 @ 60 Hz verwendet.
+Dieser Modus benötigt einen Pixeltakt von ungefähr 25,175 MHz.
 
 _@author: Thomas Schiergl_
 
