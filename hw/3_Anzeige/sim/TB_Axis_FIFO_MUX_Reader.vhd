@@ -27,6 +27,7 @@ entity TB_Axis_FIFO_MUX_Reader is
 end TB_Axis_FIFO_MUX_Reader;
 
 architecture Testbench of TB_Axis_FIFO_MUX_Reader is
+    constant tbase : time := 10 ns;
 
     constant CLK_PERIOD : time := 10 ns;
 
@@ -184,7 +185,7 @@ begin
 
     TIMEOUT_PROC : process
     begin
-        wait for tbase;
+        wait for tbase*100;
 
         if tb_test_passed = false then
             assert false
