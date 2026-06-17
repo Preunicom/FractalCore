@@ -1,3 +1,23 @@
+----------------------------------------------------------------------------------
+-- Company: OTH Regensburg
+-- Engineer: Thomas Schiergl
+-- 
+-- Create Date: 
+-- Design Name: 
+-- Module Name: TB_Farbcodierung - Testbench
+-- Project Name: FractalCore
+-- Target Devices: Arty A7 100T
+-- Tool Versions: 2023.2
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;

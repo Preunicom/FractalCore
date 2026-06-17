@@ -1,3 +1,23 @@
+----------------------------------------------------------------------------------
+-- Company: OTH Regensburg
+-- Engineer: Thomas Schiergl
+-- 
+-- Create Date: 
+-- Design Name: 
+-- Module Name: TB_VGA_Output_MUX - Testbench
+-- Project Name: FractalCore
+-- Target Devices: Arty A7 100T
+-- Tool Versions: 2023.2
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use std.env.finish;
@@ -67,8 +87,6 @@ begin
         assert out_hsync = in_hsync and out_vsync = in_vsync
             report "Sync darf durch Blanking nicht veraendert werden"
             severity failure;
-
-        report "TEST PASSED!" severity note;
 
         tb_test_done <= true;
         wait;
