@@ -71,20 +71,42 @@ foreach tb $tb_files {
 
     update_compile_order -fileset sim_1
 
-    launch_simulation
+    puts "TOP: $top_name"
 
-    # Restart simulation to also get asserts at the beginning which were already executed by launch_simulation.
-    restart
+if {[catch {launch_simulation} err]} {
+    puts "ERROR during launch_simulation:"
+    puts $err
+    set exit_code 1
+    continue
+}
 
-    run -all
+if {[catch {restart} err]} {
+    puts "ERROR during restart:"
+    puts $err
+    set exit_code 1
+    close_sim -force
+    continue
+}
 
-    set test_passed [get_value /$top_name/tb_test_passed]
-    if {$test_passed eq "TRUE"} {
-        puts "INFO: TEST SUCCESSFULL"
-    } else {
-        puts "ERROR: VHDL Assertion Failure detected for $tb"
-        set exit_code 1
-    }
+if {[catch {run -all} err]} {
+    puts "ERROR during run -all:"
+    puts $err
+    set exit_code 1
+    close_sim -force
+    continue
+}
+
+if {[catch {get_value /$top_name/tb_test_passed} test_passed]} {
+    puts "ERROR: Could not read tb_test_passed for $top_name"
+    puts $test_passed
+    set exit_code 1
+} elseif {$test_passed eq "TRUE"} {
+    puts "INFO: TEST SUCCESSFULL"
+} else {
+    puts "ERROR: Test did not pass for $tb"
+    puts "tb_test_passed = $test_passed"
+    set exit_code 1
+}
 
     # Close simulation
     close_sim -force
