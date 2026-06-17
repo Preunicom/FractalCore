@@ -23,10 +23,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 use std.env.finish;
 
-entity TB_AXI_Lite_Color_Config is
-end TB_AXI_Lite_Color_Config;
+entity TB_Axi_Lite_Color_Config is
+end TB_Axi_Lite_Color_Config;
 
-architecture Testbench of TB_AXI_Lite_Color_Config is
+architecture Testbench of TB_Axi_Lite_Color_Config is
     constant tbase : time := 10 ns;
     constant AXI_DATA_WIDTH : integer := 32;
     constant AXI_ADDR_WIDTH : integer := 4;
@@ -73,30 +73,30 @@ begin
         port map (
             o_color_scheme => o_color_scheme,
 
-            AXI_A_CLK => clk,
-            AXI_A_RESETN => resetn,
+            S_AXI_ACLK => clk,
+            S_AXI_ARESETN => resetn,
 
-            AXI_AW_ADDR => awaddr,
-            AXI_AW_VALID => awvalid,
-            AXI_AW_READY => awready,
+            S_AXI_AWADDR => awaddr,
+            S_AXI_AWVALID => awvalid,
+            S_AXI_AWREADY => awready,
 
-            AXI_DW_DATA => wdata,
-            AXI_DW_STRB => wstrb,
-            AXI_DW_VALID => wvalid,
-            AXI_DW_READY => wready,
+            S_AXI_WDATA => wdata,
+            S_AXI_WSTRB => wstrb,
+            S_AXI_WVALID => wvalid,
+            S_AXI_WREADY => wready,
 
-            AXI_RW_RESP => bresp,
-            AXI_RW_VALID => bvalid,
-            AXI_RW_READY => bready,
+            S_AXI_BRESP => bresp,
+            S_AXI_BVALID => bvalid,
+            S_AXI_BREADY => bready,
 
-            AXI_AR_ADDR => araddr,
-            AXI_AR_VALID => arvalid,
-            AXI_AR_READY => arready,
+            S_AXI_ARADDR => araddr,
+            S_AXI_ARVALID => arvalid,
+            S_AXI_ARREADY => arready,
 
-            AXI_DR_DATA => rdata,
-            AXI_DR_RESP => rresp,
-            AXI_DR_VALID => rvalid,
-            AXI_DR_READY => rready
+            S_AXI_RDATA => rdata,
+            S_AXI_RRESP => rresp,
+            S_AXI_RVALID => rvalid,
+            S_AXI_RREADY => rready
         );
 
     STIMULI : process
