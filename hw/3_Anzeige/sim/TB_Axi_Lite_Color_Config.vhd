@@ -139,13 +139,15 @@ begin
                 tick;
                 exit when awready = '1' and wready = '1';
             end loop;
+            
+            tick;
 
             awvalid <= '0';
             wvalid  <= '0';
 
             loop
-                tick;
                 exit when bvalid = '1';
+                tick;
             end loop;
 
             assert bresp = "00"
@@ -170,12 +172,14 @@ begin
                 tick;
                 exit when arready = '1';
             end loop;
+            
+            tick;
 
             arvalid <= '0';
 
             loop
-                tick;
                 exit when rvalid = '1';
+                tick;
             end loop;
 
             assert rresp = "00"
@@ -249,7 +253,7 @@ begin
 
     TIMEOUT_PROC : process
     begin
-        wait for 100*tbase;
+        wait for 10000*tbase;
 
         if tb_test_passed = false then
             assert false

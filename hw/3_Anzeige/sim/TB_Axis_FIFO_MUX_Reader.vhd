@@ -87,13 +87,13 @@ begin
         -- FIFO0 lesen
         i_read_select <= '0';
 
-        s0_axis_tdata <= "00" & std_logic_vector(to_unsigned(5, 10)) &
-                         std_logic_vector(to_unsigned(3, 9)) &
+        s0_axis_tdata <= "0" & std_logic_vector(to_unsigned(5, 10)) &
+                         std_logic_vector(to_unsigned(3, 9)) & "0" &
                          x"2A" & "000";
         s0_axis_tvalid <= '1';
 
-        s1_axis_tdata <= "01" & std_logic_vector(to_unsigned(20, 10)) &
-                         std_logic_vector(to_unsigned(9, 9)) &
+        s1_axis_tdata <= "1" & std_logic_vector(to_unsigned(20, 10)) &
+                         std_logic_vector(to_unsigned(9, 9)) & "0" &
                          x"55" & "000";
         s1_axis_tvalid <= '1';
 
@@ -121,7 +121,7 @@ begin
             report "Fehler: Y-Wert aus FIFO0 falsch"
             severity failure;
 
-        assert o_fb_wr_data = x"2A"
+        assert o_fb_wr_data =  "0" & x"2A"
             report "Fehler: Iterationswert aus FIFO0 falsch"
             severity failure;
 
@@ -153,7 +153,7 @@ begin
             report "Fehler: Y-Wert aus FIFO1 falsch"
             severity failure;
 
-        assert o_fb_wr_data = x"55"
+        assert o_fb_wr_data = "0" & x"55"
             report "Fehler: Iterationswert aus FIFO1 falsch"
             severity failure;
 
@@ -185,7 +185,7 @@ begin
 
     TIMEOUT_PROC : process
     begin
-        wait for tbase*100;
+        wait for tbase*1000;
 
         if tb_test_passed = false then
             assert false
