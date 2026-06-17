@@ -46,7 +46,7 @@ architecture Testbench of TB_Axis_FIFO_MUX_Reader is
     signal o_fb_we      : std_logic;
     signal o_fb_wr_x    : std_logic_vector(9 downto 0);
     signal o_fb_wr_y    : std_logic_vector(8 downto 0);
-    signal o_fb_wr_data : std_logic_vector(7 downto 0);
+    signal o_fb_wr_data : std_logic_vector(8 downto 0);
 
     signal tb_test_done   : boolean := false;
     signal tb_test_passed : boolean := false;
