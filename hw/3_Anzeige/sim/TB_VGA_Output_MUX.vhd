@@ -24,6 +24,7 @@ architecture Testbench of TB_VGA_Output_MUX is
     signal out_hsync : std_logic;
     signal out_vsync : std_logic;
 
+    signal tb_test_done : boolean := false;
     signal tb_test_passed : boolean := false;
 
 begin
@@ -69,10 +70,32 @@ begin
 
         report "TEST PASSED!" severity note;
 
-        tb_test_passed <= true;
-        wait for tbase;
+        tb_test_done <= true;
+        wait;
+    end process;
 
+    CHECK_PROC : process
+    begin
+        wait until tb_test_done = true;
+
+        report "TEST PASSED!" severity note;
+        tb_test_passed <= true;
+
+        wait for tbase;
         finish;
+    end process;
+
+    TIMEOUT_PROC : process
+    begin
+        wait for 100*640*480*tbase;
+
+        if tb_test_passed = false then
+            assert false
+                report "TEST TIMED OUT!"
+                severity failure;
+        end if;
+
+        wait;
     end process;
 
 end Testbench;

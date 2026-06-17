@@ -58,6 +58,7 @@ architecture Testbench of TB_AXI_Lite_Color_Config is
     signal rvalid : std_logic;
     signal rready : std_logic := '0';
 
+    signal tb_test_done : boolean := false;
     signal tb_test_passed : boolean := false;
 
 begin
@@ -197,12 +198,32 @@ begin
 
         axi_read(x"4", x"00000000", "Ungueltige Adresse sollte 0 lesen");
 
-        report "TEST PASSED!" severity note;
-        
-        tb_test_passed <= true;
-        wait for tbase;
+        tb_test_done <= true;
+        wait;
+    end process;
 
+    CHECK_PROC : process
+    begin
+        wait until tb_test_done = true;
+
+        report "TEST PASSED!" severity note;
+        tb_test_passed <= true;
+
+        wait for tbase;
         finish;
+    end process;
+
+    TIMEOUT_PROC : process
+    begin
+        wait for 100*640*480*tbase;
+
+        if tb_test_passed = false then
+            assert false
+                report "TEST TIMED OUT!"
+                severity failure;
+        end if;
+
+        wait;
     end process;
 
 end Testbench;
