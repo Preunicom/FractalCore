@@ -30,86 +30,97 @@ architecture Testbench of TB_VGA is
 
     constant tbase : time := 20 ns;
 
-    signal o_ready : std_logic;
-    signal i_valid : std_logic := '0';
-    signal i_pix_col : std_logic_vector(9 downto 0) := (others => '0');
-    signal i_pix_row : std_logic_vector(8 downto 0) := (others => '0');
-    signal i_frame_idx : std_logic_vector(1 downto 0) := (others => '0');
-    signal i_red : std_logic_vector(3 downto 0) := (others => '0');
-    signal i_green : std_logic_vector(3 downto 0) := (others => '0');
-    signal i_blue : std_logic_vector(3 downto 0) := (others => '0');
+    signal i_clk    : std_logic := '0';
+    signal i_resetn : std_logic := '0';
 
-    signal i_CLK_VGA : std_logic := '0';
-    signal i_CLK_Arbiter : std_logic := '0';
+    signal o_rd_x   : std_logic_vector(9 downto 0);
+    signal o_rd_y   : std_logic_vector(8 downto 0);
 
-    signal i_resetn_vga : std_logic := '0';
-    signal i_resetn_arbiter : std_logic := '0';
+    signal o_visible : std_logic;
+    signal o_HSync   : std_logic;
+    signal o_VSync   : std_logic;
 
-    signal o_blue : std_logic_vector(3 downto 0);
-    signal o_green : std_logic_vector(3 downto 0);
-    signal o_red : std_logic_vector(3 downto 0);
-    signal o_VSync : std_logic;
-    signal o_HSync : std_logic;
-
-    signal tb_test_done : boolean := false;
+    signal tb_test_done   : boolean := false;
     signal tb_test_passed : boolean := false;
 
 begin
 
     uut: entity work.VGA
         port map (
-            o_ready => o_ready,
-            i_valid => i_valid,
-            i_pix_col => i_pix_col,
-            i_pix_row => i_pix_row,
-            i_frame_idx => i_frame_idx,
-            i_red => i_red,
-            i_green => i_green,
-            i_blue => i_blue,
-            i_CLK_VGA => i_CLK_VGA,
-            i_CLK_Arbiter => i_CLK_Arbiter,
-            i_resetn_vga => i_resetn_vga,
-            i_resetn_arbiter => i_resetn_arbiter,
-            o_blue => o_blue,
-            o_green => o_green,
-            o_red => o_red,
-            o_VSync => o_VSync,
-            o_HSync => o_HSync
+            i_clk    => i_clk,
+            i_resetn => i_resetn,
+
+            o_rd_x => o_rd_x,
+            o_rd_y => o_rd_y,
+
+            o_visible => o_visible,
+            o_HSync   => o_HSync,
+            o_VSync   => o_VSync
         );
 
-    i_CLK_VGA <= not i_CLK_VGA after 20 ns;      -- 25 MHz
-    i_CLK_Arbiter <= not i_CLK_Arbiter after 10 ns; -- 50 MHz
-
-    i_resetn_vga <= '0', '1' after 200 ns;
-    i_resetn_arbiter <= '0', '1' after 200 ns;
+    i_clk <= not i_clk after tbase / 2;
 
     STIMULI : process
     begin
-        wait until i_resetn_vga = '1' and i_resetn_arbiter = '1';
+        i_resetn <= '0';
+        wait for 5 * tbase;
 
-        wait for 100 ns;
-        assert o_ready = '1'
-            report "Fehler: o_ready ist nicht aktiv!"
+        assert o_rd_x = std_logic_vector(to_unsigned(0, 10))
+            report "Fehler: o_rd_x nach Reset nicht 0"
             severity failure;
 
-        -- Farbe 1 (rot)
-        i_valid <= '1';
-        i_red   <= "1111";
-        i_green <= "0000";
-        i_blue  <= "0000";
+        assert o_rd_y = std_logic_vector(to_unsigned(0, 9))
+            report "Fehler: o_rd_y nach Reset nicht 0"
+            severity failure;
 
-        wait for 40 us;
+        assert o_visible = '1'
+            report "Fehler: o_visible nach Reset nicht 1"
+            severity failure;
 
-        -- Farbe 2 (grün)
-        i_red   <= "0000";
-        i_green <= "1111";
-        i_blue  <= "0000";
+        i_resetn <= '1';
 
-        wait for 40 us;
+        wait for tbase;
 
-        i_valid <= '0';
+        assert o_rd_x = std_logic_vector(to_unsigned(1, 10))
+            report "Fehler: o_rd_x zaehlt nicht hoch"
+            severity failure;
 
-        wait for 20 us;
+        assert o_rd_y = std_logic_vector(to_unsigned(0, 9))
+            report "Fehler: o_rd_y sollte noch 0 sein"
+            severity failure;
+
+        assert o_HSync /= 'U' and o_VSync /= 'U'
+            report "Sync Signale sind undefiniert"
+            severity failure;
+
+        -- Bis kurz vor Ende der ersten sichtbaren Zeile laufen lassen
+        wait for 638 * tbase;
+
+        assert o_visible = '1'
+            report "Fehler: o_visible sollte im sichtbaren Bereich 1 sein"
+            severity failure;
+
+        -- In den horizontalen Blanking-Bereich laufen
+        wait for 5 * tbase;
+
+        assert o_visible = '0'
+            report "Fehler: o_visible sollte nach sichtbarer Zeile 0 sein"
+            severity failure;
+
+        assert o_rd_x = std_logic_vector(to_unsigned(0, 10))
+            report "Fehler: o_rd_x sollte ausserhalb sichtbarem Bereich 0 sein"
+            severity failure;
+
+        -- Bis zum naechsten Zeilenanfang laufen
+        wait for 156 * tbase;
+
+        assert o_rd_y = std_logic_vector(to_unsigned(1, 9))
+            report "Fehler: o_rd_y wurde nach einer Zeile nicht erhoeht"
+            severity failure;
+
+        assert o_visible = '1'
+            report "Fehler: o_visible sollte am Anfang der zweiten Zeile 1 sein"
+            severity failure;
 
         tb_test_done <= true;
         wait;
@@ -118,10 +129,6 @@ begin
     CHECK_PROC : process
     begin
         wait until tb_test_done = true;
-
-        assert o_HSync /= 'U' and o_VSync /= 'U'
-            report "Sync Signale sind undefiniert!"
-            severity failure;
 
         report "TEST PASSED!" severity note;
         tb_test_passed <= true;
@@ -132,7 +139,7 @@ begin
 
     TIMEOUT_PROC : process
     begin
-        wait for 100*640*480*tbase;
+        wait for 50 us;
 
         if tb_test_passed = false then
             assert false
