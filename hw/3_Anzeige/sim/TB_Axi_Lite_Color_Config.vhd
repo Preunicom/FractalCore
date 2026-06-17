@@ -249,7 +249,7 @@ begin
 
     TIMEOUT_PROC : process
     begin
-        wait for 10 us;
+        wait for 100*tbase;
 
         if tb_test_passed = false then
             assert false

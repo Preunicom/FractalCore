@@ -184,7 +184,7 @@ begin
 
     TIMEOUT_PROC : process
     begin
-        wait for 2 us;
+        wait for tbase;
 
         if tb_test_passed = false then
             assert false
