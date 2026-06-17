@@ -1,23 +1,3 @@
-----------------------------------------------------------------------------------
--- Company: OTH Regensburg
--- Engineer: Thomas Schiergl
--- 
--- Create Date: 
--- Design Name: 
--- Module Name: TB_VGA_Output_MUX - Testbench
--- Project Name: FractalCore
--- Target Devices: Arty A7 100T
--- Tool Versions: 2023.2
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use std.env.finish;
@@ -26,6 +6,8 @@ entity TB_VGA_Output_MUX is
 end TB_VGA_Output_MUX;
 
 architecture Testbench of TB_VGA_Output_MUX is
+    constant tbase : time := 10 ns;
+
     signal active : std_logic := '0';
 
     signal in_r : std_logic_vector(3 downto 0) := "1010";
@@ -41,6 +23,8 @@ architecture Testbench of TB_VGA_Output_MUX is
 
     signal out_hsync : std_logic;
     signal out_vsync : std_logic;
+
+    signal tb_test_passed : boolean := false;
 
 begin
 
@@ -62,7 +46,7 @@ begin
     STIMULI : process
     begin
         active <= '1';
-        wait for 10 ns;
+        wait for tbase;
 
         assert out_r = in_r and out_g = in_g and out_b = in_b
             report "RGB wird bei active=1 nicht durchgereicht"
@@ -73,7 +57,7 @@ begin
             severity failure;
 
         active <= '0';
-        wait for 10 ns;
+        wait for tbase;
 
         assert out_r = "0000" and out_g = "0000" and out_b = "0000"
             report "RGB wird bei active=0 nicht schwarz"
@@ -84,6 +68,10 @@ begin
             severity failure;
 
         report "TEST PASSED!" severity note;
+
+        tb_test_passed <= true;
+        wait for tbase;
+
         finish;
     end process;
 

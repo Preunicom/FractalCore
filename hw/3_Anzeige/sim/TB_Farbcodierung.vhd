@@ -1,23 +1,3 @@
-----------------------------------------------------------------------------------
--- Company: OTH Regensburg
--- Engineer: Thomas Schiergl
--- 
--- Create Date: 
--- Design Name: 
--- Module Name: TB_Farbcodierung - Testbench
--- Project Name: FractalCore
--- Target Devices: Arty A7 100T
--- Tool Versions: 2023.2
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -36,6 +16,8 @@ architecture Testbench of TB_Farbcodierung is
     signal o_red   : std_logic_vector(3 downto 0);
     signal o_green : std_logic_vector(3 downto 0);
     signal o_blue  : std_logic_vector(3 downto 0);
+
+    signal tb_test_passed : boolean := false;
 
 begin
 
@@ -88,6 +70,10 @@ begin
         check_color('1' & x"55", "11", "1111", "1111", "0000", "Highlight Gelb falsch");
 
         report "TEST PASSED!" severity note;
+
+        tb_test_passed <= true;
+        wait for tbase;
+
         finish;
     end process;
 

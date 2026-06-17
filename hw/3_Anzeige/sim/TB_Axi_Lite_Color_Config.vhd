@@ -58,6 +58,8 @@ architecture Testbench of TB_AXI_Lite_Color_Config is
     signal rvalid : std_logic;
     signal rready : std_logic := '0';
 
+    signal tb_test_passed : boolean := false;
+
 begin
 
     clk <= not clk after tbase / 2;
@@ -196,6 +198,10 @@ begin
         axi_read(x"4", x"00000000", "Ungueltige Adresse sollte 0 lesen");
 
         report "TEST PASSED!" severity note;
+        
+        tb_test_passed <= true;
+        wait for tbase;
+
         finish;
     end process;
 
