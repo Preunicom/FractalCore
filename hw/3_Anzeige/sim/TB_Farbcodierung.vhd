@@ -48,6 +48,9 @@ begin
             i_color_scheme <= scheme;
             wait for tbase;
 
+            assert o_red = exp_r and o_green = exp_g and o_blue = exp_b
+                report msg
+                severity failure;
         end procedure;
     begin
         check_color('0' & x"00", "00", "0000", "0000", "0000", "Graustufen 0 falsch");
