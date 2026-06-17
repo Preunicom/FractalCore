@@ -65,7 +65,7 @@ begin
 
     clk <= not clk after tbase / 2;
 
-    uut: entity work.AXI_Lite_Color_Config
+    uut: entity work.Axi_Lite_Color_Config
         generic map (
             AXI_DATA_WIDTH => AXI_DATA_WIDTH,
             AXI_ADDR_WIDTH => AXI_ADDR_WIDTH
@@ -110,73 +110,73 @@ begin
     constant addr : in std_logic_vector(3 downto 0);
     constant data : in std_logic_vector(31 downto 0);
     constant strb : in std_logic_vector(3 downto 0)
-) is
-begin
-    awaddr  <= addr;
-    wdata   <= data;
-    wstrb   <= strb;
-    awvalid <= '1';
-    wvalid  <= '1';
-    bready  <= '1';
+    ) is
+    begin
+        awaddr  <= addr;
+        wdata   <= data;
+        wstrb   <= strb;
+        awvalid <= '1';
+        wvalid  <= '1';
+        bready  <= '1';
 
-    loop
+        loop
+            tick;
+            exit when awready = '1';
+        end loop;
+        awvalid <= '0';
+
+        loop
+            tick;
+            exit when wready = '1';
+        end loop;
+        wvalid <= '0';
+
+        loop
+            tick;
+            exit when bvalid = '1';
+        end loop;
+
+        assert bresp = "00"
+            report "AXI write response falsch"
+            severity failure;
+
         tick;
-        exit when awready = '1';
-    end loop;
-    awvalid <= '0';
+        bready <= '0';
+    end procedure;
 
-    loop
+            procedure axi_read(
+        constant addr : in std_logic_vector(3 downto 0);
+        constant expected : in std_logic_vector(31 downto 0);
+        constant msg : in string
+    ) is
+    begin
+        araddr  <= addr;
+        arvalid <= '1';
+        rready  <= '1';
+
+        loop
+            tick;
+            exit when arready = '1';
+        end loop;
+
+        arvalid <= '0';
+
+        loop
+            tick;
+            exit when rvalid = '1';
+        end loop;
+
+        assert rresp = "00"
+            report "AXI read response falsch"
+            severity failure;
+
+        assert rdata = expected
+            report msg
+            severity failure;
+
         tick;
-        exit when wready = '1';
-    end loop;
-    wvalid <= '0';
-
-    loop
-        tick;
-        exit when bvalid = '1';
-    end loop;
-
-    assert bresp = "00"
-        report "AXI write response falsch"
-        severity failure;
-
-    tick;
-    bready <= '0';
-end procedure;
-
-        procedure axi_read(
-    constant addr : in std_logic_vector(3 downto 0);
-    constant expected : in std_logic_vector(31 downto 0);
-    constant msg : in string
-) is
-begin
-    araddr  <= addr;
-    arvalid <= '1';
-    rready  <= '1';
-
-    loop
-        tick;
-        exit when arready = '1';
-    end loop;
-
-    arvalid <= '0';
-
-    loop
-        tick;
-        exit when rvalid = '1';
-    end loop;
-
-    assert rresp = "00"
-        report "AXI read response falsch"
-        severity failure;
-
-    assert rdata = expected
-        report msg
-        severity failure;
-
-    tick;
-    rready <= '0';
-end procedure;
+        rready <= '0';
+    end procedure;
 
     begin
         resetn <= '0';
@@ -229,7 +229,7 @@ end procedure;
 
     TIMEOUT_PROC : process
     begin
-        wait for 100*640*480*tbase;
+        wait for 100*tbase;
 
         if tb_test_passed = false then
             assert false
