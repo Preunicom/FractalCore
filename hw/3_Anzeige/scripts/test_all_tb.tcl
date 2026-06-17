@@ -68,7 +68,6 @@ foreach tb $tb_files {
 
     set top_name [file rootname [file tail $tb]]
     set_property top $top_name [get_filesets sim_1]
-    
 
     update_compile_order -fileset sim_1 -quiet
 
