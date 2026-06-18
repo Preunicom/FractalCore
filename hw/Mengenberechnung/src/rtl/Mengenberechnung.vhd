@@ -55,7 +55,7 @@ entity Mengenberechnung is
 end Mengenberechnung;
 
 architecture Behavioral of Mengenberechnung is
-    component AXIS_ASyncFIFO_Dispatcher is
+    component AXIS_FIFO_Dispatcher is
         Port ( 
             s_axis_aresetn : in STD_LOGIC;
             s_axis_aclk : in STD_LOGIC;
@@ -157,7 +157,7 @@ begin
 
     w_init_fifo_pixel_data_in(92 downto 0) <= to_std_logic_vector(w_init_pixel_data);
 
-    DISPATCH_FIFO: AXIS_ASyncFIFO_Dispatcher
+    DISPATCH_FIFO: AXIS_FIFO_Dispatcher
     port map (
         s_axis_aresetn => i_rstn,
         s_axis_aclk    => i_clk,
