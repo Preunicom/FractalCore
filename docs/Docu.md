@@ -330,10 +330,10 @@ Framebuffer → Farbcodierung → VGA
 
 Dadurch speichert der Framebuffer lediglich die Anzahl der Iterationen bis zur Divergenz.
 
-Mit einer Datenbreite von 8 Bit ergibt sich ein Speicherbedarf von:
+Mit einer Datenbreite von 9 Bit ergibt sich ein Speicherbedarf von:
 
 ```
-640 × 480 × 8 Bit = 2 457 600 Bit
+640 × 480 × 9 Bit = 2 764 800 Bit
 ```
 
 Dadurch reduziert sich der Speicherbedarf um ein Drittel, während gleichzeitig die Möglichkeit erhalten bleibt, das Farbschema zur Laufzeit zu ändern.

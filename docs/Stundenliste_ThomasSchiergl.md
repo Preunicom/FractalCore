@@ -80,8 +80,9 @@
 | **KW 25** | **-** | **152** | **Zwischensumme** |
 | |  |  |  |
 | 16.06.2026 | 6 | 2 | Dokumentation |
+| 17.06.2026 | 6 | 5 | Testbenches + Team-Meeting |
 | |  |  |  |
-| **KW 25** | **-** | **154** | **Zwischensumme** |
+| **KW 25** | **-** | **159** | **Zwischensumme** |
 | |  |  |  |
 
 
