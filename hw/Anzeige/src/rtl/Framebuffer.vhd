@@ -10,7 +10,7 @@
 -- Tool Versions: 2023.2
 -- Description: Framebuffer to store the iteration amounts and convergent flags.
 --
--- Infere simple dual port BRAM with dual clocks 
+-- Infer simple dual port BRAM with dual clocks 
 -- Source: https://docs.amd.com/r/en-US/ug901-vivado-synthesis/Simple-Dual-Port-Block-RAM-with-Dual-Clocks-VHDL
 -- 
 -- Dependencies: 

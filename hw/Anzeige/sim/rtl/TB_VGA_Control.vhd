@@ -8,7 +8,7 @@
 -- Project Name: FractalCore
 -- Target Devices: Arty Z7-20
 -- Tool Versions: 2023.2
--- Description: Testing the VGA Control with data presorting, fraembuffer manager and framebuffer.
+-- Description: Testing the VGA Control with data presorting, framebuffer manager and framebuffer.
 -- 
 -- Dependencies: 
 -- 
@@ -110,7 +110,7 @@ begin
         variable v_counter: integer := 0;
 	begin
         wait until s_resetn = '1';
-        -- Send data to early --> Should never show as it will be bypassed and then overriden
+        -- Send data too early --> Should never show as it will be bypassed and then overridden
         for x in 0 to 639 loop
             s_valid                  <= '1';       
             s_video_pix_col          <= std_logic_vector(to_unsigned(x, 10));

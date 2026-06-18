@@ -12,7 +12,7 @@ proc find_files {dir pattern {subfolder "*"}} {
             # End reached successfully --> Search this folder and all folders below for the filename
             set subfolder "*"
         } else { 
-            # End reached not successfully (Last folder did not matched)
+            # End reached not successfully (Last folder did not match)
             return $result
         }
     } else {
@@ -127,7 +127,7 @@ foreach tb $tb_files {
         set test_passed [get_value /$top_name/tb_test_passed]
         puts "------------------------------"
         if {$test_passed eq "TRUE"} {
-            puts "INFO: TEST SUCCESSFULL"
+            puts "INFO: TEST SUCCESSFUL"
         } else {
             puts "ERROR: VHDL Assertion Failure detected for $tb"
             incr exit_code

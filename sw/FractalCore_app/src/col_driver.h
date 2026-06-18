@@ -52,7 +52,7 @@ typedef void (*COL_AppHandlerFpType) (void *CallBackRef);
 
 typedef struct {
 	COL_Config Config; //core config using the _g-file mechanism
- 	UINTPTR BaseAddress;	 /**< Base address of registers */ //already in COL_Config, however replicate/buffer it here to avoid costly indirect access in the follwing
+ 	UINTPTR BaseAddress;	 /**< Base address of registers */ //already in COL_Config, however replicate/buffer it here to avoid costly indirect access in the following
 	COL_AppHandlerFpType AppHandler; /**< Callback function */ 
 	void *CallBackRef;	 /**< Callback reference for handler  (COL_Data* instanceptr)*/
 } COL_Data; //config data; insert additional required (config) data in this struct

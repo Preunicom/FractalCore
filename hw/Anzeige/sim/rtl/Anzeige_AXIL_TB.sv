@@ -23,7 +23,7 @@ module Anzeige_TB();
   parameter COL_PIXEL_MASK          = 9'h408;
   parameter COL_MASK                = 32'h00FFFFFF;
   
-  //BUFFER DEFINTIONS (not used so far)
+  //BUFFER DEFINITIONS (not used so far)
 
   //FURTHER DEFINITIONS
   VIP_AXIL_Anzeige_TB_axi_vip_0_0_mst_t mst_ctrl_agent; // check instance name in block design (<blockdesign-name>_<vip-inst-name>_0_mst_t)
@@ -35,7 +35,7 @@ module Anzeige_TB();
   bit error_found = 0;
 
   //--------------------------------------------------------------------------------------
-  //SYSTEM DEFINTION (system instances and signals)
+  //SYSTEM DEFINITION (system instances and signals)
   //CLK
 
   logic i_vga_clk = 0;
@@ -316,7 +316,7 @@ module Anzeige_TB();
     stimuli_counter = 0;
     // wait for reset release
     wait (i_axi_rst_n == 1);
-    // Send data to early --> Should never show as it will be bypassed and then overriden
+    // Send data too early --> Should never show as it will be bypassed and then overridden
     for (int x = 0; x < 640; x++) begin
       i_valid_0                 = 1;
       i_video_pix_col_0         = x;

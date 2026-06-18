@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.all;
 package Pkg_VGA is
 
     -- Source for timing:
-    -- https://digilent.com/reference/learn/programmable-logic/tutorials/vga-display-congroller/start
+    -- https://digilent.com/reference/learn/programmable-logic/tutorials/vga-display-controller/start
 
     -- COLS
     constant c_COLS             : integer := 640; 

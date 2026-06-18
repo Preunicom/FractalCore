@@ -12,7 +12,7 @@ proc find_files {dir pattern {subfolder "*"}} {
             # End reached successfully --> Search this folder and all folders below for the filename
             set subfolder "*"
         } else { 
-            # End reached not successfully (Last folder did not matched)
+            # End reached not successfully (Last folder did not match)
             return $result
         }
     } else {

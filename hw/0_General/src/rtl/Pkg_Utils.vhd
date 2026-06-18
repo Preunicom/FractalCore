@@ -8,7 +8,7 @@
 -- Project Name: FractalCore
 -- Target Devices: Arty A7 100T
 -- Tool Versions: 2023.2
--- Description: Provides utility functions and types for mutliple parts of FractalCore.
+-- Description: Provides utility functions and types for multiple parts of FractalCore.
 -- 
 -- Dependencies: 
 -- 

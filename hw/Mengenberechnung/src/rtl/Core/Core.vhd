@@ -80,7 +80,7 @@ begin
                 r_s3_select_loaded_data <= '0';
             else
                 r_loaded_data <= i_pixel_data;
-                -- Allign signal to the stages
+                -- Align signal to the stages
                 r_s3_loaded_data <= r_loaded_data;
                 r_s3_select_loaded_data <= w_select_loaded_data;
             end if;

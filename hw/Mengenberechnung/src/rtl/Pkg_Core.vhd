@@ -8,7 +8,7 @@
 -- Project Name: FractalCore
 -- Target Devices: Arty A7 100T
 -- Tool Versions: 2023.2
--- Description: Provides an record of the PixelData
+-- Description: Provides a record of the PixelData
 -- 
 -- Dependencies: 
 -- 

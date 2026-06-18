@@ -8,7 +8,7 @@
 -- Project Name: FractalCore
 -- Target Devices: Arty A7 100T
 -- Tool Versions: 2023.2
--- Description: Conctrols the pipelined calculation of the Mandelbrot set equation.
+-- Description: Controls the pipelined calculation of the Mandelbrot set equation.
 -- 
 -- Dependencies: 
 -- 

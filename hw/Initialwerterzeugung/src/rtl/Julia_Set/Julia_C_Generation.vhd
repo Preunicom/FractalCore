@@ -142,7 +142,7 @@ begin
                     end if;
                     r_frames_per_step_counter <= r_frames_per_step_counter + 1;
                     if (i_frames_per_step = x"0000") or (r_frames_per_step_counter >= unsigned(i_frames_per_step) - 1) then
-                        -- In case of the maximum target value this is not executed, but the overflow which will incure instead has the same effect
+                        -- In case of the maximum target value this is not executed, but the overflow which will occur instead has the same effect
                         r_frames_per_step_counter <= (others => '0');
                     end if;
                 end if;
@@ -150,7 +150,7 @@ begin
         end if;
     end process;
 
-    -- Chose the target depending on the given mode
+    -- Choose the target depending on the given mode
     w_target_re <= resize(signed(w_diamond_target_re), 18) when i_mode = '0' else resize(signed(w_lfsr_target_re), 18);
     w_target_im <= resize(signed(w_diamond_target_im), 18) when i_mode = '0' else resize(signed(w_lfsr_target_im), 18);
 

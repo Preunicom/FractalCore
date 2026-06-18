@@ -387,7 +387,7 @@ begin
         s_is_in_minimap       <= '0';
         s_frames_per_step     <= std_logic_vector(to_unsigned(1, 16));
         s_step_width          <= std_logic_vector(to_unsigned(1, 17)); 
-        s_mode                <= "10"; -- Mandelbot 
+        s_mode                <= "10"; -- Mandelbrot 
         s_load_seed           <= '0';
         s_lfsr_seed_re        <= std_logic_vector(to_signed(10, 17));
         s_lfsr_seed_im        <= std_logic_vector(to_signed(10, 17));
@@ -407,7 +407,7 @@ begin
         s_is_in_minimap       <= '0';
         s_frames_per_step     <= std_logic_vector(to_unsigned(1, 16));
         s_step_width          <= std_logic_vector(to_unsigned(1, 17)); 
-        s_mode                <= "10"; -- Mandelbot 
+        s_mode                <= "10"; -- Mandelbrot 
         s_load_seed           <= '0';
         s_lfsr_seed_re        <= std_logic_vector(to_signed(10, 17));
         s_lfsr_seed_im        <= std_logic_vector(to_signed(10, 17));

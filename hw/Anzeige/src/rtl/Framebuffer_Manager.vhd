@@ -81,7 +81,7 @@ architecture Behavioral of Framebuffer_Manager is
             o_f_X1_cycles_until_divergent : out std_logic_vector(7 downto 0)
         );
     end component;
-    -- Using IP instead of infering BRAM as it needs nearly half of BRAMs of the inferred one with same specifications.
+    -- Using IP instead of inferring BRAM as it needs nearly half of BRAMs of the inferred one with same specifications.
     component Framebuffer is
         port(
         i_clk_w : in std_logic;

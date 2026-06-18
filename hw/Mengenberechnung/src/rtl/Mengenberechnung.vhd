@@ -128,7 +128,7 @@ architecture Behavioral of Mengenberechnung is
     -- CLK Calc
     signal w_init_fifo_pixel_data_out : std_logic_vector(95 downto 0) := (others => '0');
 
-    -- GENERATE signale
+    -- GENERATE signals
     -- DISP
     signal w_disp_valid : std_logic_vector((g_AMOUNT_CORES * 2) - 2 downto 0);
     signal w_disp_ready : std_logic_vector((g_AMOUNT_CORES * 2) - 2 downto 0);

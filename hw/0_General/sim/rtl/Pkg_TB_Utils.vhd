@@ -8,7 +8,7 @@
 -- Project Name: FractalCore
 -- Target Devices: Arty A7 100T
 -- Tool Versions: 2023.2
--- Description: Provides utils for testbenched
+-- Description: Provides utils for testbenches
 -- 
 -- Dependencies: 
 -- 

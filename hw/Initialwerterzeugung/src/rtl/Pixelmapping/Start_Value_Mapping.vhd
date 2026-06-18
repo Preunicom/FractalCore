@@ -8,7 +8,7 @@
 -- Project Name: FractalCore
 -- Target Devices: Arty A7 100T
 -- Tool Versions: 2023.2
--- Description: Adds the c value to a pixel and chose c and z_0 depedning on the mode
+-- Description: Adds the c value to a pixel and choose c and z_0 depending on the mode
 -- 
 -- Dependencies: 
 -- 
@@ -143,7 +143,7 @@ begin
         if rising_edge(i_clk) then
             if i_resetn = '0' then
                 r_valid <= '0';
-                -- Max pixel values, as it starts with min values at reset --> Definitly changes in the beginning
+                -- Max pixel values, as it starts with min values at reset --> Definitely changes in the beginning
                 r_frame_idx <= (others => '1');
                 r_pixel_col <= (others => '1');
                 r_pixel_row <= (others => '1');
@@ -182,7 +182,7 @@ begin
         if rising_edge(i_clk) then
             if i_resetn = '0' then
                 o_valid <= '0';
-                -- Max pixel values, as it starts with min values at reset --> Definitly changes in the beginning
+                -- Max pixel values, as it starts with min values at reset --> Definitely changes in the beginning
                 o_frame_idx <= (others => '1');
                 o_pixel_col <= (others => '1');
                 o_pixel_row <= (others => '1');
