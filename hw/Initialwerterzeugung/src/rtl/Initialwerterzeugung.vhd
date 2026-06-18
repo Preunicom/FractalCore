@@ -1,3 +1,6 @@
+-- @author: Markus Remy
+-- Used AXI Lite Template from Xilinx
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -7,18 +10,11 @@ use work.Pkg_Utils.all;
 
 entity Initialwerterzeugung is
 	generic (
-		-- Users to add parameters here
-
-		-- User parameters ends
-		-- Do not modify the parameters beyond this line
-
-
 		-- Parameters of Axi Slave Bus Interface S00_AXI
 		C_S00_AXI_DATA_WIDTH	: integer	:= 32;
 		C_S00_AXI_ADDR_WIDTH	: integer	:= 6
 	);
 	port (
-		-- Users to add ports here
 		-- AXI Stream like interface to Mengenberechnung
         i_ready : in std_logic;
         o_valid : out std_logic;
@@ -34,9 +30,6 @@ entity Initialwerterzeugung is
 		o_highlight_ch1 : out std_logic_vector(38 downto 0);
 		o_highlight_ch2 : out std_logic_vector(38 downto 0);
 		o_highlight_ch3 : out std_logic_vector(38 downto 0);
-		-- User ports ends
-		-- Do not modify the ports beyond this line
-
 
 		-- Ports of Axi Slave Bus Interface S00_AXI
 		s00_axi_aclk	: in std_logic;
@@ -64,8 +57,6 @@ entity Initialwerterzeugung is
 end Initialwerterzeugung;
 
 architecture arch_imp of Initialwerterzeugung is
-
-	-- component declaration
 	component Initialwerterzeugung_AXI is
 		generic (
 			C_S_AXI_DATA_WIDTH	: integer	:= 32;
@@ -199,7 +190,6 @@ begin
 		S_AXI_RREADY       => S00_AXI_RREADY
 	);	
 
-	-- Add user logic here
 	Pixel_Gen: Pixel_Data_Generation_Pipeline
 	port map (
 		i_resetn           => s00_axi_aresetn,
@@ -232,7 +222,5 @@ begin
 	o_highlight_ch1 <= to_std_logic_vector(w_highlight(1));
 	o_highlight_ch2 <= to_std_logic_vector(w_highlight(2));
 	o_highlight_ch3 <= to_std_logic_vector(w_highlight(3));
-
-	-- User logic ends
 
 end arch_imp;

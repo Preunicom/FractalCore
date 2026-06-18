@@ -1,21 +1,18 @@
+-- @author: Markus Remy
+-- Used AXI Lite Template from Xilinx
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity Initialwerterzeugung_AXI is
 	generic (
-		-- Users to add parameters here
-
-		-- User parameters ends
-		-- Do not modify the parameters beyond this line
-
 		-- Width of S_AXI data bus
 		C_S_AXI_DATA_WIDTH	: integer	:= 32;
 		-- Width of S_AXI address bus
 		C_S_AXI_ADDR_WIDTH	: integer	:= 6
 	);
 	port (
-		-- Users to add ports here
 		o_pixel_distance: out  std_logic_vector(7 downto 0);
 		o_frames_per_step : out std_logic_vector(15 downto 0);
 		o_mode : out std_logic_vector(1 downto 0);
@@ -28,8 +25,6 @@ entity Initialwerterzeugung_AXI is
 		o_diamond_height : out std_logic_vector(15 downto 0);
 		o_diamond_width : out std_logic_vector(15 downto 0);
 		o_load_seed : out std_logic;
-		-- User ports ends
-		-- Do not modify the ports beyond this line
 
 		-- Global Clock Signal
 		S_AXI_ACLK	: in std_logic;
@@ -108,7 +103,6 @@ architecture arch_imp of Initialwerterzeugung_AXI is
 	signal axi_rresp	: std_logic_vector(1 downto 0);
 	signal axi_rvalid	: std_logic;
 
-	-- Example-specific design signals
 	-- local parameter for addressing 32 bit / 64 bit C_S_AXI_DATA_WIDTH
 	-- ADDR_LSB is used for addressing 32/64 bit registers/memories
 	-- ADDR_LSB = 2 for 32 bits (n downto 2)
@@ -116,7 +110,7 @@ architecture arch_imp of Initialwerterzeugung_AXI is
 	constant ADDR_LSB  : integer := (C_S_AXI_DATA_WIDTH/32)+ 1;
 	constant OPT_MEM_ADDR_BITS : integer := 3;
 	------------------------------------------------
-	---- Signals for user logic register space example
+	---- Signals for registers
 	--------------------------------------------------
 	---- Number of Slave Registers 16
 	signal GSCR_reg		: std_logic_vector(C_S_AXI_DATA_WIDTH-1 downto 0);

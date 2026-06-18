@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////////////
 //
 // author: Markus Remy
+// Used template of the CSA course of Mr. Münch
 //
 ////////////////////////////////////////////////////////
 
@@ -106,7 +107,7 @@ module Anzeige_TB();
   };
 
   //check instance name in block design -> <blockdesign_name>_wrapper 
-  VIP_AXIL_Anzeige_TB_wrapper DUT( // TODO: Check signals!
+  VIP_AXIL_Anzeige_TB_wrapper DUT(
     .i_axi_clk(i_axi_clk),
     .i_axi_rst_n(i_axi_rst_n),
     .i_cycles_until_divergent_0(i_cycles_until_divergent_0),

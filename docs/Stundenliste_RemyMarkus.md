@@ -104,11 +104,11 @@
 | |  |  |  |
 | 15.06.2026 | 9 | 1 | Clk Pfade fixen |
 | 15.06.2026 | 9 | 1 | Typo heigh -> height fixen |
+| 17.06.2026 | 9 | 1 | Abschlussteammeeting mit finaler Integration und letzten Fehlerbehebungen |
+| 18.06.2026 | 9 | 1 | Kommentare im Code prüfen |
 | |  |  |  |
-| **KW 25** | **-** | **134** | **Zwischensumme** |
+| **KW 25** | **-** | **137** | **Zwischensumme** |
 | |  |  |  |
-
-
 
 ## Feature Nummerierung
 
