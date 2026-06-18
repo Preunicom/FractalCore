@@ -9,7 +9,7 @@
 
 
 /************************** Constant Definitions ***************************/
-//shared constant defintions should be done in ctrl_driver.h
+//shared constant definitions should be done in ctrl_driver.h
 
 /**************************** Type Definitions *****************************/
 

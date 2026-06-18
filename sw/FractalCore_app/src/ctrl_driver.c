@@ -67,7 +67,7 @@ XStatus CTRL_InitHw(CTRL_Data *InstancePtr)
 {
   XStatus Status = XST_SUCCESS;
    
-    ///Immediate HW Initilaization
+    ///Immediate HW Initialization
     //Put in here things which have to be done immediately after start
 
     //In this case nothing is required

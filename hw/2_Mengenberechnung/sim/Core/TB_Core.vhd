@@ -202,7 +202,7 @@ begin
                 & " Exp.: 0"
                 & " Got. " & std_logic'image(c_pixel_result.is_convergent)
             severity failure;
-        -- Check no exact iteration value the calculation is sligthtly off due to rounding at the end of one iteration
+        -- Check no exact iteration value the calculation is slightly off due to rounding at the end of one iteration
         -- But the value should be around 60-100 (MatLab solution: 94, Test: 66)
         assert to_integer(unsigned(c_pixel_result.cycles_until_divergent)) > 60
             report "Iteration amount is wrong!" & LF

@@ -97,7 +97,7 @@ XStatus menu_parse_uint32(const char *buf, uint32_t *out) {
 XStatus menu_parse_hex32(const char *buf, uint32_t *out) {
     uint32_t val = 0;
     const char *p = buf;
-    if (*p == '\0') return XST_FAILURE; // Emtpy String
+    if (*p == '\0') return XST_FAILURE; // Empty String
     if (p[0] == '0' && (p[1] == 'x' || p[1] == 'X')) p += 2;
     while ((*p >= '0' && *p <= '9') ||
            (*p >= 'a' && *p <= 'f') ||

@@ -90,7 +90,7 @@ _@author: Thomas Schiergl_
 Um ein animiertes Bild zu erzeugen werden nach einer ausgewählten Strategie Startwerte auf die Pixel verteilt.
 Dafür werden z_0 und c Werte festgelegt.
 Je nach Modus erfüllen diese unterschiedliche Eigenschaften.
-Die Modi sowie die zughörigen Einstellungen können via AXI Lite konfiguriert werden.
+Die Modi sowie die zugehörigen Einstellungen können via AXI Lite konfiguriert werden.
 Die genaueren Beschreibungen der dafür notwendigen Register sind in der entsprechenden [Registerbeschreibung](./Registerbeschreibungen/Initialwerterzeugung/) genauer beschrieben.
 
 _@author: Markus Remy_
@@ -170,7 +170,7 @@ _@author: Markus Remy_
 
 Der Dispatcher verteilt eingehende Startwerte für die Berechnung auf die Cores.
 Da aufgrund Einschränkungen in der Konfiguration die asynchronen FIFOs nicht direkt vor den Cores platziert werden konnten, muss er davor platziert werden.
-Damit ist der Dispatcher in der Clock Domaine der Cores und muss entprechend hoch getaktet werden können.
+Damit ist der Dispatcher in der Clock Domaine der Cores und muss entsprechend hoch getaktet werden können.
 Es wurden verschiedene Ansätze getestet um eine möglichst hohe Taktfrequenz zu erreichen.
 
 _@author: Markus Remy_
@@ -235,7 +235,7 @@ Dabei werden Festkommazahlen im Format 3.15 verwendet um die DSP des FPGA mögli
 
 Bei der Berechnung der Mandelbrot Gleichung entstehen Ergebnisse mit Bitbreiten bis zu 39 Bit.
 Diese müssen wieder auf die 18 Bit der 3.15 Bit Festkommazahlen gebracht werden um für die nächste Iteration als Startwert verwendet werden zu können.
-Dabei wird sowohl der Ganzzahlanteil als auch der Nachkommanateil um einige Bits gekürzt, was zu Ungenauigkeiten in der Berechnung führt.
+Dabei wird sowohl der Ganzzahlanteil als auch der Nachkommaanteil um einige Bits gekürzt, was zu Ungenauigkeiten in der Berechnung führt.
 Diese Abweichung beeinflusst das Ergebnis besonders bei Folgen mit vielen Iterationen bis zum Abbruch.
 Dementsprechend kann und wird die Iterationsanzahl teilweise vom Idealwert abweichen.
 Eine mögliche Alternative wären Gleitkommazahlen, die aber auf dem FPGA sehr aufwendig umzusetzen sind und zusätzlich langsamer wären, da die DSPs keine Gleitkommaoperationen unterstützen.
@@ -319,7 +319,7 @@ Somit wird an jeder möglichen Stelle BRAM gespart.
 Dementsprechend muss auch bei dem Framebuffer entsprechend gehandelt werden.
 Es werden also nur 9 Bit für die Iterationsanzahl und das Konvergenzflag pro Pixel gespeichert anstelle der Farben.
 Mit den Daten wird dann zum Zeitpunkt der Ausgabe des Pixels in der Farbcodierung die Farbe ermittelt und ausgegeben.
-Zusätzlich wurde die Addressierung dicht gewählt, sodass die BRAMs voll ausgelastet sind.
+Zusätzlich wurde die Adressierung dicht gewählt, sodass die BRAMs voll ausgelastet sind.
 
 _@author: Markus Remy_
 
@@ -340,9 +340,9 @@ _@author: Markus Remy_
 #### 9.1.3 Farbcodierung
 
 Für die Farbcodierung wurde ein True Dual Port BRAM gewählt, bei dem das PS (Processing System) über einen BRAM Controller und AXIL auf den einen Port zugreift und die PL (Programmable Logic) über den anderen.
-Dabei entsprechen die ersten 256 Addressen den Farben für die jeweilige Iteration.
-Die folgenden drei Addressen sind in der genannten Reihenfolge für die Konvergenten Pixel, die Minimap C Koordinaten und das Ziel der Minimap C Koordinaten.
-Die Farben werden dabei je Addresse in den unteren 24 der 32 Bit kodiert.
+Dabei entsprechen die ersten 256 Adressen den Farben für die jeweilige Iteration.
+Die folgenden drei Adressen sind in der genannten Reihenfolge für die Konvergenten Pixel, die Minimap C Koordinaten und das Ziel der Minimap C Koordinaten.
+Die Farben werden dabei je Adresse in den unteren 24 der 32 Bit kodiert.
 Die niederwertigsten acht Bit sind dabei rot, die folgenden grün und die höchstwertigen acht blau.
 Die verbleibenden Bits sind Padding und werden von der PL nicht ausgelesen.
 
@@ -376,7 +376,7 @@ _@author: Markus Remy_
 
 #### 9.3.1 Spiegelung der Anzeige
 
-Der erste nach der Inbetriebnahme auffalende Fehler ist die Spiegelung der Anzeige.
+Der erste nach der Inbetriebnahme auffallende Fehler ist die Spiegelung der Anzeige.
 Dieser Umstand tritt jedoch nur auf, wenn der 8 Bit Pixelabstand 128 oder größer gewählt wurde.
 Damit liegt nahe, dass es einen Überlauf gibt.
 Dieser wurde schnell in der Hardware identifiziert.
@@ -403,7 +403,7 @@ _@author: Markus Remy_
 #### 9.3.3 Minimap - Visualisierung
 
 Die Minimap wurde anfangs mit einem Punkt für den Zielwert sowie für den aktuellen Wert entwickelt.
-Jedoch irritiert diese Darstellung besondern im LFSR Modus, da der Zielpunkt nicht erreicht wird, sondern nur die beiden Achsen.
+Jedoch irritiert diese Darstellung besonders im LFSR Modus, da der Zielpunkt nicht erreicht wird, sondern nur die beiden Achsen.
 Deshalb wurde die Darstellung so geändert, dass nur der aktuelle Punkt ein Punkt ist und der Zielwert als Fadenkreuz dargestellt wird.
 Dies bildet das reale Verhalten besser ab, da auch die Achsen für den LFSR Modus abgebildet werden.
 

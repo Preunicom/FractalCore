@@ -72,7 +72,7 @@ typedef void (*CTRL_AppHandlerFpType) (void *CallBackRef);
 
 typedef struct {
 	CTRL_Config Config; //core config using the _g-file mechanism
- 	UINTPTR BaseAddress;	 /**< Base address of registers */ //already in CTRL_Config, however replicate/buffer it here to avoid costly indirect access in the follwing
+ 	UINTPTR BaseAddress;	 /**< Base address of registers */ //already in CTRL_Config, however replicate/buffer it here to avoid costly indirect access in the following
 	CTRL_AppHandlerFpType AppHandler; /**< Callback function */ 
 	void *CallBackRef;	 /**< Callback reference for handler  (AT_Data* instanceptr)*/
 } CTRL_Data; //config data; insert additional required (config) data in this struct
@@ -102,7 +102,7 @@ uint32_t _CTRL_GetValue(CTRL_Data *InstancePtr, uint32_t register_offset);
 
 /************************** Function Definitions ***************************/
 
-// ========== SETER ==========
+// ========== SETTER ==========
 #define CTRL_SetAnimationSpeed(InstancePtr, value) \
 	_CTRL_SetValue((InstancePtr), SPECR_ADDR_OFFSET, ((value) & SPECR_DP_MASK))
 
@@ -130,7 +130,7 @@ uint32_t _CTRL_GetValue(CTRL_Data *InstancePtr, uint32_t register_offset);
 #define CTRL_SetPixelDistance(InstancePtr, value) \
 	_CTRL_SetValue((InstancePtr), ZOMCR_ADDR_OFFSET, ((value) & ZOMCR_DS_MASK))
 
-// ========== GETER ==========
+// ========== GETTER ==========
 #define CTRL_GetId(InstancePtr) \
 	_CTRL_GetValue((InstancePtr), IDR_ADDR_OFFSET)
 

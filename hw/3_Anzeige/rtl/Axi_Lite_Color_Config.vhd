@@ -128,7 +128,7 @@ architecture Behavioral of AXI_Lite_Color_Config is
 	signal byte_index	: integer;
 	signal aw_en		: std_logic;
 
-	--Register Adresses
+	--Register Addresses
 	constant COLOR_SCHEME_ADDR	: std_logic_vector(OPT_MEM_ADDR_BITS downto 0) := x"0"; -- offset x"00"
 	
 begin

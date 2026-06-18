@@ -76,7 +76,7 @@ foreach tb $tb_files {
 
     set test_passed [get_value /$top_name/tb_test_passed]
     if {$test_passed eq "TRUE"} {
-        puts "INFO: TEST SUCCESSFULL"
+        puts "INFO: TEST SUCCESSFUL"
     } else {
         puts "ERROR: VHDL Assertion Failure detected for $tb"
         set exit_code 1

@@ -62,7 +62,7 @@ module Initialwerterzeugung_TB();
   parameter ZOMCR_ADDR              = 6'h03C;
   parameter ZOMCR_DH_MASK           = 32'h000000FF;
   
-  //BUFFER DEFINTIONS (not used so far)
+  //BUFFER DEFINITIONS (not used so far)
 
   //FURTHER DEFINITIONS
   VIP_AXIL_Initialwerterzeugung_TB_axi_vip_0_0_mst_t mst_ctrl_agent; // check instance name in block design (<blockdesign-name>_<vip-inst-name>_0_mst_t)
@@ -72,7 +72,7 @@ module Initialwerterzeugung_TB();
 
 
   //--------------------------------------------------------------------------------------
-  //SYSTEM DEFINTION (system instances and signals)
+  //SYSTEM DEFINITION (system instances and signals)
   //CLK
   logic i_aclk_0 = 0;
   initial begin: AP_CLK
@@ -102,7 +102,7 @@ module Initialwerterzeugung_TB();
   logic [38:0] o_highlight_ch2_0;
   logic [38:0] o_highlight_ch3_0;
 
-  //check instance name in block design -> <blockdeisgn_name>_wrapper 
+  //check instance name in block design -> <blockdesign_name>_wrapper 
   VIP_AXIL_Initialwerterzeugung_TB_wrapper DUT( // TODO: Check signals!
     .i_aclk_0(i_aclk_0),
     .i_aresetn_0(i_aresetn_0),

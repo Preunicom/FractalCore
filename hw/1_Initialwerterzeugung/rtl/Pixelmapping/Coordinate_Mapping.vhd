@@ -110,7 +110,7 @@ begin
         end if;
     end process;
 
-    -- Calculates the final value for the coordinates (mini map as well es normal mode)
+    -- Calculates the final value for the coordinates (mini map as well as normal mode)
     OUTPUT: process(i_clk)
 	begin
         if rising_edge(i_clk) then

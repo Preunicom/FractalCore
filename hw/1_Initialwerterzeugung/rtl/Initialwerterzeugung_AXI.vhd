@@ -136,7 +136,7 @@ architecture arch_imp of Initialwerterzeugung_AXI is
 	signal byte_index	: integer;
 	signal aw_en		: std_logic;
 
-	--Register Adresses
+	--Register Addresses
 	constant GSCR_ADDR	: std_logic_vector(OPT_MEM_ADDR_BITS downto 0) := x"0"; -- offset x"00"
 	constant GIER_ADDR	: std_logic_vector(OPT_MEM_ADDR_BITS downto 0) := x"1"; -- offset x"04"
 	constant IPIER_ADDR	: std_logic_vector(OPT_MEM_ADDR_BITS downto 0) := x"2"; -- offset x"08"

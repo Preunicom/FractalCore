@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 05/26/2026 02:25:54 PM
 -- Design Name: 
--- Module Name: TB_Axis_FIOF_MUX_Reader - Behavioral
+-- Module Name: TB_Axis_FIFO_MUX_Reader - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 

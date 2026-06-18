@@ -115,7 +115,7 @@ begin
         wait;
     end process;
 
-    -- Checks all time for load (sets finished after the first successfull check of an loaded data)
+    -- Checks all time for load (sets finished after the first successful check of an loaded data)
     CHECK_LOAD: process
 	begin
         wait until s_resetn = '1';
