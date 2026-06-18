@@ -75,13 +75,27 @@ _@author: Markus Remy_
 
 ## 1. MicroBlaze
 
-TODO @Thomas
+Der MicroBlaze übernimmt im System die Laufzeitkonfiguration der Hardwarekomponenten.
+Dazu startet die Software zunächst die Plattform, initialisiert den Treiber für die Initialwerterzeugung und führt einen einfachen Register-Selbsttest aus.
+Anschließend werden Defaultwerte geladen, sodass direkt nach dem Start ein gültiges Bild erzeugt wird.
+
+Die Initialwerterzeugung wird vom MicroBlaze über AXI Lite Register gesteuert.
+Über den Treiber können unter anderem der Fraktalmodus, die Animationsgeschwindigkeit, die Schrittweite, der Zoom, die LFSR-Parameter und die Diamond-Parameter gesetzt werden.
+Für die Farbcodierung schreibt der MicroBlaze ebenfalls per speicherabgebildetem Registerzugriff das gewünschte Farbschema in das Farbkonfigurationsmodul.
+Damit kann die Darstellung zur Laufzeit geändert werden, ohne die FPGA-Logik neu zu synthetisieren.
 
 _@author: Thomas Schiergl_
 
 ## 2. UART Schnittstelle
 
-TODO @Thomas
+Die Bedienung erfolgt über eine einfache UART-Konsole.
+Nach dem Start gibt die Software ein Menü aus und wartet am Prompt `fractal>` auf Befehle.
+Die Eingabe wird zeilenweise gelesen, per UART zurückgeschrieben und unterstützt einfache Korrekturen mit Backspace.
+
+Im Hauptmenü können die Farbschemata `gray`, `color`, `bw` und `fire` ausgewählt oder mit `read` abgefragt werden.
+Zusätzlich verzweigen die Befehle `11` bis `18` in Untermenüs für die Initialwerterzeugung.
+Dort lassen sich beispielsweise Mandelbrot, Julia Diamond oder Julia LFSR auswählen sowie Animationsgeschwindigkeit, Zoom, LFSR-Seeds, XOR-Masken und Diamond-Breite bzw. -Höhe konfigurieren.
+In den Untermenüs führt `q` wieder zurück zum Hauptmenü.
 
 _@author: Thomas Schiergl_
 
