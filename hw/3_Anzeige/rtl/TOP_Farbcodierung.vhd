@@ -106,7 +106,7 @@ architecture Behavioral of Top_Farbcodierung is
     signal r_delay_visible_sync_buf : std_logic := '0';
 
     signal r_read_select_vga      : std_logic := '0';
-    signal r_frame_start_seen     : std_logic := '0';
+    signal w_last_vsync_vga_out   : std_logic := '1';
     signal r_read_select_meta     : std_logic := '0';
     signal r_read_select_calc     : std_logic := '0';
 
@@ -225,14 +225,11 @@ begin
         if rising_edge(i_pixel_clk) then
             if i_pixel_rstn = '0' then
                 r_read_select_vga  <= '0';
-                r_frame_start_seen <= '0';
+                w_last_vsync_vga_out <= '1';
             else
-                if w_x_vga_out = C_ZERO_X and w_y_vga_out = C_ZERO_Y then
-                    if r_frame_start_seen = '0' then
-                        r_frame_start_seen <= '1';
-                    else
-                        r_read_select_vga <= not r_read_select_vga;
-                    end if;
+                w_last_vsync_vga_out <= w_vsync_vga_out;
+                if w_last_vsync_vga_out = '1' and w_vsync_vga_out = '0' then
+                    r_read_select_vga <= not r_read_select_vga;
                 end if;
             end if;
         end if;
