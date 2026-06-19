@@ -60,13 +60,29 @@
 | |  |  |  |
 | 25.05.2026 | 6 | 4 | Multiplexer + TB Multiplexer |
 | 27.05.2026 | 8 | 1 | Team-Meeting |
+| 30.05.2026 | 6 | 4 | Multiplexer + Axi |
 | |  |  |  |
-| **KW 22** | **-** | **117** | **Zwischensumme** |
+| **KW 22** | **-** | **121** | **Zwischensumme** |
 | |  |  |  |
-| 30.05.2026 | 6 | 4 |  |
-| 01.06.2026 | 6 | 6 |  |
+| 01.06.2026 | 6 | 6 | Axi |
+| 03.06.2026 | 6 | 4 | Integration |
 | |  |  |  |
-| **KW 23** | **-** | **127** | **Zwischensumme** |
+| **KW 23** | **-** | **131** | **Zwischensumme** |
+| |  |  |  |
+| 08.06.2026 | 6 | 7 | Konfiguration |
+| 09.06.2026 | 6 | 6 | Updating Testbenches |
+| 10.06.2026 | 6 | 4 | Updating Testbenches |
+| |  |  |  |
+| **KW 24** | **-** | **148** | **Zwischensumme** |
+| |  |  |  |
+| 14.06.2026 | 6 | 4 | Dokumentation |
+| |  |  |  |
+| **KW 25** | **-** | **152** | **Zwischensumme** |
+| |  |  |  |
+| 16.06.2026 | 6 | 2 | Dokumentation |
+| 17.06.2026 | 6 | 5 | Testbenches + Team-Meeting |
+| |  |  |  |
+| **KW 25** | **-** | **159** | **Zwischensumme** |
 | |  |  |  |
 
 

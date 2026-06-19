@@ -1,0 +1,267 @@
+----------------------------------------------------------------------------------
+-- Company: OTH Regensburg
+-- Engineer: Thomas Schiergl
+-- 
+-- Create Date: 
+-- Design Name: 
+-- Module Name: TB_Axi_Lite_Color_Config - Testbench
+-- Project Name: FractalCore
+-- Target Devices: Arty A7 100T
+-- Tool Versions: 2023.2
+-- Description: 
+-- 
+-- Dependencies: 
+-- 
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
+-- 
+----------------------------------------------------------------------------------
+
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+use std.env.finish;
+
+entity TB_Axi_Lite_Color_Config is
+end TB_Axi_Lite_Color_Config;
+
+architecture Testbench of TB_Axi_Lite_Color_Config is
+    constant tbase : time := 10 ns;
+
+    constant AXI_DATA_WIDTH : integer := 32;
+    constant AXI_ADDR_WIDTH : integer := 6;
+
+    signal clk     : std_logic := '0';
+    signal clk_vga : std_logic := '0';
+    signal resetn  : std_logic := '0';
+
+    signal o_color_scheme : std_logic_vector(1 downto 0);
+
+    signal awaddr  : std_logic_vector(AXI_ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal awprot  : std_logic_vector(2 downto 0) := (others => '0');
+    signal awvalid : std_logic := '0';
+    signal awready : std_logic;
+
+    signal wdata  : std_logic_vector(AXI_DATA_WIDTH-1 downto 0) := (others => '0');
+    signal wstrb  : std_logic_vector((AXI_DATA_WIDTH/8)-1 downto 0) := (others => '0');
+    signal wvalid : std_logic := '0';
+    signal wready : std_logic;
+
+    signal bresp  : std_logic_vector(1 downto 0);
+    signal bvalid : std_logic;
+    signal bready : std_logic := '0';
+
+    signal araddr  : std_logic_vector(AXI_ADDR_WIDTH-1 downto 0) := (others => '0');
+    signal arprot  : std_logic_vector(2 downto 0) := (others => '0');
+    signal arvalid : std_logic := '0';
+    signal arready : std_logic;
+
+    signal rdata  : std_logic_vector(AXI_DATA_WIDTH-1 downto 0);
+    signal rresp  : std_logic_vector(1 downto 0);
+    signal rvalid : std_logic;
+    signal rready : std_logic := '0';
+
+    signal tb_test_done   : boolean := false;
+    signal tb_test_passed : boolean := false;
+
+begin
+
+    clk     <= not clk after tbase / 2;
+    clk_vga <= not clk_vga after tbase / 2;
+
+    uut: entity work.Axi_Lite_Color_Config
+        generic map (
+            C_S_AXI_DATA_WIDTH => AXI_DATA_WIDTH,
+            C_S_AXI_ADDR_WIDTH => AXI_ADDR_WIDTH
+        )
+        port map (
+            i_clk_vga      => clk_vga,
+            o_color_scheme => o_color_scheme,
+
+            S_AXI_ACLK    => clk,
+            S_AXI_ARESETN => resetn,
+
+            S_AXI_AWADDR  => awaddr,
+            S_AXI_AWPROT  => awprot,
+            S_AXI_AWVALID => awvalid,
+            S_AXI_AWREADY => awready,
+
+            S_AXI_WDATA  => wdata,
+            S_AXI_WSTRB  => wstrb,
+            S_AXI_WVALID => wvalid,
+            S_AXI_WREADY => wready,
+
+            S_AXI_BRESP  => bresp,
+            S_AXI_BVALID => bvalid,
+            S_AXI_BREADY => bready,
+
+            S_AXI_ARADDR  => araddr,
+            S_AXI_ARPROT  => arprot,
+            S_AXI_ARVALID => arvalid,
+            S_AXI_ARREADY => arready,
+
+            S_AXI_RDATA  => rdata,
+            S_AXI_RRESP  => rresp,
+            S_AXI_RVALID => rvalid,
+            S_AXI_RREADY => rready
+        );
+
+    STIMULI : process
+        procedure tick is
+        begin
+            wait until rising_edge(clk);
+            wait for 1 ns;
+        end procedure;
+
+        procedure wait_vga_ticks(constant count : in integer) is
+        begin
+            for i in 1 to count loop
+                wait until rising_edge(clk_vga);
+            end loop;
+            wait for 1 ns;
+        end procedure;
+
+        procedure axi_write(
+            constant addr : in std_logic_vector(AXI_ADDR_WIDTH-1 downto 0);
+            constant data : in std_logic_vector(AXI_DATA_WIDTH-1 downto 0);
+            constant strb : in std_logic_vector((AXI_DATA_WIDTH/8)-1 downto 0)
+        ) is
+        begin
+            awaddr  <= addr;
+            wdata   <= data;
+            wstrb   <= strb;
+            awvalid <= '1';
+            wvalid  <= '1';
+            bready  <= '1';
+
+            loop
+                tick;
+                exit when awready = '1' and wready = '1';
+            end loop;
+            
+            tick;
+
+            awvalid <= '0';
+            wvalid  <= '0';
+
+            loop
+                exit when bvalid = '1';
+                tick;
+            end loop;
+
+            assert bresp = "00"
+                report "AXI write response falsch"
+                severity failure;
+
+            tick;
+            bready <= '0';
+        end procedure;
+
+        procedure axi_read(
+            constant addr     : in std_logic_vector(AXI_ADDR_WIDTH-1 downto 0);
+            constant expected : in std_logic_vector(AXI_DATA_WIDTH-1 downto 0);
+            constant msg      : in string
+        ) is
+        begin
+            araddr  <= addr;
+            arvalid <= '1';
+            rready  <= '1';
+
+            loop
+                tick;
+                exit when arready = '1';
+            end loop;
+            
+            tick;
+
+            arvalid <= '0';
+
+            loop
+                exit when rvalid = '1';
+                tick;
+            end loop;
+
+            assert rresp = "00"
+                report "AXI read response falsch"
+                severity failure;
+
+            assert rdata = expected
+                report msg
+                severity failure;
+
+            tick;
+            rready <= '0';
+        end procedure;
+
+    begin
+        resetn <= '0';
+        tick;
+        tick;
+        wait_vga_ticks(2);
+
+        resetn <= '1';
+        tick;
+        wait_vga_ticks(2);
+
+        assert o_color_scheme = "00"
+            report "Resetwert von o_color_scheme falsch"
+            severity failure;
+
+        axi_write("000000", x"00000003", "0001");
+
+        wait_vga_ticks(3);
+
+        assert o_color_scheme = "11"
+            report "o_color_scheme nach Write 3 falsch"
+            severity failure;
+
+        axi_read("000000", x"00000003", "Register Readback falsch");
+
+        axi_write("000000", x"00000002", "0000");
+
+        wait_vga_ticks(3);
+
+        assert o_color_scheme = "11"
+            report "Register darf sich bei WSTRB=0000 nicht aendern"
+            severity failure;
+
+        axi_write("000100", x"00000001", "0001");
+
+        wait_vga_ticks(3);
+
+        assert o_color_scheme = "11"
+            report "Ungueltige Adresse darf Register nicht aendern"
+            severity failure;
+
+        axi_read("000100", x"00000000", "Ungueltige Adresse sollte 0 lesen");
+
+        tb_test_done <= true;
+        wait;
+    end process;
+
+    CHECK_PROC : process
+    begin
+        wait until tb_test_done = true;
+
+        report "TEST PASSED!" severity note;
+        tb_test_passed <= true;
+
+        wait for tbase;
+        finish;
+    end process;
+
+    TIMEOUT_PROC : process
+    begin
+        wait for 10000*tbase;
+
+        if tb_test_passed = false then
+            assert false
+                report "TEST TIMED OUT!"
+                severity failure;
+        end if;
+
+        wait;
+    end process;
+
+end Testbench;

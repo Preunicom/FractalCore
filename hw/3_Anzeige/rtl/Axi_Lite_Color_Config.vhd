@@ -22,7 +22,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
-entity AXI_Lite_Color_Config is
+entity Axi_Lite_Color_Config is
     generic (
         C_S_AXI_DATA_WIDTH	: integer	:= 32;
 		C_S_AXI_ADDR_WIDTH	: integer	:= 6
@@ -92,9 +92,9 @@ entity AXI_Lite_Color_Config is
     		-- accept the read data and response information.
 		S_AXI_RREADY	: in std_logic
     );
-end AXI_Lite_Color_Config;
+end Axi_Lite_Color_Config;
 
-architecture Behavioral of AXI_Lite_Color_Config is
+architecture Behavioral of Axi_Lite_Color_Config is
     signal r_cdc_color_scheme : std_logic_vector(1 downto 0);
 
     -- AXI4LITE signals

@@ -51,8 +51,8 @@ architecture Behavioral of Axis_FIFO_MUX_Reader is
     signal selected_tvalid : std_logic;
 
 begin
-    selected_tdata <= s0_axis_tdata when i_read_select = '0' else s1_axis_tdata;
 
+    selected_tdata <= s0_axis_tdata when i_read_select = '0' else s1_axis_tdata;
     selected_tvalid <= s0_axis_tvalid when i_read_select = '0' else s1_axis_tvalid;
 
     s0_axis_tready <= '1' when i_read_select = '0' else '0';

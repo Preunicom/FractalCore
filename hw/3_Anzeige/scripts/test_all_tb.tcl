@@ -64,17 +64,17 @@ foreach tb $tb_files {
     puts "------------------------------------------------------------"
 
     # Reset simulation environment
-    reset_simulation
+    reset_simulation -quiet
 
     set top_name [file rootname [file tail $tb]]
     set_property top $top_name [get_filesets sim_1]
 
-    update_compile_order -fileset sim_1
+    update_compile_order -fileset sim_1 -quiet
 
-    launch_simulation
+    launch_simulation -quiet
 
     # Restart simulation to also get asserts at the beginning which were already executed by launch_simulation.
-    restart
+    restart -quiet
 
     run -all
 
@@ -87,7 +87,7 @@ foreach tb $tb_files {
     }
 
     # Close simulation
-    close_sim -force
+    close_sim -force -quiet
 }
 
 puts "============================================================"
