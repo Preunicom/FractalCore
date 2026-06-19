@@ -422,7 +422,6 @@ void menu_status(CTRL_Data *ctrl) {
         mode_str = "Mandelbrot";
     }
 
-    uint32_t mm_state = CTRL_GetMinimapState(ctrl);
     uint32_t speed = CTRL_GetAnimationSpeed(ctrl);
     uint32_t dist = CTRL_GetPixelDistance(ctrl);
     uint32_t xor_re = CTRL_GetXorMaskLfsrRe(ctrl);
@@ -445,7 +444,7 @@ void menu_status(CTRL_Data *ctrl) {
     xil_printf("  Seed Imag factor:          0x%08X\n\r", seed_im);
     xil_printf("  Diamond width factor:      0x%08X\n\r", dw);
     xil_printf("  Diamond height factor:     0x%08X\n\r", dh);
-    xil_printf("  Minimap:                   %s\n\r", mm_state ? "On" : "Off");
+    xil_printf("  Minimap:                   Not available on Arty A7\n\r");
     xil_printf("================================\n\r");
     xil_printf("Press 'q' to continue.\n\r");
     do { c = menu_getkey(); } while (c != 'q' && c != 'Q');

@@ -2,7 +2,7 @@
 
 ## Generelles
 
-Das Fractal Core Projekt läuft auf dem Arty A7-100 und dem Arty Z7-20.
+Das Fractal Core Projekt läuft auf dem Arty A7-100 (branch: master) und dem Arty Z7-20 (branch: ArtyZ7/master).
 Das Arty A7 verwendet einen Pmod VGA zur Ausgabe des Videosignals während das Arty Z7 den integrierten HDMI Output verwendet.
 
 Um mehr Details über das Projekt zu erfahren klicken sie [hier](./docs/Docu.md).

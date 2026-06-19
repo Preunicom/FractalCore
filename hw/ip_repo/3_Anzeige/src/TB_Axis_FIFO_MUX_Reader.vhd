@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 05/26/2026 02:25:54 PM
 -- Design Name: 
--- Module Name: TB_Axis_FIOF_MUX_Reader - Behavioral
+-- Module Name: TB_Axis_FIFO_MUX_Reader - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -27,6 +27,7 @@ entity TB_Axis_FIFO_MUX_Reader is
 end TB_Axis_FIFO_MUX_Reader;
 
 architecture Testbench of TB_Axis_FIFO_MUX_Reader is
+    constant tbase : time := 10 ns;
 
     constant CLK_PERIOD : time := 10 ns;
 
@@ -46,7 +47,7 @@ architecture Testbench of TB_Axis_FIFO_MUX_Reader is
     signal o_fb_we      : std_logic;
     signal o_fb_wr_x    : std_logic_vector(9 downto 0);
     signal o_fb_wr_y    : std_logic_vector(8 downto 0);
-    signal o_fb_wr_data : std_logic_vector(7 downto 0);
+    signal o_fb_wr_data : std_logic_vector(8 downto 0);
 
     signal tb_test_done   : boolean := false;
     signal tb_test_passed : boolean := false;
@@ -86,14 +87,16 @@ begin
         -- FIFO0 lesen
         i_read_select <= '0';
 
-        s0_axis_tdata <= "00" & std_logic_vector(to_unsigned(5, 10)) &
-                         std_logic_vector(to_unsigned(3, 9)) &
-                         x"2A" & "000";
+        -- Layout: bit31=0 | bit30=fifo_select | X[29:20] | Y[19:11]
+        --         | highlight[10] | value[9:2] | pad[1:0]
+        s0_axis_tdata <= "0" & "0" & std_logic_vector(to_unsigned(5, 10)) &
+                         std_logic_vector(to_unsigned(3, 9)) & "0" &
+                         x"2A" & "00";
         s0_axis_tvalid <= '1';
 
-        s1_axis_tdata <= "01" & std_logic_vector(to_unsigned(20, 10)) &
-                         std_logic_vector(to_unsigned(9, 9)) &
-                         x"55" & "000";
+        s1_axis_tdata <= "0" & "1" & std_logic_vector(to_unsigned(20, 10)) &
+                         std_logic_vector(to_unsigned(9, 9)) & "0" &
+                         x"55" & "00";
         s1_axis_tvalid <= '1';
 
         wait for CLK_PERIOD;
@@ -120,7 +123,7 @@ begin
             report "Fehler: Y-Wert aus FIFO0 falsch"
             severity failure;
 
-        assert o_fb_wr_data = x"2A"
+        assert o_fb_wr_data =  "0" & x"2A"
             report "Fehler: Iterationswert aus FIFO0 falsch"
             severity failure;
 
@@ -152,7 +155,7 @@ begin
             report "Fehler: Y-Wert aus FIFO1 falsch"
             severity failure;
 
-        assert o_fb_wr_data = x"55"
+        assert o_fb_wr_data = "0" & x"55"
             report "Fehler: Iterationswert aus FIFO1 falsch"
             severity failure;
 
@@ -184,7 +187,7 @@ begin
 
     TIMEOUT_PROC : process
     begin
-        wait for 2 us;
+        wait for tbase*1000;
 
         if tb_test_passed = false then
             assert false

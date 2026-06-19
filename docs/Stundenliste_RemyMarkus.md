@@ -106,8 +106,9 @@
 | 15.06.2026 | 9 | 1 | Typo heigh -> height fixen |
 | 17.06.2026 | 9 | 1 | Abschlussteammeeting mit finaler Integration und letzten Fehlerbehebungen |
 | 18.06.2026 | 9 | 1 | Kommentare im Code prüfen |
+| 19.06.2026 | 9 | 3 | Finale Änderungen der Anzeige ins Gesamtsystem integrieren |
 | |  |  |  |
-| **KW 25** | **-** | **137** | **Zwischensumme** |
+| **KW 25** | **-** | **140** | **Zwischensumme** |
 | |  |  |  |
 
 

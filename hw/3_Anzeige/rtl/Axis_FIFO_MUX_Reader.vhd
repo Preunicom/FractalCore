@@ -69,9 +69,9 @@ begin
             else
                 if selected_tvalid = '1' then
                     o_fb_we <= '1';
-                    o_fb_wr_x <= selected_tdata(30 downto 21);
-                    o_fb_wr_y <= selected_tdata(20 downto 12);
-                    o_fb_wr_data <= selected_tdata(11 downto 3);
+                    o_fb_wr_x <= selected_tdata(29 downto 20);
+                    o_fb_wr_y <= selected_tdata(19 downto 11);
+                    o_fb_wr_data <= selected_tdata(10 downto 2);
                 else
                     o_fb_we <= '0';
                 end if;

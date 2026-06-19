@@ -1571,7 +1571,7 @@
       },
       "Anzeige_0": {
         "vlnv": "user.org:user:Anzeige:1.0",
-        "ip_revision": "1",
+        "ip_revision": "2",
         "xci_name": "FractalCore_Anzeige_0_0",
         "xci_path": "ip/FractalCore_Anzeige_0_0/FractalCore_Anzeige_0_0.xci",
         "inst_hier_path": "Anzeige_0",
@@ -1915,8 +1915,8 @@
           "Mengenberechnung_0/i_clk_init",
           "CDC_Synchronizer_0/i_clk_out",
           "Mengenberechnung_0/i_clk_calc",
-          "Anzeige_0/S_AXI_ACLK",
-          "Initialwerterzeugung_0/s00_axi_aclk"
+          "Initialwerterzeugung_0/s00_axi_aclk",
+          "Anzeige_0/S_AXI_ACLK"
         ]
       },
       "mig_7series_0_mmcm_locked": {
@@ -1987,8 +1987,8 @@
           "axi_uartlite_0/s_axi_aresetn",
           "microblaze_0_axi_periph/M02_ARESETN",
           "Mengenberechnung_0/i_resetn_init",
-          "Anzeige_0/S_AXI_ARESETN",
-          "Initialwerterzeugung_0/s00_axi_aresetn"
+          "Initialwerterzeugung_0/s00_axi_aresetn",
+          "Anzeige_0/S_AXI_ARESETN"
         ]
       },
       "rst_mig_7series_0_81M_peripheral_aresetn": {

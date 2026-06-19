@@ -87,14 +87,16 @@ begin
         -- FIFO0 lesen
         i_read_select <= '0';
 
-        s0_axis_tdata <= "0" & std_logic_vector(to_unsigned(5, 10)) &
+        -- Layout: bit31=0 | bit30=fifo_select | X[29:20] | Y[19:11]
+        --         | highlight[10] | value[9:2] | pad[1:0]
+        s0_axis_tdata <= "0" & "0" & std_logic_vector(to_unsigned(5, 10)) &
                          std_logic_vector(to_unsigned(3, 9)) & "0" &
-                         x"2A" & "000";
+                         x"2A" & "00";
         s0_axis_tvalid <= '1';
 
-        s1_axis_tdata <= "1" & std_logic_vector(to_unsigned(20, 10)) &
+        s1_axis_tdata <= "0" & "1" & std_logic_vector(to_unsigned(20, 10)) &
                          std_logic_vector(to_unsigned(9, 9)) & "0" &
-                         x"55" & "000";
+                         x"55" & "00";
         s1_axis_tvalid <= '1';
 
         wait for CLK_PERIOD;
