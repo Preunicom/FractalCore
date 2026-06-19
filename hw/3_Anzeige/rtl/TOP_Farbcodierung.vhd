@@ -268,36 +268,39 @@ begin
 
     AXI_LITE_CONF_i: entity work.AXI_Lite_Color_Config
         generic map (
-            AXI_DATA_WIDTH => C_S_AXI_DATA_WIDTH,
-            AXI_ADDR_WIDTH => C_S_AXI_ADDR_WIDTH
+            C_S_AXI_DATA_WIDTH => C_S_AXI_DATA_WIDTH,
+            C_S_AXI_ADDR_WIDTH => C_S_AXI_ADDR_WIDTH
         )
         port map (
+            i_clk_vga      => i_pixel_clk,
             o_color_scheme => w_color_scheme,
 
-            AXI_A_CLK    => S_AXI_ACLK,
-            AXI_A_RESETN => S_AXI_ARESETN,
+            S_AXI_ACLK    => S_AXI_ACLK,
+            S_AXI_ARESETN => S_AXI_ARESETN,
 
-            AXI_AW_ADDR => S_AXI_AWADDR,
-            AXI_AW_VALID => S_AXI_AWVALID,
-            AXI_AW_READY => S_AXI_AWREADY,
+            S_AXI_AWADDR  => S_AXI_AWADDR,
+            S_AXI_AWPROT  => S_AXI_AWPROT,
+            S_AXI_AWVALID => S_AXI_AWVALID,
+            S_AXI_AWREADY => S_AXI_AWREADY,
 
-            AXI_DW_DATA  => S_AXI_WDATA,
-            AXI_DW_STRB  => S_AXI_WSTRB,
-            AXI_DW_VALID => S_AXI_WVALID,
-            AXI_DW_READY => S_AXI_WREADY,
+            S_AXI_WDATA  => S_AXI_WDATA,
+            S_AXI_WSTRB  => S_AXI_WSTRB,
+            S_AXI_WVALID => S_AXI_WVALID,
+            S_AXI_WREADY => S_AXI_WREADY,
 
-            AXI_RW_RESP  => S_AXI_BRESP,
-            AXI_RW_VALID => S_AXI_BVALID,
-            AXI_RW_READY => S_AXI_BREADY,
+            S_AXI_BRESP  => S_AXI_BRESP,
+            S_AXI_BVALID => S_AXI_BVALID,
+            S_AXI_BREADY => S_AXI_BREADY,
 
-            AXI_AR_ADDR  => S_AXI_ARADDR,
-            AXI_AR_VALID => S_AXI_ARVALID,
-            AXI_AR_READY => S_AXI_ARREADY,
+            S_AXI_ARADDR  => S_AXI_ARADDR,
+            S_AXI_ARPROT  => S_AXI_ARPROT,
+            S_AXI_ARVALID => S_AXI_ARVALID,
+            S_AXI_ARREADY => S_AXI_ARREADY,
 
-            AXI_DR_DATA  => S_AXI_RDATA,
-            AXI_DR_RESP  => S_AXI_RRESP,
-            AXI_DR_VALID => S_AXI_RVALID,
-            AXI_DR_READY => S_AXI_RREADY
+            S_AXI_RDATA  => S_AXI_RDATA,
+            S_AXI_RRESP  => S_AXI_RRESP,
+            S_AXI_RVALID => S_AXI_RVALID,
+            S_AXI_RREADY => S_AXI_RREADY
         );
 
     FARB_COD_i: entity work.Farbcodierung
