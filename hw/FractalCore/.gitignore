@@ -8,8 +8,7 @@ constraints/**/*.*
 !bd/
 !bd/**
 bd/**/*.*
-!bd/**/*.bd
-!bd/**/ip/**/*.xci
+!bd/*/*.bd
 # IPs
 !ip/
 !ip/**

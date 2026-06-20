@@ -1,0 +1,61 @@
+\subsection{Setup Control Register (SETCR)}
+
+Address offset: \textbf{0x18}
+\newline
+Reset value: 0x0000 0000
+
+\begin{figure}[H]
+    \centering
+    \begin{bytefield}[bitwidth=\bflenhalfword, endianness=big]{16}
+        \bitheader[lsb=16]{16-31} \\
+        \bitbox{15}{Res} &
+        \bitbox{1}{MME} \\
+        \bitbox[]{15}{} &
+        \bitbox[]{1}{R/W}
+    \end{bytefield}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{bytefield}[bitwidth=\bflenhalfword, endianness=big]{16}
+        \bitheader{0-15} \\
+        \bitbox{7}{Res} &
+        \bitbox{1}{LD} &
+        \bitbox{6}{Res} &
+        \bitbox{2}{MODE} \\
+        \bitbox[]{7}{} &
+        \bitbox[]{1}{R/W} &
+        \bitbox[]{6}{} &
+        \bitbox[]{2}{R/W}
+    \end{bytefield}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Bit 31:17 - Reserved Bits}
+    \item \textbf{Bit 16 - MME - Minimap Enable} \\
+    (De-)Aktiviert die Minimap im Julia Modus.
+    \item \textbf{Bit 15:9 - Reserved Bits}
+    \item \textbf{Bit 8 - LD: Load LFSR Seeds} \\
+    Dieses Bit liest immer 0.
+    Schreiben des Bits auf 1 übernimmt die Seeds der beiden LFSRs (RE \& IM) für den LFSR Modus.
+    \item \textbf{Bit 7:2 - Reserved Bits}
+    \item \textbf{Bit 1:0 - MODE: Modus}\\
+    Auswahl des Modus entsprechend der folgenden Tabelle. \\ \\
+    \begin{tabular}{c|l}
+        MODE & Modus \\
+        \hline
+        00 & Diamond Modus \\
+        01 & LFSR Modus \\
+        1X & Mandelbrot Modus \\
+    \end{tabular}
+    \\ \\ \\
+    Im Diamond Modus wird als C der Julia Menge eine Raute mit den in DWCR und DHCR gesetzten Eckpunkten abgefahren.\\
+    Im LFSR Modus wird eine pseudozufällige Form abgefahren, deren Ecken durch zwei LFSR bestimmt werden.
+    Dabei wird getrennt für RE und IM je ein Zielwert durch ein LFSR bestimmt.
+    Ist der Wert einer Achse (RE/IM) erreicht, wird für die jeweilige Achse ein neuer Zielwert bestimmt durch shiften des LFSR.
+    Die LFSR können durch die Register LSICR, LSRCR, XMRCR, XMICR modifiziert werden.
+    Die LFSR schieben in Richtung MSB. \\ \\
+    Im Mandelbrot Modus wird statisch die Mandelbrotmenge angezeigt.
+    In diesem Modus ist die Minimap nicht verfügbar.
+\end{itemize}
+

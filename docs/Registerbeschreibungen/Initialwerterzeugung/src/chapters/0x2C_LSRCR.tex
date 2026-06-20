@@ -1,0 +1,32 @@
+\subsection{LFSR Seed RE Control Register (LSRCR)}
+
+Address offset: \textbf{0x2C}
+\newline
+Reset value: 0x0000 0001
+
+\begin{figure}[H]
+    \centering
+    \begin{bytefield}[bitwidth=\bflenhalfword, endianness=big]{16}
+        \bitheader[lsb=16]{16-31} \\
+        \bitbox{15}{Res} &
+        \bitbox{1}{SR} \\
+        \bitbox[]{15}{}
+        \bitbox[]{1}{R/W}
+    \end{bytefield}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{bytefield}[bitwidth=\bflenhalfword, endianness=big]{16}
+        \bitheader{0-15} \\
+        \bitbox{16}{SR} \\
+        \bitbox[]{16}{R/W}
+    \end{bytefield}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Bit 31:17 - Reserved Bits}
+    \item \textbf{Bit 16:0 - SR: LFSR Seed RE}\\
+    Dieses Register enthält den Seed für das LFSR des RE C Wertes im LFSR Julia Modus.
+    Der Wert wird übernommen, sobald das LD Bit im SETCR Register gesetzt wird.
+\end{itemize}

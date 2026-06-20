@@ -65,9 +65,9 @@
 | 27.04.2026 | 3.2.1.2 | 2 | Minimap Pixel Highlight Berechnung |
 | 27.04.2026 | 3.2.1.2 | 2 | Minimap Pixel Highlight Berechnung TB |
 | 29.04.2026 | 9 | 1 | Teambesprechung Initialwerte <-> VGA Overlay |
-| 01.05.2026 | 3.2.2 | 2 | Pipeline Design: C hinzufügen zu Pixeldaten |
-| 02.05.2026 | 3.2.2 | 6 | Start Value Mapping TB |
-| 03.05.2026 | 3.2.2 | 3 | Pixel Data Generation Pipeline + TB |
+| 01.05.2026 | 3.2.2.2 | 2 | Pipeline Design: C hinzufügen zu Pixeldaten |
+| 02.05.2026 | 3.2.2.2 | 6 | Start Value Mapping TB |
+| 03.05.2026 | 3.2.2.2 | 3 | Pixel Data Generation Pipeline + TB |
 | |  |  |  |
 | **KW 18** | **-** | **109** | **Zwischensumme** |
 | |  |  |  |
@@ -77,9 +77,38 @@
 | **KW 19** | **-** | **113** | **Zwischensumme** |
 | |  |  |  |
 | 13.05.2026 | 10 | 1 | AXIL Wrapper Initialwerterzeugung CDC |
-| 13.05.2026 | 3.2.1 | 3 | AXIL TB |
+| 13.05.2026 | 3.2.2.1 | 3 | AXIL TB |
 | |  |  |  |
 | **KW 20** | **-** | **117** | **Zwischensumme** |
+| |  |  |  |
+| 20.05.2026 | 9 | 1 | Teammeeting |
+| |  |  |  |
+| **KW 21** | **-** | **118** | **Zwischensumme** |
+| |  |  |  |
+| 27.05.2026 | 9 | 1 | Teammeeting |
+| 30.05.2026 | 9 | 1 | DDR für Microblaze und aktuelle IPs (Initialwerterzeugung & Mengenberechnung) erzeugen |
+| |  |  |  |
+| **KW 22** | **-** | **120** | **Zwischensumme** |
+| |  |  |  |
+| 03.06.2026 | 9 | 4 | HW Integration im Team |
+| |  |  |  |
+| **KW 23** | **-** | **124** | **Zwischensumme** |
+| |  |  |  |
+| 10.06.2026 | 9 | 2 | HW/SW Integration |
+| 11.06.2026 | 1.2 | 1 | CTRL Treiber integrieren von HDMI |
+| 11.06.2026 | 1.3 | 1 | CTRL Menü integrieren von HDMI |
+| 12.06.2026 | 9 | 3 | Build Skripte testen |
+| 14.06.2026 | 9 | 2 | Clk Pfade fixen |
+| |  |  |  |
+| **KW 24** | **-** | **133** | **Zwischensumme** |
+| |  |  |  |
+| 15.06.2026 | 9 | 1 | Clk Pfade fixen |
+| 15.06.2026 | 9 | 1 | Typo heigh -> height fixen |
+| 17.06.2026 | 9 | 1 | Abschlussteammeeting mit finaler Integration und letzten Fehlerbehebungen |
+| 18.06.2026 | 9 | 1 | Kommentare im Code prüfen |
+| 19.06.2026 | 9 | 3 | Finale Änderungen der Anzeige ins Gesamtsystem integrieren |
+| |  |  |  |
+| **KW 25** | **-** | **140** | **Zwischensumme** |
 | |  |  |  |
 
 
@@ -126,3 +155,54 @@
 8) Systementwurf & Schnittstellendefinition (15h)
 9) Systemintegration (20h)
 10) Clock Domains Crossing (20h)
+
+# Stundenliste Arty Z7-20 Portierung
+
+| Datum | Dauer [h] | Beschreibung | 
+|-------|-----------|--------------|
+| 15.05.2026 | 3 | Portieren der Projektstruktur auf den Arty Z7-20 und das Haupt-Block-Design auf Zynq |
+| 15.05.2026 | 1 | Erstellen FIFO IPs und Framebuffer |
+| 17.05.2026 | 3 | TB FIFO IP und TB Framebuffer |
+| |  |  |
+| **KW 20** | **7** | **Zwischensumme** |
+| |  |  |
+| 18.05.2026 | 1 | Result Frame Sorting + TB |
+| 18.05.2026 | 2 | Framebuffer Manager |
+| 19.05.2026 | 5 | VGA Control + Anzeige|
+| 19.05.2026 | 3 | VGA Control TB |
+| 20.05.2026 | 1 | VGA Control TB |
+| 20.05.2026 | 1 | Highlight Logik Implementierung |
+| 20.05.2026 | 2 | AXIL Color Buffer |
+| 20.05.2026 | 4 | AXIL Color Buffer TB (Probleme mit SV) |
+| 21.05.2026 | 1 | BRAM Optimierung (IP statt inferieren --> Halb so viele BRAMs) + CDC mit Grey Code |
+| 21.05.2026 | 1 | Top Level BD |
+| 21.05.2026 | 3 | Ports vereinheitlichen, Timing Analyse des Gesamtsystems |
+| 22.05.2026 | 6 | Reset Design, Projektstruktur und Tcl Skripte überarbeiten |
+| 23.05.2026 | 1 | Top Level Blockdesign überarbeiten |
+| 23.05.2026 | 2 | Bugsuche (Multiple Driven Signal) |
+| 24.05.2026 | 3 | Constraints setzen für CDC |
+| 24.05.2026 | 1 | Bug Fixes |
+| |  |  |
+| **KW 21** | **44** | **Zwischensumme** |
+| |  |  |
+| 25.05.2026 | 3 | Bug Fixes, Tests und Timing Verbesserungen |
+| 25.05.2026 | 3 | CI für Vitis |
+| 25.05.2026 | 2 | SW Treiber |
+| 26.05.2026 | 1 | BugFixed |
+| 26.05.2026 | 3 | Vibe Coded the menu structure and manually improved the code |
+| 26.05.2026 | 3 | Vorbereiten von Tests auf der Hardware |
+| 27.05.2026 | 10 | Tests auf echter Hardware + Bug fixes |
+| 28.05.2026 | 3 | Bug Fix (Overflow mit pixel distance, Minimapbereich zu klein, LFSR Werte zu groß) |
+| 28.05.2026 | 1 | Vibe Coded Farbschemata |
+| |  |  |
+| **KW 22** | **73** | **Zwischensumme** |
+| |  |  |
+| 02.06.2026 | 2 | Vitis CI Skript überarbeiten, Linker Skript zu Git hinzufügen und Tests |
+| 07.06.2026 | 2 | Tests auf Arty Z7-20 und Bug Fixes|
+| |  |  |
+| **KW 23** | **77** | **Zwischensumme** |
+| |  |  |
+| 08.06.2026 | 2 | Bug Fixes color scheme|
+| |  |  |
+| **KW 24** |  **79** | **Zwischensumme** |
+| |  |  |
