@@ -33,3 +33,4 @@ vivado.log
 !xilinx/
 !xilinx/vivado/
 !.gitkeep
+!.gitmodules
