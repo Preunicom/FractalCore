@@ -1,0 +1,746 @@
+{
+  "design": {
+    "design_info": {
+      "boundary_crc": "0xDFBA4D0578B0DF62",
+      "device": "xc7z020clg400-1",
+      "name": "VIP_AXIL_Anzeige_TB",
+      "rev_ctrl_bd_flag": "RevCtrlBdOff",
+      "synth_flow_mode": "None",
+      "tool_version": "2023.2",
+      "validated": "true"
+    },
+    "design_tree": {
+      "axi_vip_0": "",
+      "Anzeige_0": ""
+    },
+    "ports": {
+      "i_cycles_until_divergent_0": {
+        "direction": "I",
+        "left": "7",
+        "right": "0"
+      },
+      "i_is_convergent_0": {
+        "direction": "I"
+      },
+      "i_video_frame_idx_0": {
+        "direction": "I",
+        "left": "1",
+        "right": "0"
+      },
+      "i_video_pix_row_0": {
+        "direction": "I",
+        "left": "8",
+        "right": "0"
+      },
+      "i_video_pix_col_0": {
+        "direction": "I",
+        "left": "9",
+        "right": "0"
+      },
+      "i_valid_0": {
+        "direction": "I"
+      },
+      "o_ready_0": {
+        "direction": "O"
+      },
+      "o_vga_h_sync_0": {
+        "direction": "O"
+      },
+      "o_vga_v_sync_0": {
+        "direction": "O"
+      },
+      "o_vga_blank_0": {
+        "direction": "O"
+      },
+      "o_vga_red_0": {
+        "direction": "O",
+        "left": "7",
+        "right": "0"
+      },
+      "o_vga_green_0": {
+        "direction": "O",
+        "left": "7",
+        "right": "0"
+      },
+      "o_vga_blue_0": {
+        "direction": "O",
+        "left": "7",
+        "right": "0"
+      },
+      "i_vga_clk_0": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_RESET": {
+            "value": "i_vga_rstn"
+          },
+          "CLK_DOMAIN": {
+            "value": "VIP_AXIL_Anzeige_TB_i_vga_clk_0",
+            "value_src": "default"
+          },
+          "FREQ_HZ": {
+            "value": "100000000",
+            "value_src": "default"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
+      },
+      "i_vga_rstn": {
+        "type": "rst",
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_HIGH"
+          }
+        }
+      },
+      "i_axi_clk": {
+        "type": "clk",
+        "direction": "I",
+        "parameters": {
+          "ASSOCIATED_RESET": {
+            "value": "i_axi_rst_n",
+            "value_src": "default"
+          },
+          "CLK_DOMAIN": {
+            "value": "VIP_AXIL_Anzeige_TB_sim_clk_gen_1_0_clk"
+          },
+          "FREQ_HZ": {
+            "value": "100000000"
+          },
+          "FREQ_TOLERANCE_HZ": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "PHASE": {
+            "value": "0.0",
+            "value_src": "default"
+          }
+        }
+      },
+      "i_axi_rst_n": {
+        "type": "rst",
+        "direction": "I",
+        "parameters": {
+          "INSERT_VIP": {
+            "value": "0",
+            "value_src": "default"
+          },
+          "POLARITY": {
+            "value": "ACTIVE_LOW",
+            "value_src": "default"
+          }
+        }
+      },
+      "i_highlight_ch0_0": {
+        "direction": "I",
+        "left": "38",
+        "right": "0"
+      },
+      "i_highlight_ch1_0": {
+        "direction": "I",
+        "left": "38",
+        "right": "0"
+      },
+      "i_highlight_ch3_0": {
+        "direction": "I",
+        "left": "38",
+        "right": "0"
+      },
+      "i_highlight_ch2_0": {
+        "direction": "I",
+        "left": "38",
+        "right": "0"
+      }
+    },
+    "components": {
+      "axi_vip_0": {
+        "vlnv": "xilinx.com:ip:axi_vip:1.1",
+        "ip_revision": "15",
+        "xci_name": "VIP_AXIL_Anzeige_TB_axi_vip_0_0",
+        "xci_path": "ip/VIP_AXIL_Anzeige_TB_axi_vip_0_0/VIP_AXIL_Anzeige_TB_axi_vip_0_0.xci",
+        "inst_hier_path": "axi_vip_0",
+        "parameters": {
+          "ADDR_WIDTH": {
+            "value": "32"
+          },
+          "DATA_WIDTH": {
+            "value": "32"
+          },
+          "HAS_BRESP": {
+            "value": "1"
+          },
+          "HAS_PROT": {
+            "value": "1"
+          },
+          "HAS_RRESP": {
+            "value": "1"
+          },
+          "HAS_WSTRB": {
+            "value": "1"
+          },
+          "INTERFACE_MODE": {
+            "value": "MASTER"
+          },
+          "PROTOCOL": {
+            "value": "AXI4LITE"
+          },
+          "READ_WRITE_MODE": {
+            "value": "READ_WRITE"
+          }
+        },
+        "interface_ports": {
+          "M_AXI": {
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "mode": "Master",
+            "address_space_ref": "Master_AXI",
+            "base_address": {
+              "minimum": "0x00000000",
+              "maximum": "0xFFFFFFFF",
+              "width": "32"
+            }
+          }
+        },
+        "addressing": {
+          "address_spaces": {
+            "Master_AXI": {
+              "range": "4G",
+              "width": "32"
+            }
+          }
+        }
+      },
+      "Anzeige_0": {
+        "vlnv": "xilinx.com:module_ref:Anzeige:1.0",
+        "ip_revision": "1",
+        "xci_name": "VIP_AXIL_Anzeige_TB_Anzeige_0_1",
+        "xci_path": "ip/VIP_AXIL_Anzeige_TB_Anzeige_0_1/VIP_AXIL_Anzeige_TB_Anzeige_0_1.xci",
+        "inst_hier_path": "Anzeige_0",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "Anzeige",
+          "boundary_crc": "0x0"
+        },
+        "interface_ports": {
+          "s00_axi": {
+            "mode": "Slave",
+            "vlnv_bus_definition": "xilinx.com:interface:aximm:1.0",
+            "vlnv": "xilinx.com:interface:aximm_rtl:1.0",
+            "parameters": {
+              "DATA_WIDTH": {
+                "value": "32",
+                "value_src": "auto"
+              },
+              "PROTOCOL": {
+                "value": "AXI4LITE",
+                "value_src": "constant"
+              },
+              "FREQ_HZ": {
+                "value": "100000000",
+                "value_src": "user_prop"
+              },
+              "ID_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "ADDR_WIDTH": {
+                "value": "12",
+                "value_src": "auto"
+              },
+              "AWUSER_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "ARUSER_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "WUSER_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "RUSER_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "BUSER_WIDTH": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "READ_WRITE_MODE": {
+                "value": "READ_WRITE",
+                "value_src": "constant"
+              },
+              "HAS_BURST": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_LOCK": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_PROT": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "HAS_CACHE": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_QOS": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_REGION": {
+                "value": "0",
+                "value_src": "constant"
+              },
+              "HAS_WSTRB": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "HAS_BRESP": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "HAS_RRESP": {
+                "value": "1",
+                "value_src": "constant"
+              },
+              "SUPPORTS_NARROW_BURST": {
+                "value": "0",
+                "value_src": "auto"
+              },
+              "NUM_READ_OUTSTANDING": {
+                "value": "1",
+                "value_src": "auto"
+              },
+              "NUM_WRITE_OUTSTANDING": {
+                "value": "1",
+                "value_src": "auto"
+              },
+              "MAX_BURST_LENGTH": {
+                "value": "1",
+                "value_src": "auto"
+              },
+              "CLK_DOMAIN": {
+                "value": "VIP_AXIL_Anzeige_TB_sim_clk_gen_1_0_clk",
+                "value_src": "user_prop"
+              },
+              "RUSER_BITS_PER_BYTE": {
+                "value": "0",
+                "value_src": "user_prop"
+              },
+              "WUSER_BITS_PER_BYTE": {
+                "value": "0",
+                "value_src": "user_prop"
+              }
+            },
+            "memory_map_ref": "s00_axi",
+            "port_maps": {
+              "AWADDR": {
+                "physical_name": "s00_axi_awaddr",
+                "direction": "I",
+                "left": "11",
+                "right": "0"
+              },
+              "AWPROT": {
+                "physical_name": "s00_axi_awprot",
+                "direction": "I",
+                "left": "2",
+                "right": "0"
+              },
+              "AWVALID": {
+                "physical_name": "s00_axi_awvalid",
+                "direction": "I"
+              },
+              "AWREADY": {
+                "physical_name": "s00_axi_awready",
+                "direction": "O"
+              },
+              "WDATA": {
+                "physical_name": "s00_axi_wdata",
+                "direction": "I",
+                "left": "31",
+                "right": "0"
+              },
+              "WSTRB": {
+                "physical_name": "s00_axi_wstrb",
+                "direction": "I",
+                "left": "3",
+                "right": "0"
+              },
+              "WVALID": {
+                "physical_name": "s00_axi_wvalid",
+                "direction": "I"
+              },
+              "WREADY": {
+                "physical_name": "s00_axi_wready",
+                "direction": "O"
+              },
+              "BRESP": {
+                "physical_name": "s00_axi_bresp",
+                "direction": "O",
+                "left": "1",
+                "right": "0"
+              },
+              "BVALID": {
+                "physical_name": "s00_axi_bvalid",
+                "direction": "O"
+              },
+              "BREADY": {
+                "physical_name": "s00_axi_bready",
+                "direction": "I"
+              },
+              "ARADDR": {
+                "physical_name": "s00_axi_araddr",
+                "direction": "I",
+                "left": "11",
+                "right": "0"
+              },
+              "ARPROT": {
+                "physical_name": "s00_axi_arprot",
+                "direction": "I",
+                "left": "2",
+                "right": "0"
+              },
+              "ARVALID": {
+                "physical_name": "s00_axi_arvalid",
+                "direction": "I"
+              },
+              "ARREADY": {
+                "physical_name": "s00_axi_arready",
+                "direction": "O"
+              },
+              "RDATA": {
+                "physical_name": "s00_axi_rdata",
+                "direction": "O",
+                "left": "31",
+                "right": "0"
+              },
+              "RRESP": {
+                "physical_name": "s00_axi_rresp",
+                "direction": "O",
+                "left": "1",
+                "right": "0"
+              },
+              "RVALID": {
+                "physical_name": "s00_axi_rvalid",
+                "direction": "O"
+              },
+              "RREADY": {
+                "physical_name": "s00_axi_rready",
+                "direction": "I"
+              }
+            }
+          }
+        },
+        "ports": {
+          "i_valid": {
+            "direction": "I"
+          },
+          "i_video_pix_col": {
+            "direction": "I",
+            "left": "9",
+            "right": "0"
+          },
+          "i_video_pix_row": {
+            "direction": "I",
+            "left": "8",
+            "right": "0"
+          },
+          "i_video_frame_idx": {
+            "direction": "I",
+            "left": "1",
+            "right": "0"
+          },
+          "i_is_convergent": {
+            "direction": "I"
+          },
+          "i_cycles_until_divergent": {
+            "direction": "I",
+            "left": "7",
+            "right": "0"
+          },
+          "o_ready": {
+            "direction": "O"
+          },
+          "i_highlight_ch0": {
+            "direction": "I",
+            "left": "38",
+            "right": "0"
+          },
+          "i_highlight_ch1": {
+            "direction": "I",
+            "left": "38",
+            "right": "0"
+          },
+          "i_highlight_ch2": {
+            "direction": "I",
+            "left": "38",
+            "right": "0"
+          },
+          "i_highlight_ch3": {
+            "direction": "I",
+            "left": "38",
+            "right": "0"
+          },
+          "i_clk_vga": {
+            "direction": "I",
+            "parameters": {
+              "FREQ_HZ": {
+                "value": "100000000",
+                "value_src": "default_prop"
+              },
+              "PHASE": {
+                "value": "0.0",
+                "value_src": "default_prop"
+              },
+              "CLK_DOMAIN": {
+                "value": "VIP_AXIL_Anzeige_TB_i_vga_clk_0",
+                "value_src": "default_prop"
+              }
+            }
+          },
+          "i_rstn_vga": {
+            "direction": "I",
+            "parameters": {
+              "POLARITY": {
+                "value": "ACTIVE_HIGH",
+                "value_src": "user_prop"
+              }
+            }
+          },
+          "o_vga_h_sync": {
+            "direction": "O"
+          },
+          "o_vga_v_sync": {
+            "direction": "O"
+          },
+          "o_vga_blank": {
+            "direction": "O"
+          },
+          "o_vga_red": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          },
+          "o_vga_green": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          },
+          "o_vga_blue": {
+            "direction": "O",
+            "left": "7",
+            "right": "0"
+          },
+          "s00_axi_aclk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "ASSOCIATED_BUSIF": {
+                "value": "s00_axi",
+                "value_src": "constant"
+              },
+              "ASSOCIATED_RESET": {
+                "value": "s00_axi_aresetn",
+                "value_src": "constant"
+              },
+              "FREQ_HZ": {
+                "value": "100000000",
+                "value_src": "user_prop"
+              },
+              "CLK_DOMAIN": {
+                "value": "VIP_AXIL_Anzeige_TB_sim_clk_gen_1_0_clk",
+                "value_src": "user_prop"
+              }
+            }
+          },
+          "s00_axi_aresetn": {
+            "type": "rst",
+            "direction": "I",
+            "parameters": {
+              "POLARITY": {
+                "value": "ACTIVE_LOW",
+                "value_src": "constant"
+              }
+            }
+          }
+        }
+      }
+    },
+    "interface_nets": {
+      "axi_vip_0_M_AXI": {
+        "interface_ports": [
+          "axi_vip_0/M_AXI",
+          "Anzeige_0/s00_axi"
+        ]
+      }
+    },
+    "nets": {
+      "Anzeige_0_o_ready": {
+        "ports": [
+          "Anzeige_0/o_ready",
+          "o_ready_0"
+        ]
+      },
+      "Anzeige_0_o_vga_blank": {
+        "ports": [
+          "Anzeige_0/o_vga_blank",
+          "o_vga_blank_0"
+        ]
+      },
+      "Anzeige_0_o_vga_blue": {
+        "ports": [
+          "Anzeige_0/o_vga_blue",
+          "o_vga_blue_0"
+        ]
+      },
+      "Anzeige_0_o_vga_green": {
+        "ports": [
+          "Anzeige_0/o_vga_green",
+          "o_vga_green_0"
+        ]
+      },
+      "Anzeige_0_o_vga_h_sync": {
+        "ports": [
+          "Anzeige_0/o_vga_h_sync",
+          "o_vga_h_sync_0"
+        ]
+      },
+      "Anzeige_0_o_vga_red": {
+        "ports": [
+          "Anzeige_0/o_vga_red",
+          "o_vga_red_0"
+        ]
+      },
+      "Anzeige_0_o_vga_v_sync": {
+        "ports": [
+          "Anzeige_0/o_vga_v_sync",
+          "o_vga_v_sync_0"
+        ]
+      },
+      "i_cycles_until_divergent_0_1": {
+        "ports": [
+          "i_cycles_until_divergent_0",
+          "Anzeige_0/i_cycles_until_divergent"
+        ]
+      },
+      "i_highlight_ch0_0_1": {
+        "ports": [
+          "i_highlight_ch0_0",
+          "Anzeige_0/i_highlight_ch0"
+        ]
+      },
+      "i_highlight_ch1_0_1": {
+        "ports": [
+          "i_highlight_ch1_0",
+          "Anzeige_0/i_highlight_ch1"
+        ]
+      },
+      "i_highlight_ch2_0_1": {
+        "ports": [
+          "i_highlight_ch2_0",
+          "Anzeige_0/i_highlight_ch2"
+        ]
+      },
+      "i_highlight_ch3_0_1": {
+        "ports": [
+          "i_highlight_ch3_0",
+          "Anzeige_0/i_highlight_ch3"
+        ]
+      },
+      "i_is_convergent_0_1": {
+        "ports": [
+          "i_is_convergent_0",
+          "Anzeige_0/i_is_convergent"
+        ]
+      },
+      "i_valid_0_1": {
+        "ports": [
+          "i_valid_0",
+          "Anzeige_0/i_valid"
+        ]
+      },
+      "i_vga_clk_0_1": {
+        "ports": [
+          "i_vga_clk_0",
+          "Anzeige_0/i_clk_vga"
+        ]
+      },
+      "i_vga_rst_1": {
+        "ports": [
+          "i_vga_rstn",
+          "Anzeige_0/i_rstn_vga"
+        ]
+      },
+      "i_video_frame_idx_0_1": {
+        "ports": [
+          "i_video_frame_idx_0",
+          "Anzeige_0/i_video_frame_idx"
+        ]
+      },
+      "i_video_pix_col_0_1": {
+        "ports": [
+          "i_video_pix_col_0",
+          "Anzeige_0/i_video_pix_col"
+        ]
+      },
+      "i_video_pix_row_0_1": {
+        "ports": [
+          "i_video_pix_row_0",
+          "Anzeige_0/i_video_pix_row"
+        ]
+      },
+      "sim_clk_gen_1_AXI_clk": {
+        "ports": [
+          "i_axi_clk",
+          "Anzeige_0/s00_axi_aclk",
+          "axi_vip_0/aclk"
+        ]
+      },
+      "sim_clk_gen_1_AXI_sync_rst": {
+        "ports": [
+          "i_axi_rst_n",
+          "Anzeige_0/s00_axi_aresetn",
+          "axi_vip_0/aresetn"
+        ]
+      }
+    },
+    "addressing": {
+      "/axi_vip_0": {
+        "address_spaces": {
+          "Master_AXI": {
+            "segments": {
+              "SEG_Anzeige_0_reg0": {
+                "address_block": "/Anzeige_0/s00_axi/reg0",
+                "offset": "0x00000000",
+                "range": "4K"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

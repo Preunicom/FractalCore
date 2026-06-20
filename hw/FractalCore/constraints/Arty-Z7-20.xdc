@@ -4,8 +4,22 @@
 ## - rename the used ports (in each line, after get_ports) according to the top level signal names in the project
 
 ## Clock Signal
-#set_property -dict { PACKAGE_PIN H16    IOSTANDARD LVCMOS33 } [get_ports { i_clk }]; #IO_L13P_T2_MRCC_35 Sch=SYSCLK
-#create_clock -add -name sys_clk_pin -period 8.00 -waveform {0 4} [get_ports { i_clk }];#set
+set_property -dict { PACKAGE_PIN H16    IOSTANDARD LVCMOS33 } [get_ports { ext_clk }]; #IO_L13P_T2_MRCC_35 Sch=SYSCLK
+# create_clock -add -name ext_clk -period 8.00 -waveform {0 4} [get_ports { ext_clk }];
+
+# set_clock_groups -asynchronous -group [get_clocks ext_clk] -group [get_clocks clk_fpga_0];
+set_clock_groups -asynchronous -group [get_clocks -of_objects [get_pins FractalCore_i/Video_Clk_Gen/inst/mmcm_adv_inst/CLKOUT0]] -group [get_clocks clk_fpga_0];
+
+# Set FF to CDC mode --> Placed nearby to improve metastability resistance
+# CDC of reset (locked) signal
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_0/U0/r_buf_reg }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_0/U0/o_data_reg }];
+# CDC of VGA control signals
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Anzeige_0/U0/VGA_CTRL/FRAME_BUF_MANAGER/r_cdc_*_reg* }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Anzeige_0/U0/VGA_CTRL/FRAME_BUF_MANAGER/r_stable_*_reg* }];
+# CDC of highlight data
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Anzeige_0/U0/CDC_HIGHLIGHT/r_highlight_info_reg* }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Anzeige_0/U0/CDC_HIGHLIGHT/o_highlight_reg* }];
 
 ## Switches
 #set_property -dict { PACKAGE_PIN M20    IOSTANDARD LVCMOS33 } [get_ports { sw[0] }]; #IO_L7N_T1_AD2N_35 Sch=SW0
@@ -26,7 +40,7 @@
 #set_property -dict { PACKAGE_PIN M14    IOSTANDARD LVCMOS33 } [get_ports { led[3] }]; #IO_L23P_T3_35 Sch=LED3
 
 ## Buttons
-set_property -dict { PACKAGE_PIN D19    IOSTANDARD LVCMOS33 } [get_ports { sys_reset }]; #IO_L4P_T0_35 Sch=BTN0
+set_property -dict { PACKAGE_PIN D19    IOSTANDARD LVCMOS33 } [get_ports { ext_rst }]; #IO_L4P_T0_35 Sch=BTN0
 #set_property -dict { PACKAGE_PIN D20    IOSTANDARD LVCMOS33 } [get_ports { btn[1] }]; #IO_L4N_T0_35 Sch=BTN1
 #set_property -dict { PACKAGE_PIN L20    IOSTANDARD LVCMOS33 } [get_ports { btn[2] }]; #IO_L9N_T1_DQS_AD3N_35 Sch=BTN2
 #set_property -dict { PACKAGE_PIN L19    IOSTANDARD LVCMOS33 } [get_ports { btn[3] }]; #IO_L9P_T1_DQS_AD3P_35 Sch=BTN3
