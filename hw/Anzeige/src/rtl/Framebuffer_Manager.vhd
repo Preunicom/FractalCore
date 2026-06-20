@@ -125,11 +125,12 @@ architecture Behavioral of Framebuffer_Manager is
     signal r_is_lower_half_of_frame : std_logic;
     signal r_cdc_is_lower_half_of_frame : std_logic;
     signal r_stable_is_lower_half_of_frame : std_logic;
+    signal r_lower_half_of_frame_timed_with_decoded_frame_idx : std_logic;
 
     signal w_frame_idx_grey_code : std_logic_vector(1 downto 0);
     signal r_cdc_frame_idx_grey_code : std_logic_vector(1 downto 0);
     signal r_stable_frame_idx_grey_code : std_logic_vector(1 downto 0);
-    signal w_stable_frame_idx : std_logic_vector(1 downto 0);
+    signal r_stable_frame_idx : std_logic_vector(1 downto 0);
 
 begin
     PRESORTING: Result_Frame_Presorting
@@ -172,16 +173,16 @@ begin
         end if;
     end process;
 
-    NEXT_STATE_LOGIC: process(r_stable_is_lower_half_of_frame, w_stable_frame_idx(0))
+    NEXT_STATE_LOGIC: process(r_lower_half_of_frame_timed_with_decoded_frame_idx, r_stable_frame_idx(0))
     begin
-        if r_stable_is_lower_half_of_frame = '0' then
-            if w_stable_frame_idx(0) = '0' then
+        if r_lower_half_of_frame_timed_with_decoded_frame_idx = '0' then
+            if r_stable_frame_idx(0) = '0' then
                 r_nextstate <= s_FRAME_TOP_EVEN;
             else
                 r_nextstate <= s_FRAME_TOP_ODD;
             end if;
         else
-            if w_stable_frame_idx(0) = '0' then
+            if r_stable_frame_idx(0) = '0' then
                 r_nextstate <= s_FRAME_LOWER_EVEN;
             else
                 r_nextstate <= s_FRAME_LOWER_ODD;
@@ -191,7 +192,7 @@ begin
 
     -- The AXI Stream like handshake does not meet the AXI Stream specifications as its ready depends on the given data
     -- This is no problem in this case as it is designed to work with this dependency.
-    CONTROL_LOGIC: process(r_state, w_stable_frame_idx, w_f_X0_frame_idx, w_f_X0_valid, w_f_X0_col, w_f_X0_row, w_f_X0_data, w_f_X1_frame_idx, w_f_X1_valid, w_f_X1_col, w_f_X1_row, w_f_X1_data)
+    CONTROL_LOGIC: process(r_state, r_stable_frame_idx, w_f_X0_frame_idx, w_f_X0_valid, w_f_X0_col, w_f_X0_row, w_f_X0_data, w_f_X1_frame_idx, w_f_X1_valid, w_f_X1_col, w_f_X1_row, w_f_X1_data)
     begin
         w_f_X0_ready <= '0';
         w_f_X1_ready <= '0';
@@ -201,7 +202,7 @@ begin
         w_to_buf_data <= (others => '0');
         case r_state is
             when s_FRAME_TOP_EVEN =>
-                if w_f_X0_frame_idx = w_stable_frame_idx then
+                if w_f_X0_frame_idx = r_stable_frame_idx then
                     w_f_X0_ready <= '1';
                     w_to_buf_write_en <= w_f_X0_valid;
                     w_to_buf_col <= w_f_X0_col;
@@ -209,7 +210,7 @@ begin
                     w_to_buf_data <= w_f_X0_data;
                 end if;
             when s_FRAME_TOP_ODD => 
-                if w_f_X1_frame_idx = w_stable_frame_idx then
+                if w_f_X1_frame_idx = r_stable_frame_idx then
                     w_f_X1_ready <= '1';
                     w_to_buf_write_en <= w_f_X1_valid;
                     w_to_buf_col <= w_f_X1_col;
@@ -217,7 +218,7 @@ begin
                     w_to_buf_data <= w_f_X1_data;
                 end if;
             when s_FRAME_LOWER_EVEN =>
-                if w_f_X0_frame_idx = w_stable_frame_idx and w_f_X0_valid = '1' then
+                if w_f_X0_frame_idx = r_stable_frame_idx and w_f_X0_valid = '1' then
                     -- Current frame data available
                     w_f_X0_ready <= '1';
                     w_to_buf_write_en <= '1';
@@ -234,7 +235,7 @@ begin
                     w_to_buf_data <= w_f_X1_data;
                 end if;
             when s_FRAME_LOWER_ODD =>
-                if w_f_X1_frame_idx = w_stable_frame_idx and w_f_X1_valid = '1' then
+                if w_f_X1_frame_idx = r_stable_frame_idx and w_f_X1_valid = '1' then
                     -- Current frame data available
                     w_f_X1_ready <= '1';
                     w_to_buf_write_en <= '1';
@@ -312,6 +313,7 @@ begin
         if rising_edge(i_clk) then
             r_cdc_is_lower_half_of_frame <= r_is_lower_half_of_frame;
             r_stable_is_lower_half_of_frame <= r_cdc_is_lower_half_of_frame;
+            r_lower_half_of_frame_timed_with_decoded_frame_idx <= r_stable_is_lower_half_of_frame; -- Delay one more clock cycle to match delay of sync. decode of frame idx
             r_cdc_frame_idx_grey_code <= w_frame_idx_grey_code;
             r_stable_frame_idx_grey_code <= r_cdc_frame_idx_grey_code;
         end if;
@@ -326,13 +328,24 @@ begin
             "11" when "10",
             "10" when "11",
             "00" when others;
-    -- Decode
-    with r_stable_frame_idx_grey_code select
-        w_stable_frame_idx <=
-            "00" when "00",
-            "01" when "01",
-            "10" when "11",
-            "11" when "10",
-            "00" when others;
+
+    -- Decode (Pipeline to meet timing)
+    GRAY_CODE_DECODE: process(i_clk)
+	begin
+        if rising_edge(i_clk) then
+            case r_stable_frame_idx_grey_code is
+                when "00" =>
+                    r_stable_frame_idx <= "00";
+                when "01" =>
+                    r_stable_frame_idx <= "01";
+                when "11" =>
+                    r_stable_frame_idx <= "10";
+                when "10" =>
+                    r_stable_frame_idx <= "11";
+                when others =>
+                    r_stable_frame_idx <= "00";
+            end case;
+        end if;
+    end process;
 
 end Behavioral;

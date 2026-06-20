@@ -155,11 +155,11 @@ begin
             if i_vga_resetn = '0' then
                 o_vga_h_sync <= '1';
             else
-                if r_col_count = c_COLS + c_COLS_BACKPORCH - 1 then
+                if r_col_count = c_COLS + c_COLS_FRONTPORCH - 1 then
                     -- 0 while sync time
                     o_vga_h_sync <= '0';
-                elsif r_col_count = c_COLS_SUM - c_COLS_FRONTPORCH - 1 then
-                    -- 1 while frontporch, display area and backporch
+                elsif r_col_count = c_COLS_SUM - c_COLS_BACKPORCH - 1 then
+                    -- 1 while backporch, display area and frontporch
                     o_vga_h_sync <= '1';
                 end if;
             end if;
@@ -172,11 +172,11 @@ begin
             if i_vga_resetn = '0' then
                 o_vga_v_sync <= '1';
             else
-                if r_row_count = c_ROWS + c_ROWS_BACKPORCH - 1 then
+                if r_row_count = c_ROWS + c_ROWS_FRONTPORCH - 1 then
                     -- 0 while sync time
                     o_vga_v_sync <= '0';
-                elsif r_row_count = c_ROWS_SUM - c_ROWS_FRONTPORCH - 1 then
-                    -- 1 while frontporch, display area and backporch
+                elsif r_row_count = c_ROWS_SUM - c_ROWS_BACKPORCH - 1 then
+                    -- 1 while backporch, display area and frontporch
                     o_vga_v_sync <= '1';
                 end if;
             end if;
@@ -219,11 +219,11 @@ begin
 
     -- Highlighting the col and row of the current target in the minimap area
     w_highlighted_target_col <= '1' when (r_col_count = unsigned(i_highlight_info(to_integer(r_frame_idx)).target_pixel_col) and
-                                    r_row_count >= to_unsigned((3*(480/4)), c_COLS_BUS_WIDTH) and w_active_area = '1')
+                                    r_row_count >= to_unsigned((3*(480/4)), c_ROWS_BUS_WIDTH) and w_active_area = '1')
                             else '0';
 
     w_highlighted_target_row <= '1' when (r_row_count = unsigned(i_highlight_info(to_integer(r_frame_idx)).target_pixel_row) and
-                                    r_col_count < to_unsigned((640/4), c_ROWS_BUS_WIDTH) and w_active_area = '1')
+                                    r_col_count < to_unsigned((640/4), c_COLS_BUS_WIDTH) and w_active_area = '1')
                             else '0';
 
     HIGHLIGHT: process(i_vga_clk)

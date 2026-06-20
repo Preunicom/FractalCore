@@ -12,7 +12,7 @@ set_clock_groups -asynchronous -group [get_clocks -of_objects [get_pins FractalC
 
 # Set FF to CDC mode --> Placed nearby to improve metastability resistance
 # CDC of reset (locked) signal
-set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_0/U0/buf_reg }];
+set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_0/U0/r_buf_reg }];
 set_property ASYNC_REG TRUE [get_cells { FractalCore_i/CDC_Synchronizer_0/U0/o_data_reg }];
 # CDC of VGA control signals
 set_property ASYNC_REG TRUE [get_cells { FractalCore_i/Anzeige_0/U0/VGA_CTRL/FRAME_BUF_MANAGER/r_cdc_*_reg* }];

@@ -202,7 +202,11 @@
 | |  |  |
 | **KW 23** | **77** | **Zwischensumme** |
 | |  |  |
-| 08.06.2026 | 2 | Bug Fixes color scheme|
+| 08.06.2026 | 2 | Bug Fixes color scheme |
 | |  |  |
 | **KW 24** |  **79** | **Zwischensumme** |
+| |  |  |
+| 19.06.2026 | 1 | Finale BugFixes im HDMI Timing |
+| |  |  |
+| **KW 25** |  **80** | **Zwischensumme** |
 | |  |  |

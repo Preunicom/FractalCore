@@ -5,7 +5,7 @@
 | Entwickler | Aufgebrachte Zeit |
 |------------|-------------------|
 | Thomas Schiergl | 159 |
-| Markus Remy | 219 |
+| Markus Remy | 220 |
 
 ## Implementierungsübersicht
 
@@ -62,7 +62,7 @@
 | | | | | | | |
 | 10 | **Clock Domain Crossing** | 20 | 4 | - | 4 | Thomas + Markus |
 | | | | | | | |
-| Z1 | **Zusatzfeature: Portierung auf Arty Z7-20 mit HDMI** | 0 | 79 | - | 79 | Markus |
+| Z1 | **Zusatzfeature: Portierung auf Arty Z7-20 mit HDMI** | 0 | 80 | - | 80 | Markus |
 
 ### Erklärung zur Implementierungsübersicht
 
